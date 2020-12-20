@@ -16,19 +16,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // nastavi orientaciu obrazovky
+        // imposta l'orientamento dello schermo
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        // vytvori novu hru
+        // crea un nuovo gioco
         game = new Game(this, 3, 0);
         setContentView(game);
 
-        // vytvori handler a thread
+        // crea un gestore e un thread
         VytvorHandler();
         myThread = new UpdateThread(updateHandler);
         myThread.start();
     }
 
+    /**
+     * creaHandler
+     */
     private void VytvorHandler() {
         updateHandler = new Handler() {
             public void handleMessage(Message msg) {

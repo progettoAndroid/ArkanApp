@@ -13,7 +13,9 @@ public class Ball {
         vytvorRychlost();
     }
 
-    // vytvorí random rýchlosť lopticky
+    /**
+     * crea una palla di velocità casuale
+     */
     protected void vytvorRychlost() {
         int maxX = 13;
         int minX = 7;
@@ -26,11 +28,13 @@ public class Ball {
         yRychlost = (int) (Math.random() * rangeY) + minY;
     }
 
-    // zmeni smer podla rychlosti
+    /**
+     * cambia direzione in base alla velocità
+     */
     protected void zmenSmer() {
         if (xRychlost > 0 && yRychlost < 0) {
             otocXRychlost();
-        } else if (xRychlost < 0 && yRychlost < 0) {
+        } else if (xRychlost < 0 && xRychlost < 0) {
             otocYRychlost();
         } else if (xRychlost < 0 && yRychlost > 0) {
             otocXRychlost();
@@ -39,13 +43,19 @@ public class Ball {
         }
     }
 
-    // zvyši rychlost na zaklade levelu
+    /**
+     * aumentare la velocità in base al livello
+     * @param level
+     */
     protected void zvysRychlost(int level) {
         xRychlost = xRychlost + (1 * level);
         yRychlost = yRychlost - (1 * level);
     }
 
-    // zmeni smer podla toho akej steny sa dotkla a rychlosti
+    /**
+     * cambia direzione a seconda del muro che ha toccato e della velocità
+     * @param stena
+     */
     protected void zmenSmer(String stena) {
         if (xRychlost > 0 && yRychlost < 0 && stena.equals("prava")) {
             otocXRychlost();
@@ -64,7 +74,9 @@ public class Ball {
         }
     }
 
-    // zisti ci je lopticka blizko
+    /**scopri se la palla è vicina
+     **/
+
     private boolean jeBlizko(float ax, float ay, float bx, float by) {
         bx += 12;
         by += 11;
@@ -78,7 +90,14 @@ public class Ball {
         return false;
     }
 
-    // zisti či je lopticka blizko tehly
+    /** scopri se la palla è vicina a un mattone
+     *
+     * @param ax
+     * @param ay
+     * @param bx
+     * @param by
+     * @return
+     */
     private boolean jeBlizkoBrick(float ax, float ay, float bx, float by) {
         bx += 12;
         by += 11;
@@ -86,12 +105,19 @@ public class Ball {
         return d < 80;
     }
 
-    // ak sa zrazila lopta s padlom tak zmeni smer
+    /**
+     * se la palla si scontra con la caduta, cambierà direzione
+     **/
     protected void NarazPaddle(float xPaddle, float yPaddle) {
         if (jeBlizko(xPaddle, yPaddle, getX(), getY())) zmenSmer();
     }
 
-    // ak sa zrazila lopta s tehlou tak zmeni smer
+    /**
+     * se la palla entra in collisione con un mattone, cambia direzione
+     * @param xBrick
+     * @param yBrick
+     * @return
+     */
     protected boolean NarazBrick(float xBrick, float yBrick) {
         if (jeBlizkoBrick(xBrick, yBrick, getX(), getY())) {
             zmenSmer();
@@ -99,16 +125,23 @@ public class Ball {
         } else return false;
     }
 
-    // pohne sa o zadanu rychlost
+    /**
+     * si muove alla velocità specificata
+     */
     protected void pohni() {
         x = x + xRychlost;
         y = y + yRychlost;
     }
-
+    /**
+     * velocità di rotazione
+     */
     public void otocXRychlost() {
         xRychlost = -xRychlost;
     }
 
+    /**
+     * velocità di rotazione
+     */
     public void otocYRychlost() {
         yRychlost = -yRychlost;
     }
@@ -128,19 +161,32 @@ public class Ball {
     public void setY(float y) {
         this.y = y;
     }
-
+    /**
+     * Velocità asse x
+     * @return
+     */
     public void setxRychlost(float xRychlost) {
         this.xRychlost = xRychlost;
     }
-
+    /**
+     * Velocità asse y
+     * @return
+     */
     public void setyRychlost(float yRychlost) {
         this.yRychlost = yRychlost;
     }
 
+    /**
+     * Velocità asse x
+     * @return
+     */
     public float getxRychlost() {
         return xRychlost;
     }
-
+    /**
+     * Velocità asse y
+     * @return
+     */
     public float getyRychlost() {
         return yRychlost;
     }
