@@ -1,6 +1,8 @@
 package com.example.android.arkanoid;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -12,12 +14,15 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 
 import java.util.ArrayList;
+
+import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
 
 public class Game extends View implements SensorEventListener, View.OnTouchListener {
 
@@ -36,17 +41,39 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
 
     private RectF r;
 
-    private SensorManager sManager;
-    private Sensor accelerometer;
+    private SensorManager sManager = null;
+    private Sensor accelerometer = null;
 
     private int lifes;
     private int score;
     private int level;
+    private int controller;
     private boolean start;
     private boolean gameOver;
     private Context context;
 
-    public Game(Context context, int lifes, int score) {
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+
+        if (this.controller == 0){
+            switch(event.getAction()){
+                case MotionEvent.ACTION_DOWN:
+                    if(context.getResources().getConfiguration().orientation == ORIENTATION_PORTRAIT){
+                        if((event.getRawX() > (size.x / 2)) && ((paddle.getX() + size.x / 12) < size.x - 200))
+                        {
+
+                            paddle.setX(paddle.getX() + (size.x / 12));
+                        }else if((event.getRawX() < (size.x / 2)) && ((paddle.getX() - (size.x / 12)) > 0)) {
+                            paddle.setX(paddle.getX() - (size.x / 12 ));
+                        }
+                    }
+
+            }
+        }
+        return super.onTouchEvent(event);
+    }
+
+    public Game(Context context, int lifes, int score, int controller) {
         super(context);
         paint = new Paint();
 
@@ -54,16 +81,18 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
         this.context = context;
         this.lifes = lifes;
         this.score = score;
+        this.controller = controller;
         level = 0;
 
         // start a gameOver per scoprire se il gioco è finito e se il giocatore non l'ha perso
         start = false;
         gameOver = false;
 
-        //crea un accelerometro a SensorManager
-        sManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
-        accelerometer = sManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-
+        //Il giocatore sceglie quale controller utilizzare
+        if(controller == 1){
+            sManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+            accelerometer = sManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        }
         nacitajPozadie(context);
 
         //crea una bitmap per la palla e la pagaia
@@ -73,7 +102,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
         //
         //crea una nuova palla, una nuova base e un elenco di mattoni
         ball = new Ball(size.x / 2, size.y - 480);
-        paddle = new Paddle(size.x / 2, size.y - 400);
+        paddle = new Paddle(size.x / 2 - 100, size.y - 400);
         zoznam = new ArrayList<Brick>();
 
         vygenerujBricks(context);
@@ -205,7 +234,9 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
      * runScanning
      */
     public void spustiSnimanie() {
-        sManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME);
+        if(sManager != null) {
+            sManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME);
+        }
     }
 
     //
