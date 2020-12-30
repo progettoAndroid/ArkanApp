@@ -30,24 +30,20 @@ public class Brick extends View {
     private float y;
 
 
+
     public Brick(Context context, float x, float y ,Level level) {
         super(context);
         this.x = x;
         this.y = y;
-        this.level = level;
-        if (level == Level.ONE)
+
+        if (level == Level.ONE) {
+            this.level = level;
             skin();
-        else if (level == Level.TWO)
-            skin();
-    }
-    public Brick(Context context, float x, float y ,Level level,Bitmap bitmapCurrent) {
-        super(context);
-        this.x = x;
-        this.y = y;
-        if (level == Level.ONE)
-            skin();
-        else if (level == Level.TWO)
-            skin_level2(bitmapCurrent);
+        }
+        else if (level == Level.TWO){
+            this.level = level;
+            skin_level2();
+        }
     }
 
 
@@ -83,7 +79,7 @@ public class Brick extends View {
     }
 
     // assegna un'immagine casuale al mattone
-    private void skin_level2( Bitmap bitmapCurrent) {
+    private void skin_level2( ) {
         int a = (int) (Math.random() * 8);
         switch (a) {
             case 0:

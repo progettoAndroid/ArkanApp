@@ -186,12 +186,13 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
             for (int i = 0; i < zoznam.size(); i++) {
                 Brick b = zoznam.get(i);
                 if (ball.NarazBrick(b.getX(), b.getY())) {
-                    Bitmap brickCurrent = zoznam.get(i).getBrick();
+//                    Bitmap brickCurrent = zoznam.get(i).getBrick();
                     if (zoznam.get(i).getLevel() == Brick.Level.ONE){
                         zoznam.remove(i);
-                        zoznam.add(i,new Brick(context, b.getX(),  b.getY(), Brick.Level.TWO, brickCurrent) );
+
+                        zoznam.add(i,new Brick(context, b.getX(),  b.getY(), Brick.Level.TWO) );
                     }
-                    else{
+                    else if (zoznam.get(i).getLevel() == Brick.Level.TWO){
                         zoznam.remove(i);
 
                     }
