@@ -30,7 +30,6 @@ public class Brick extends View {
     private float y;
 
 
-
     public Brick(Context context, float x, float y ,Level level) {
         super(context);
         this.x = x;
