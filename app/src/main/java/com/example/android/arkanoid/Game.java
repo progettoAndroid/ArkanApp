@@ -117,7 +117,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
     private void vygenerujBricks(Context context) {
         for (int i = 3; i < 7; i++) {
             for (int j = 1; j < 6; j++) {
-                zoznam.add(new Brick(context, j * 150, i * 100));
+                zoznam.add(new Brick(context, j * 150, i * 100, Brick.Level.ONE));
             }
         }
     }
@@ -215,7 +215,19 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
             for (int i = 0; i < zoznam.size(); i++) {
                 Brick b = zoznam.get(i);
                 if (ball.NarazBrick(b.getX(), b.getY())) {
-                    zoznam.remove(i);
+//                    Bitmap brickCurrent = zoznam.get(i).getBrick();
+                    if (zoznam.get(i).getLevel() == Brick.Level.ONE){
+                        zoznam.remove(i);
+
+                        zoznam.add(i,new Brick(context, b.getX(),  b.getY(), Brick.Level.TWO) );
+                    }
+                    else if (zoznam.get(i).getLevel() == Brick.Level.TWO){
+                        zoznam.remove(i);
+
+                    }
+
+
+
                     score = score + 80;
                 }
             }

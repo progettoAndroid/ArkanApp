@@ -1,7 +1,5 @@
 package com.example.android.arkanoid;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.os.Handler;
 import android.os.Message;
@@ -13,8 +11,7 @@ public class MainActivity extends AppCompatActivity {
     private Game game;
     private UpdateThread myThread;
     private Handler updateHandler;
-    private int selectedController;
-    String[] controllers = {"Touch", "Accelerometro"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,16 +20,7 @@ public class MainActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         // crea un nuovo gioco
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Scegli come Controllare il Paddle");
-        builder.setItems(controllers, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                selectedController = which;
-            }
-        });
-        builder.show();
-        game = new Game(this, 3, 0, selectedController);
+        game = new Game(this, 3, 0);
         setContentView(game);
 
         // crea un gestore e un thread
