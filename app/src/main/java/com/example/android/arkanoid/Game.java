@@ -51,27 +51,8 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
     private boolean start;
     private boolean gameOver;
     private Context context;
+    private WorkerThread controlsThread;
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-
-        if (this.controller == 0){
-            switch(event.getAction()){
-                case MotionEvent.ACTION_DOWN:
-                    if(context.getResources().getConfiguration().orientation == ORIENTATION_PORTRAIT){
-                        if((event.getRawX() > (size.x / 2)) && ((paddle.getX() + size.x / 12) < size.x - 200))
-                        {
-
-                            paddle.setX(paddle.getX() + (size.x / 12));
-                        }else if((event.getRawX() < (size.x / 2)) && ((paddle.getX() - (size.x / 12)) > 0)) {
-                            paddle.setX(paddle.getX() - (size.x / 12 ));
-                        }
-                    }
-
-            }
-        }
-        return super.onTouchEvent(event);
-    }
 
     public Game(Context context, int lifes, int score, int controller) {
         super(context);
@@ -283,7 +264,25 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
 
         } else {
             start = true;
-        }
+
+                switch(event.getAction()){
+                    //se l'azione è di tipo down o move richiamo il thread
+                    case MotionEvent.ACTION_DOWN: case MotionEvent.ACTION_MOVE:
+                        if (controlsThread == null){
+                            controlsThread = new WorkerThread(context, event, paddle, size);
+                            controlsThread.start();
+                        }
+                      return true;
+                     //se è di tipo up, stoppo il thread
+                    case MotionEvent.ACTION_UP:
+                        if (controlsThread != null){
+                            controlsThread.terminate();
+                            controlsThread = null;
+                        }
+                        return true;
+                }
+            }
+
         return false;
     }
 
