@@ -53,7 +53,6 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
     private Context context;
     private WorkerThread controlsThread;
 
-
     public Game(Context context, int lifes, int score, int controller) {
         super(context);
         paint = new Paint();
