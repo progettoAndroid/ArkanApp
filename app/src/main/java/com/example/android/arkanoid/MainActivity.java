@@ -1,13 +1,17 @@
 package com.example.android.arkanoid;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
-
     private Game game;
     private UpdateThread myThread;
     private Handler updateHandler;
@@ -15,38 +19,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // nastavi orientaciu obrazovky
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-        // vytvori novu hru
-        game = new Game(this, 3, 0);
-        setContentView(game);
-
-        // vytvori handler a thread
-        VytvorHandler();
-        myThread = new UpdateThread(updateHandler);
-        myThread.start();
+        setContentView(R.layout.activity_main);
     }
 
-    private void VytvorHandler() {
-        updateHandler = new Handler() {
-            public void handleMessage(Message msg) {
-                game.invalidate();
-                game.update();
-                super.handleMessage(msg);
-            }
-        };
+    public void sendMessageSingleplayer(View view) {
+        Intent gameStarter = new Intent(this, GameStarter.class);
+        startActivity(gameStarter);
     }
 
-    protected void onPause() {
-        super.onPause();
-        game.zastavSnimanie();
-    }
+    public void sendMessageMultiplayer(View view) {
 
-    protected void onResume() {
-        super.onResume();
-        game.spustiSnimanie();
     }
+    public void sendMessageImpostazioni(View view) {
 
+    }
+    public void sendMessageClassifica(View view) {
+
+    }
 }
