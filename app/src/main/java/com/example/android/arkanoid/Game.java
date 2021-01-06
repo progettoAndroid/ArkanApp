@@ -70,10 +70,10 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
         gameOver = false;
 
         //Il giocatore sceglie quale controller utilizzare
-
+        if(controller == 1) {
             sManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
             accelerometer = sManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-
+        }
         nacitajPozadie(context);
 
         //crea una bitmap per la palla e la pagaia
@@ -264,7 +264,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
 
         } else {
             start = true;
-
+            if(controller==0){
                 switch(event.getAction()){
                     //se l'azione è di tipo down o move richiamo il thread
                     case MotionEvent.ACTION_DOWN: case MotionEvent.ACTION_MOVE:
@@ -282,9 +282,10 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
                         return true;
                 }
             }
-
+        }
         return false;
     }
+
 
     /** imposta il gioco per iniziare
      *

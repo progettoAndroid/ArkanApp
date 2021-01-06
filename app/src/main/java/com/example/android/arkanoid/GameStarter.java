@@ -1,5 +1,7 @@
 package com.example.android.arkanoid;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.os.Handler;
 import android.os.Message;
@@ -11,16 +13,19 @@ public class GameStarter extends AppCompatActivity {
     private Game game;
     private UpdateThread myThread;
     private Handler updateHandler;
-
+    private int Controller;
+    String[] controllers = {"Touch", "Accelerometro"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // nastavi orientaciu obrazovky
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setContentView(R.layout.activity_main);
 
         // vytvori novu hru
-        game = new Game(this, 3, 0);
+        Controller = getIntent().getIntExtra("EXTRA_CONTROLLER", 0);
+        game = new Game(this, 3, 0, Controller);
         setContentView(game);
 
         // vytvori handler a thread
