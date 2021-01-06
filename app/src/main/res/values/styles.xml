@@ -7,4 +7,9 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+    <style name="styledialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:fontFamily">@font/caviar_dreams_bold</item>
+        <item name="textColorAlertDialogListItem">#FFFFFF</item>
+    </style>
 </resources>

@@ -21,7 +21,6 @@ public class GameStarter extends AppCompatActivity {
 
         // nastavi orientaciu obrazovky
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        setContentView(R.layout.activity_main);
 
         // vytvori novu hru
         Controller = getIntent().getIntExtra("EXTRA_CONTROLLER", 0);
