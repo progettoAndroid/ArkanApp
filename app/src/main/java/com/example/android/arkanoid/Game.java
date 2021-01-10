@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
 
+
 public class Game extends View implements SensorEventListener, View.OnTouchListener {
 
     private Bitmap wallpaper;
@@ -199,8 +200,8 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
 //                    Bitmap brickCurrent = zoznam.get(i).getBrick();
                     if (zoznam.get(i).getLevel() == Brick.Level.ONE){
                         zoznam.remove(i);
+                        zoznam.add(i,new Brick(context, b.getX(),  b.getY(), Brick.Level.TWO));
 
-                        zoznam.add(i,new Brick(context, b.getX(),  b.getY(), Brick.Level.TWO) );
                     }
                     else if (zoznam.get(i).getLevel() == Brick.Level.TWO){
                         zoznam.remove(i);
@@ -220,19 +221,20 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
      * stopSensing
      */
     public void zastavSnimanie() {
-        sManager.unregisterListener(this);
+        if(controller == 1) {
+            sManager.unregisterListener(this);
+        }
     }
 
     /**
      * runScanning
      */
     public void spustiSnimanie() {
-        if(sManager != null) {
+        if(controller == 1) {
             sManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME);
         }
     }
 
-    //
     //cambiare accelerometro
     @Override
     public void onSensorChanged(SensorEvent event) {
