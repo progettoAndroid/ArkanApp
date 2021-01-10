@@ -13,7 +13,7 @@ public class Ball {
         vytvorRychlost();
     }
 
-    // vytvorí random rýchlosť lopticky
+    /**crea una palla di velocità casuale**/
     protected void vytvorRychlost() {
         int maxX = 13;
         int minX = 7;
@@ -26,7 +26,7 @@ public class Ball {
         yRychlost = (int) (Math.random() * rangeY) + minY;
     }
 
-    // cambia direzione in base alla velocità
+    /**cambia direzione in base alla velocità**/
     protected void zmenSmer() {
         if (xRychlost > 0 && yRychlost < 0) {
             otocXRychlost();
@@ -39,13 +39,13 @@ public class Ball {
         }
     }
 
-    // aumenta velocità in base al livello
+    /** aumenta velocità in base al livello*/
     protected void zvysRychlost(int level) {
         xRychlost = xRychlost + (1 * level);
         yRychlost = yRychlost - (1 * level);
     }
 
-    //cambia direzione a seconda del muro che ha toccato e della velocità
+    /**cambia direzione a seconda del muro che ha toccato e della velocità**/
     protected void zmenSmer(String stena) {
         if (xRychlost > 0 && yRychlost < 0 && stena.equals("prava")) {
             otocXRychlost();
@@ -64,7 +64,7 @@ public class Ball {
         }
     }
 
-    //scopri se la palla è vicina
+    /**scopri se la palla è vicina**/
     private boolean jeBlizko(float ax, float ay, float bx, float by) {
         bx += 12;
         by += 11;
@@ -78,7 +78,7 @@ public class Ball {
         return false;
     }
 
-    //scopri se la palla è vicina a un mattone
+    /**scopri se la palla è vicina a un mattone**/
     private boolean jeBlizkoBrick(float ax, float ay, float bx, float by) {
         bx += 12;
         by += 11;
@@ -86,13 +86,13 @@ public class Ball {
         return d < 80;
     }
 
-    //se la palla entra in collisione con il paddle, cambierà direzione
+    /**se la palla entra in collisione con il paddle, cambierà direzione**/
     protected void NarazPaddle(float xPaddle, float yPaddle) {
         if (jeBlizko(xPaddle, yPaddle, getX(), getY())) zmenSmer();
     }
 
 
-    // se la palla entra in collisione con un mattone, cambierà direzione
+    /** se la palla entra in collisione con un mattone, cambierà direzione **/
     protected boolean NarazBrick(float xBrick, float yBrick) {
         if (jeBlizkoBrick(xBrick, yBrick, getX(), getY())) {
             zmenSmer();
@@ -100,8 +100,9 @@ public class Ball {
         } else return false;
     }
 
-    // si sposta alla velocità specificata
-    protected void pohni() {
+    /** si sposta alla velocità specificata
+    **/
+     protected void pohni() {
         x = x + xRychlost;
         y = y + yRychlost;
     }
