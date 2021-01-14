@@ -1,5 +1,7 @@
 package com.example.android.arkanoid;
 
+import java.util.Random;
+
 public class Ball {
 
     protected float xRychlost;
@@ -37,6 +39,30 @@ public class Ball {
         } else if (xRychlost > 0 && yRychlost > 0) {
             otocYRychlost();
         }
+    }
+    /**cambia direzione in base alla velocità**/
+    protected void cambiaDirezioneAlToccoMattone() {
+        if (xRychlost > 0 && yRychlost < 0) {
+           Random random= new Random();
+           if ( random.nextBoolean())
+               otocYRychlost();
+           else{
+            otocYRychlost();
+            otocXRychlost();}
+        } else if (xRychlost < 0 && yRychlost < 0) {
+           otocYRychlost();
+        } else if (xRychlost < 0 && yRychlost > 0) {
+
+            Random random= new Random();
+            if ( random.nextBoolean())
+                otocYRychlost();
+            else{
+                otocYRychlost();
+                otocXRychlost();}
+        } else if (xRychlost > 0 && yRychlost > 0) {
+            otocYRychlost();
+        }
+
     }
 
     /** aumenta velocità in base al livello*/
@@ -95,7 +121,8 @@ public class Ball {
     /** se la palla entra in collisione con un mattone, cambierà direzione **/
     protected boolean NarazBrick(float xBrick, float yBrick) {
         if (jeBlizkoBrick(xBrick, yBrick, getX(), getY())) {
-            zmenSmer();
+            cambiaDirezioneAlToccoMattone();
+
             return true;
         } else return false;
     }

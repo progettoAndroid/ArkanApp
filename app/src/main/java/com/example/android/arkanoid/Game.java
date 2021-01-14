@@ -23,6 +23,7 @@ import android.view.WindowManager;
 import java.util.ArrayList;
 
 import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
+import static android.os.SystemClock.sleep;
 
 
 public class Game extends View implements SensorEventListener, View.OnTouchListener {
@@ -97,13 +98,12 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
      * @param context
      */
     private void vygenerujBricks(Context context) {
-        for (int i = 3; i < 7; i++) {
+        for (int i = 3; i < 8; i++) {
             for (int j = 1; j < 6; j++) {
-                zoznam.add(new Brick(context, j * 150, i * 100, Brick.Level.ONE));
+                zoznam.add(new Brick(context, j * 170, i * 130, Brick.Level.ONE));
             }
         }
     }
-
     /**
      * impostare lo sfondo
      * @param context
@@ -200,6 +200,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
 //                    Bitmap brickCurrent = zoznam.get(i).getBrick();
                     if (zoznam.get(i).getLevel() == Brick.Level.ONE){
                         zoznam.remove(i);
+
                         zoznam.add(i,new Brick(context, b.getX(),  b.getY(), Brick.Level.TWO));
 
                     }
