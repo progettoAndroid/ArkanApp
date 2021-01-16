@@ -87,8 +87,10 @@ public class Ball {
     }
 
     /**se la palla entra in collisione con il paddle, cambierà direzione**/
-    protected void NarazPaddle(float xPaddle, float yPaddle) {
-        if (jeBlizko(xPaddle, yPaddle, getX(), getY())) zmenSmer();
+    protected boolean NarazPaddle(float xPaddle, float yPaddle) {
+        boolean isNear = jeBlizko(xPaddle, yPaddle, getX(), getY());
+        if (isNear) zmenSmer();
+        return isNear;
     }
 
 

@@ -25,25 +25,24 @@ public class Brick extends View {
     }
 
     private  Level level;
-    private Bitmap   brick;
+    private Bitmap brick;
     private float x;
     private float y;
 
 
     public Brick(Context context, float x, float y ,Level level) {
         super(context);
-        this.x = x;
-        this.y = y;
+            this.x = x;
+            this.y = y;
 
-        if (level == Level.ONE) {
-            this.level = level;
-            skin();
+            if (level == Level.ONE) {
+                this.level = level;
+                skin();
+            } else if (level == Level.TWO) {
+                this.level = level;
+                skin_level2();
+            }
         }
-        else if (level == Level.TWO){
-            this.level = level;
-            skin_level2();
-        }
-    }
 
 
     // assegna un'immagine casuale al mattone
@@ -57,7 +56,7 @@ public class Brick extends View {
                 brick = BitmapFactory.decodeResource(getResources(), R.drawable.brick_blue);
                  break;
             case 2:
-                 brick = BitmapFactory.decodeResource(getResources(), R.drawable.brick_green);
+                 brick = BitmapFactory.decodeResource(getResources(), R.drawable.brick_blue);
                 break;
             case 3:
                 brick = BitmapFactory.decodeResource(getResources(), R.drawable.brick_orange);
@@ -131,5 +130,8 @@ public class Brick extends View {
 
     public Bitmap getBrick() {
         return brick;
+    }
+    public void setBrick(Bitmap brick) {
+        this.brick=brick;
     }
 }

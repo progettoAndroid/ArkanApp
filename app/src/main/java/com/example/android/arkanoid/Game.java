@@ -21,6 +21,9 @@ import android.view.View;
 import android.view.WindowManager;
 
 import java.util.ArrayList;
+import java.util.Random;
+
+import tyrantgit.explosionfield.ExplosionField;
 
 import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
 
@@ -54,6 +57,12 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
     private Context context;
     private WorkerThread controlsThread;
 
+    boolean bombTriggerPaddle = false;
+    boolean bombTriggerScore = false;
+    boolean threadTrigger = false;
+    int brickIndex = 0;
+    private BlowBrick blowBrick = new BlowBrick();
+
 
     public Game(Context context, int lifes, int score, int controller) {
         super(context);
@@ -71,7 +80,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
         gameOver = false;
 
         //Il giocatore sceglie quale controller utilizzare
-        if(controller == 1) {
+        if (controller == 1) {
             sManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
             accelerometer = sManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         }
@@ -94,6 +103,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
 
     /**
      * riempire l'elenco con i mattoni
+     *
      * @param context
      */
     private void vygenerujBricks(Context context) {
@@ -106,6 +116,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
 
     /**
      * impostare lo sfondo
+     *
      * @param context
      */
     private void nacitajPozadie(Context context) {
@@ -155,8 +166,8 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
     }
 
 
-    /**controllare che la palla non abbia toccato il bordo
-     *
+    /**
+     * controllare che la palla non abbia toccato il bordo
      */
     private void skontrolujOkraje() {
         if (ball.getX() + ball.getxRychlost() >= size.x - 60) {
@@ -170,8 +181,8 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
         }
     }
 
-    /**controlla lo stato del gioco. se le mie vite o se il gioco è finito
-     *
+    /**
+     * controlla lo stato del gioco. se le mie vite o se il gioco è finito
      */
     private void skontrolujZivoty() {
         if (lifes == 1) {
@@ -188,40 +199,74 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
         }
     }
 
+    private class BlowBrick extends Thread {/*
+        @Override
+        public void run() {
+            super.run();
+            while (start) {
+                if (threadTrigger) {
+                    if (score % 640 == 0 && score != 0) {
+                            Random r = new Random();
+                            int i = r.nextInt(zoznam.size());
+                            zoznam.get(i).setBrick(BitmapFactory.decodeResource(getResources(), R.drawable.brick_green));
+                            try {
+                                Thread.sleep(1000);
+                                ExplosionField explosionField = new ExplosionField(context);
+                                explosionField.explode(zoznam.get(i));
+                                zoznam.remove(i);
+                                score = score + 80 * 2;
+                            } catch (Exception e){
+                                e.printStackTrace();
+                            } finally {
+                                threadTrigger = false;
+                            }
+                    }
+                }
+            }
+        }*/
+    }
+
+
     // ogni passaggio controlla se c'è una collisione, una sconfitta o una vittoria, ecc.
     public void update() {
+        /*if(!blowBrick.isAlive()){
+            blowBrick = new BlowBrick();
+            blowBrick.start();
+        }*/
         if (start) {
             vyhra();
             skontrolujOkraje();
-            ball.NarazPaddle(paddle.getX(), paddle.getY());
-            for (int i = 0; i < zoznam.size(); i++) {
-                Brick b = zoznam.get(i);
+            if (ball.NarazPaddle(paddle.getX(), paddle.getY()) && bombTriggerScore) {
+                redBall = BitmapFactory.decodeResource(getResources(), R.drawable.bombball);
+                bombTriggerPaddle = true;
+            }
+            for (brickIndex = 0; brickIndex < zoznam.size(); brickIndex++) {
+                Brick b = zoznam.get(brickIndex);
                 if (ball.NarazBrick(b.getX(), b.getY())) {
-//                    Bitmap brickCurrent = zoznam.get(i).getBrick();
-                    if (zoznam.get(i).getLevel() == Brick.Level.ONE){
-                        zoznam.remove(i);
-                        zoznam.add(i,new Brick(context, b.getX(),  b.getY(), Brick.Level.TWO));
-
+                    if (zoznam.get(brickIndex).getLevel() == Brick.Level.ONE) {
+                        zoznam.remove(brickIndex);
+                        zoznam.add(brickIndex, new Brick(context, b.getX(), b.getY(), Brick.Level.TWO));
+                    } else if (zoznam.get(brickIndex).getLevel() == Brick.Level.TWO) {
+                        zoznam.remove(brickIndex);
                     }
-                    else if (zoznam.get(i).getLevel() == Brick.Level.TWO){
-                        zoznam.remove(i);
-
-                    }
-
-
-
+                    threadTrigger = true;
                     score = score + 80;
                 }
             }
-            ball.pohni();
-        }
+
+        } /*else if(blowBrick.isAlive()){
+            blowBrick.interrupt();
+        }*/
+
+        ball.pohni();
     }
+
 
     /**
      * stopSensing
      */
     public void zastavSnimanie() {
-        if(controller == 1) {
+        if (controller == 1) {
             sManager.unregisterListener(this);
         }
     }
@@ -230,7 +275,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
      * runScanning
      */
     public void spustiSnimanie() {
-        if(controller == 1) {
+        if (controller == 1) {
             sManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME);
         }
     }
@@ -254,7 +299,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
     }
 
     /**
-     serve a sospendere il gioco in caso di un nuovo gioco
+     * serve a sospendere il gioco in caso di un nuovo gioco
      **/
     @Override
     public boolean onTouch(View v, MotionEvent event) {
@@ -266,18 +311,19 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
 
         } else {
             start = true;
-            if(controller==0){
-                switch(event.getAction()){
+            if (controller == 0) {
+                switch (event.getAction()) {
                     //se l'azione è di tipo down o move richiamo il thread
-                    case MotionEvent.ACTION_DOWN: case MotionEvent.ACTION_MOVE:
-                        if (controlsThread == null){
+                    case MotionEvent.ACTION_DOWN:
+                    case MotionEvent.ACTION_MOVE:
+                        if (controlsThread == null) {
                             controlsThread = new WorkerThread(context, event, paddle, size);
                             controlsThread.start();
                         }
-                      return true;
-                     //se è di tipo up, stoppo il thread
+                        return true;
+                    //se è di tipo up, stoppo il thread
                     case MotionEvent.ACTION_UP:
-                        if (controlsThread != null){
+                        if (controlsThread != null) {
                             controlsThread.terminate();
                             controlsThread = null;
                         }
@@ -289,8 +335,8 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
     }
 
 
-    /** imposta il gioco per iniziare
-     *
+    /**
+     * imposta il gioco per iniziare
      */
     private void resetLevel() {
         ball.setX(size.x / 2);
