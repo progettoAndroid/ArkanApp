@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Settings">
+
+    <android.support.design.widget.AppBarLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="1100dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:background="@drawable/vaporwave" />
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/arkanoidvw" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingTop="100dp"
+        android:paddingRight="16dp"
+        app:layout_anchor="@+id/imageView"
+        app:layout_anchorGravity="center">
+
+        <Button
+            android:id="@+id/button_musicaOn"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/buttonshape_home"
+            android:fontFamily="@font/feasfbrg"
+            android:onClick="sendMessageMusicaOn"
+            android:text="@string/musicaOn"
+            android:textColor="#FFFFFF"
+            android:textSize="35dp" />
+
+        <Button
+            android:id="@+id/button_musicaOff"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/buttonshape_home"
+            android:fontFamily="@font/feasfbrg"
+            android:onClick="sendMessageMusicaOff"
+            android:text="@string/musicaOff"
+            android:textColor="#FFFFFF"
+            android:textSize="35dp" />
+
+
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

@@ -13,5 +13,6 @@
     <string name="multiplayer">Multiplayer</string>
     <string name="impostazioni">Impostazioni</string>
     <string name="classifica">Classifica</string>
-
+    <string name="musicaOn">musica on</string>
+    <string name="musicaOff">musica off</string>
 </resources>

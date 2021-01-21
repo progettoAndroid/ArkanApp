@@ -1,21 +1,15 @@
 package com.example.android.arkanoid;
 
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.support.v7.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListView;
 
@@ -26,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private Handler updateHandler;
     private int selectedController = 2;
     private Context mContext;
+    private SoundPlayer sound2;
     String[] controllers = {"Touch", "Accelerometro"};
     SharedPreferences controllerSettings;
     @Override
@@ -33,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         mContext = getApplicationContext();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        sound2 = new SoundPlayer(this);
 
         //Uso le preferenze per salvare e recuperare i comandi preferiti dell'utente
         controllerSettings = mContext.getSharedPreferences(CONTROLLER, mContext.MODE_PRIVATE);
@@ -74,12 +70,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sendMessageMultiplayer(View view) {
-
+        sound2.playButton();
     }
     public void sendMessageImpostazioni(View view) {
-
+        Intent settings = new Intent(this, Settings.class);
+        sound2.playButton();
+        startActivity(settings);
     }
     public void sendMessageClassifica(View view) {
-
+        sound2.playButton();
     }
 }
