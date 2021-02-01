@@ -14,11 +14,19 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.MediaPlayer;
+import android.support.constraint.ConstraintLayout;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.model.stream.BaseGlideUrlLoader;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -56,13 +64,10 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
     private boolean gameOver;
     private Context context;
     private WorkerThread controlsThread;
-
-    boolean bombTriggerPaddle = false;
-    boolean bombTriggerScore = false;
-    boolean threadTrigger = false;
-    int brickIndex = 0;
-    private BlowBrick blowBrick = new BlowBrick();
-
+    private boolean isScoreMultipleOf360 = false;
+    int randomBrick = -1;
+    boolean isRandomTNT = false;
+    int paddleTouchCounter = 0;
 
     public Game(Context context, int lifes, int score, int controller) {
         super(context);
@@ -95,7 +100,6 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
         ball = new Ball(size.x / 2, size.y - 480);
         paddle = new Paddle(size.x / 2 - 100, size.y - 400);
         zoznam = new ArrayList<Brick>();
-
         vygenerujBricks(context);
         this.setOnTouchListener(this);
 
@@ -109,7 +113,8 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
     private void vygenerujBricks(Context context) {
         for (int i = 3; i < 7; i++) {
             for (int j = 1; j < 6; j++) {
-                zoznam.add(new Brick(context, j * 150, i * 100, Brick.Level.ONE));
+                Brick b = new Brick(context, j * 150, i * 100, Brick.Level.ONE);
+                zoznam.add(b);
             }
         }
     }
@@ -145,6 +150,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
 
         // disegnare mattoni
         paint.setColor(Color.GREEN);
+
         for (int i = 0; i < zoznam.size(); i++) {
             Brick b = zoznam.get(i);
             r = new RectF(b.getX(), b.getY(), b.getX() + 100, b.getY() + 80);
@@ -198,69 +204,61 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
             start = false;
         }
     }
-
-    private class BlowBrick extends Thread {/*
-        @Override
-        public void run() {
-            super.run();
-            while (start) {
-                if (threadTrigger) {
-                    if (score % 640 == 0 && score != 0) {
-                            Random r = new Random();
-                            int i = r.nextInt(zoznam.size());
-                            zoznam.get(i).setBrick(BitmapFactory.decodeResource(getResources(), R.drawable.brick_green));
-                            try {
-                                Thread.sleep(1000);
-                                ExplosionField explosionField = new ExplosionField(context);
-                                explosionField.explode(zoznam.get(i));
-                                zoznam.remove(i);
-                                score = score + 80 * 2;
-                            } catch (Exception e){
-                                e.printStackTrace();
-                            } finally {
-                                threadTrigger = false;
-                            }
-                    }
-                }
-            }
-        }*/
+    private boolean randomTNT(){
+        boolean returnValue = false;
+        Random randomInt = new Random();
+        randomBrick = randomInt.nextInt(zoznam.size());
+        if (isScoreMultipleOf360&&score!=0) {
+            MediaPlayer ring= MediaPlayer.create(context,R.raw.miccia);
+            ring.start();
+            zoznam.get(randomBrick).setBrick(BitmapFactory.decodeResource(getResources(), R.drawable.brick_green));
+            isScoreMultipleOf360=false;
+            returnValue=true;
+        }
+        return returnValue;
     }
-
 
     // ogni passaggio controlla se c'è una collisione, una sconfitta o una vittoria, ecc.
     public void update() {
-        /*if(!blowBrick.isAlive()){
-            blowBrick = new BlowBrick();
-            blowBrick.start();
-        }*/
         if (start) {
             vyhra();
             skontrolujOkraje();
-            if (ball.NarazPaddle(paddle.getX(), paddle.getY()) && bombTriggerScore) {
-                redBall = BitmapFactory.decodeResource(getResources(), R.drawable.bombball);
-                bombTriggerPaddle = true;
-            }
-            for (brickIndex = 0; brickIndex < zoznam.size(); brickIndex++) {
-                Brick b = zoznam.get(brickIndex);
-                if (ball.NarazBrick(b.getX(), b.getY())) {
-                    if (zoznam.get(brickIndex).getLevel() == Brick.Level.ONE) {
-                        zoznam.remove(brickIndex);
-                        zoznam.add(brickIndex, new Brick(context, b.getX(), b.getY(), Brick.Level.TWO));
-                    } else if (zoznam.get(brickIndex).getLevel() == Brick.Level.TWO) {
-                        zoznam.remove(brickIndex);
+            if(ball.NarazPaddle(paddle.getX(), paddle.getY())){
+                if(paddleTouchCounter==0) {
+                    isRandomTNT = randomTNT();
+                    if(isRandomTNT) {
+                        paddleTouchCounter++;
                     }
-                    threadTrigger = true;
-                    score = score + 80;
                 }
             }
+            for (int i = 0; i < zoznam.size(); i++) {
+                Brick b = zoznam.get(i);
+                if (ball.NarazBrick(b.getX(), b.getY())) {
+                    if (randomBrick != -1  && isRandomTNT) {
+                        MediaPlayer ring= MediaPlayer.create(context,R.raw.explosion);
+                        ring.start();
+                        zoznam.remove(randomBrick);
+                        isRandomTNT = false;
+                        paddleTouchCounter=0;
+                        randomBrick = -1;
+                    } else {
+                        if (zoznam.get(i).getLevel() == Brick.Level.ONE) {
+                            zoznam.remove(i);
+                            zoznam.add(i, new Brick(context, b.getX(), b.getY(), Brick.Level.TWO));
+                        } else if (zoznam.get(i).getLevel() == Brick.Level.TWO) {
+                            zoznam.remove(i);
 
-        } /*else if(blowBrick.isAlive()){
-            blowBrick.interrupt();
-        }*/
-
-        ball.pohni();
+                        }
+                        score = score + 80;
+                        if (score % 400 == 0) {
+                            isScoreMultipleOf360 = true;
+                        }
+                    }
+                }
+            }
+            ball.pohni();
+        }
     }
-
 
     /**
      * stopSensing

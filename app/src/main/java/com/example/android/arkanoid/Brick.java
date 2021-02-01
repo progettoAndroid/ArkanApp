@@ -3,7 +3,10 @@ package com.example.android.arkanoid;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import java.util.HashMap;
 
@@ -24,17 +27,18 @@ public class Brick extends View {
         this.level = level;
     }
 
-    private  Level level;
+    private Level level;
     private Bitmap brick;
     private float x;
     private float y;
 
 
-    public Brick(Context context, float x, float y ,Level level) {
+    public Brick(Context context, float x, float y, Level level) {
         super(context);
             this.x = x;
             this.y = y;
-
+        this.setLayoutParams(new ViewGroup.LayoutParams(64,32));
+        System.out.println("getHeight: "+this.getHeight()+" getWidth "+this.getWidth());
             if (level == Level.ONE) {
                 this.level = level;
                 skin();
@@ -87,7 +91,7 @@ public class Brick extends View {
                 brick = BitmapFactory.decodeResource(getResources(), R.drawable.brick_blue_screpolato);
                 break;
             case 2:
-                brick = BitmapFactory.decodeResource(getResources(), R.drawable.brick_green_screpolato);
+                brick = BitmapFactory.decodeResource(getResources(), R.drawable.brick_blue_screpolato);
                 break;
             case 3:
                 brick = BitmapFactory.decodeResource(getResources(), R.drawable.brick_orange_screpolato);
