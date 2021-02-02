@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "930844078514",
+    "firebase_url": "https://arkanapp-f50ab-default-rtdb.firebaseio.com",
+    "project_id": "arkanapp-f50ab",
+    "storage_bucket": "arkanapp-f50ab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:930844078514:android:d41fcddc00ef8fb54d74ab",
+        "android_client_info": {
+          "package_name": "com.example.android.arkanoid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "930844078514-hjsn4alf0eighkf5m4d073t0d4bvskg7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBr23wI1P6G1Od2uN49qtaPjyWGcYbXz7E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "930844078514-hjsn4alf0eighkf5m4d073t0d4bvskg7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

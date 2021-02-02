@@ -8,9 +8,13 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import android.text.InputType;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
 public class MainActivity extends AppCompatActivity {
@@ -21,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private int selectedController = 2;
     private Context mContext;
     private SoundPlayer sound2;
+    private String nickname;
     String[] controllers = {"Touch", "Accelerometro"};
     SharedPreferences controllerSettings;
     @Override
@@ -30,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         sound2 = new SoundPlayer(this);
 
+
         //Uso le preferenze per salvare e recuperare i comandi preferiti dell'utente
         controllerSettings = mContext.getSharedPreferences(CONTROLLER, mContext.MODE_PRIVATE);
         selectedController = controllerSettings.getInt("SelectedController", 2);
@@ -38,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         if (selectedController == 2) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.styledialog);
             builder.setTitle("CONFIGURAZIONE INIZIALE \nScegli come controllare il paddle");
+            builder.setCancelable(false);
             builder.setItems(controllers, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -49,12 +56,46 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
             //sistemo la parte grafica dell'alertdialog
-            AlertDialog dialog = builder.show();
-            dialog.getWindow().setBackgroundDrawableResource(R.drawable.popup_style);
-            ListView listView =dialog.getListView();
+            AlertDialog dialogController = builder.show();
+
+            dialogController.getWindow().setBackgroundDrawableResource(R.drawable.popup_style);
+            ListView listView =dialogController.getListView();
             listView.setDivider(new ColorDrawable(Color.LTGRAY));
             listView.setDividerHeight(2);
+
+
+
+
         }
+
+        final AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+        builder1.setTitle("Benvenuto su ArkanApp");
+        builder1.setMessage("Imposta un nickname");
+        builder1.setCancelable(false);
+// Set an EditText view to get user input
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT );
+        builder1.setView(input);
+        builder1.setPositiveButton("OK", null);
+        final AlertDialog dialog = builder1.show();
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.popup_style);
+
+
+
+        Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view1) {
+                if (TextUtils.isEmpty(input.getText().toString().trim())) {
+                    input.setError("Il campo non può essere vuoto");
+                } else {
+                    nickname = input.getText().toString().trim();
+
+                    dialog.dismiss();
+
+                }
+            }
+        });
     }
 
 
@@ -80,4 +121,4 @@ public class MainActivity extends AppCompatActivity {
     public void sendMessageClassifica(View view) {
         sound2.playButton();
     }
-}
+}		
