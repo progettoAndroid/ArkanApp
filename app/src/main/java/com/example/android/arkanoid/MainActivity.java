@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         namePlayerPreferences = mContext.getSharedPreferences(NICKNAME, mContext.MODE_PRIVATE);
         nickname = namePlayerPreferences.getString ("nickname","");
 
-//        if ( nickname.isEmpty()) {
+        if ( nickname.isEmpty()) {
             final AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
             builder1.setTitle("Benvenuto su ArkanApp");
             builder1.setMessage("Imposta un nickname");
@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
-//    }
+    }
 
     public void sendMessageSingleplayer(View view) {
         Intent gameStarter = new Intent(this, GameStarter.class);
