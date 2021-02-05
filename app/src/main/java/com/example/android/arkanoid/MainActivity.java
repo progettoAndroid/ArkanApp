@@ -31,22 +31,18 @@ public class MainActivity extends AppCompatActivity {
     public static final String CONTROLLER ="ControllerFile";    //serve a salvare la preferenza sul controller
     public static final String NICKNAME ="NamePlayerFile";
     private static final String TAG = "DB";
-    private int selectedController = 2;
+
     private String nickname = "";
     private String inputName = "";
-
     SharedPreferences controllerSettings;
     SharedPreferences namePlayerPreferences;
     String[] controllers = {"Touch", "Accelerometro"};
-     private Game game;
+    private Game game;
     private UpdateThread myThread;
     private Handler updateHandler;
     private int selectedController = 2;
     private Context mContext;
     private SoundPlayer sound2;
-    private String nickname;
-    String[] controllers = {"Touch", "Accelerometro"};
-    SharedPreferences controllerSettings;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mContext = getApplicationContext();
