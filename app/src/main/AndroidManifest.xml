@@ -16,6 +16,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Settings" />
+        <activity android:name=".Ranking" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">

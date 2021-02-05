@@ -144,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
                             }
                         };
                         userNameRef.addListenerForSingleValueEvent(eventListener);
-
                     }
                 }
             });
@@ -170,7 +169,10 @@ public class MainActivity extends AppCompatActivity {
         sound2.playButton();
         startActivity(settings);
     }
-    public void sendMessageClassifica(View view) {
+    public void sendMessageRanking(View view) {
+        Intent rank = new Intent(this,Ranking.class);
         sound2.playButton();
+
+        startActivity(rank);
     }
 }		
