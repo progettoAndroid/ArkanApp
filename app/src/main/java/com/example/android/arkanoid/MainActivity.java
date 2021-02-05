@@ -8,8 +8,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ListView;
 
@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void sendMessageSingleplayer(View view) {
         Intent gameStarter = new Intent(this, GameStarter.class);
+        sound2.playStarting();
         if(selectedController==2){
             selectedController=0;
         }

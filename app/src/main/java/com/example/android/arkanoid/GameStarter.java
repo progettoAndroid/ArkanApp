@@ -12,6 +12,7 @@ public class GameStarter extends AppCompatActivity {
     private UpdateThread myThread;
     private Handler updateHandler;
     private int Controller;
+    private SoundPlayer sound2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +24,7 @@ public class GameStarter extends AppCompatActivity {
         // vytvori novu hru
         Controller = getIntent().getIntExtra("EXTRA_CONTROLLER", 0);
         game = new Game(this, 3, 0, Controller);
+
         setContentView(game);
 
         // vytvori handler a thread

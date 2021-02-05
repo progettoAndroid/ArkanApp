@@ -13,7 +13,6 @@ public class SoundPlayer {
 
     private static SoundPool soundPool;
     private static int hitSound;
-    private static int overSound;
     private static int starting;
     private static int button;
 
@@ -30,7 +29,6 @@ public class SoundPlayer {
 
 
         hitSound = soundPool.load(context, R.raw.tasti,1);
-        overSound = soundPool.load(context, R.raw.tasti,1);
         starting = soundPool.load(context, R.raw.tastosp,1);
         button = soundPool.load(context, R.raw.tasti,1);
 
@@ -40,9 +38,6 @@ public class SoundPlayer {
         soundPool.play(hitSound, 1.0f, 1.0f, 1,0, 1.0f);
     }
 
-    public void playOverSound(){
-        soundPool.play(overSound, 1.0f, 1.0f, 1,0, 1.0f);
-    }
 
     public void playStarting(){
         soundPool.play(starting, 1.0f, 1.0f, 1,0, 1.0f);
