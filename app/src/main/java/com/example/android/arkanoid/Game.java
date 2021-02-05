@@ -15,6 +15,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.MediaPlayer;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -50,7 +51,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
     private Paddle paddle;
 
     private RectF r;
-
+    private SoundPlayer sound2;
     private SensorManager sManager = null;
     private Sensor accelerometer = null;
 
@@ -77,6 +78,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
         this.score = score;
         this.controller = controller;
         level = 0;
+        sound2 = new SoundPlayer(this.context);
 
         // start a gameOver per scoprire se il gioco è finito e se il giocatore non l'ha perso
         start = false;
@@ -98,6 +100,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
         ball = new Ball(size.x / 2, size.y - 480);
         paddle = new Paddle(size.x / 2 - 100, size.y - 400);
         zoznam = new ArrayList<Brick>();
+        Sottofondo();
 
         vygenerujBricks(context);
         this.setOnTouchListener(this);
@@ -114,6 +117,12 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
                 zoznam.add(new Brick(context, j * 150, i * 100, Brick.Level.ONE));
             }
         }
+    }
+
+    private void Sottofondo(){
+        MediaPlayer mediaPlayer = MediaPlayer.create(this.context, R.raw.song);
+        mediaPlayer.setLooping(true);
+        mediaPlayer.start();
     }
 
     /**
@@ -229,19 +238,24 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
     // ogni passaggio controlla se c'è una collisione, una sconfitta o una vittoria, ecc.
     public void update() {
         if (start) {
+
             vyhra();
             skontrolujOkraje();
-            ball.NarazPaddle(paddle.getX(), paddle.getY());
+            if(ball.NarazPaddle(paddle.getX(), paddle.getY()) == 1){
+                sound2.playHitSound();
+            }
             for (int i = 0; i < zoznam.size(); i++) {
                 Brick b = zoznam.get(i);
                 if (ball.NarazBrick(b.getX(), b.getY())) {
 //                    Bitmap brickCurrent = zoznam.get(i).getBrick();
                     if (zoznam.get(i).getLevel() == Brick.Level.ONE){
                         zoznam.remove(i);
+                        sound2.playHitSound();
                         zoznam.add(i,new Brick(context, b.getX(),  b.getY(), Brick.Level.TWO));
 
                     }
                     else if (zoznam.get(i).getLevel() == Brick.Level.TWO){
+                        sound2.playHitSound();
                         zoznam.remove(i);
                     }
 
