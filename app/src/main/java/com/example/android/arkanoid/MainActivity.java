@@ -155,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
         }
         gameStarter.putExtra("EXTRA_CONTROLLER",selectedController);
         if(selectedController != 2) {
+            sound2.playStarting();
             startActivity(gameStarter);
         }
     }
