@@ -95,8 +95,8 @@ public class MainActivity extends AppCompatActivity {
 
         if ( nickname.isEmpty()) {
             final AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-            builder1.setTitle("Benvenuto su ArkanApp");
-            builder1.setMessage("Imposta un nickname");
+            builder1.setTitle("Benvenuto su ARKANOID");
+            builder1.setMessage("Imposta un username");
             builder1.setCancelable(false);
 
              final EditText input = new EditText(this);
@@ -121,14 +121,15 @@ public class MainActivity extends AppCompatActivity {
                         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
                         final DatabaseReference userNameRef = rootRef.child("Users").child(inputName);
 
-
                         ValueEventListener eventListener = new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if(!dataSnapshot.exists()) {
+
                                     SharedPreferences.Editor editor = namePlayerPreferences.edit();
-                                    editor.putString("nickname", nickname);
+                                    editor.putString("nickname", inputName);
                                     editor.commit();
+
                                     userNameRef.setValue(0);
                                     dialog.dismiss();
                                  }

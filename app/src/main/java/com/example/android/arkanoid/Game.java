@@ -2,6 +2,7 @@ package com.example.android.arkanoid;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,10 +16,17 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -27,6 +35,7 @@ import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
 
 public class Game extends View implements SensorEventListener, View.OnTouchListener {
 
+    private static final String TAG = "db" ;
     private Bitmap wallpaper;
     private Bitmap redBall;
     private Bitmap screenorientation;
@@ -46,7 +55,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
     private Sensor accelerometer = null;
 
     private int lifes;
-    private int score;
+    private Integer score;
     private int level;
     private int controller;
     private boolean start;
@@ -54,6 +63,9 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
     private Context context;
     private WorkerThread controlsThread;
 
+    SharedPreferences namePlayerPreferences;
+    public static final String NICKNAME ="NamePlayerFile";
+    private String nickname = "";
 
     public Game(Context context, int lifes, int score, int controller) {
         super(context);
@@ -178,6 +190,32 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
             gameOver = true;
             start = false;
             invalidate();
+
+            namePlayerPreferences = context.getSharedPreferences(NICKNAME, context.MODE_PRIVATE);
+            nickname = namePlayerPreferences.getString ("nickname","");
+            DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+            final DatabaseReference userNameRef = rootRef.child("Users");
+
+            ValueEventListener eventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.child(nickname).exists()) {
+                        try {
+                            Integer value = dataSnapshot.child(nickname).getValue(Integer.class);
+                            if (value < score )
+                                userNameRef.child(nickname).setValue(score);
+                        }catch (Exception e){
+                            Log.d(TAG, e.getMessage()); //Don't ignore errors!
+                        }
+                    }
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.d(TAG, databaseError.getMessage()); //Don't ignore errors!
+                }
+            };
+            userNameRef.addListenerForSingleValueEvent(eventListener);
+
         } else {
             lifes--;
             ball.setX(size.x / 2);
@@ -205,10 +243,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
                     }
                     else if (zoznam.get(i).getLevel() == Brick.Level.TWO){
                         zoznam.remove(i);
-
                     }
-
-
 
                     score = score + 80;
                 }
