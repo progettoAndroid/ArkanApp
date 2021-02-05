@@ -1,7 +1,5 @@
 package com.example.android.arkanoid;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.os.Handler;
 import android.os.Message;
@@ -14,7 +12,7 @@ public class GameStarter extends AppCompatActivity {
     private UpdateThread myThread;
     private Handler updateHandler;
     private int Controller;
-    String[] controllers = {"Touch", "Accelerometro"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

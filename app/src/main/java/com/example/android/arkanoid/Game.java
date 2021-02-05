@@ -68,6 +68,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
     int randomBrick = -1;
     boolean isRandomTNT = false;
     int paddleTouchCounter = 0;
+    MediaPlayer ringMiccia;
 
     public Game(Context context, int lifes, int score, int controller) {
         super(context);
@@ -209,8 +210,9 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
         Random randomInt = new Random();
         randomBrick = randomInt.nextInt(zoznam.size());
         if (isScoreMultipleOf360&&score!=0) {
-            MediaPlayer ring= MediaPlayer.create(context,R.raw.miccia);
-            ring.start();
+            ringMiccia = MediaPlayer.create(context,R.raw.miccia);
+            ringMiccia.setLooping(true);
+            ringMiccia.start();
             zoznam.get(randomBrick).setBrick(BitmapFactory.decodeResource(getResources(), R.drawable.brick_green));
             isScoreMultipleOf360=false;
             returnValue=true;
@@ -234,15 +236,16 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
             for (int i = 0; i < zoznam.size(); i++) {
                 Brick b = zoznam.get(i);
                 if (ball.NarazBrick(b.getX(), b.getY())) {
-                    if (randomBrick != -1  && isRandomTNT) {
-                        MediaPlayer ring= MediaPlayer.create(context,R.raw.explosion);
+                    if (randomBrick != -1  && isRandomTNT && zoznam.size()!=1) {
+                        MediaPlayer ring = MediaPlayer.create(context,R.raw.explosion);
+                        ringMiccia.stop();
                         ring.start();
                         zoznam.remove(randomBrick);
                         isRandomTNT = false;
                         paddleTouchCounter=0;
                         randomBrick = -1;
                     } else {
-                        if (zoznam.get(i).getLevel() == Brick.Level.ONE) {
+                        if (zoznam.get(i).getLevel() == Brick.Level.ONE && !zoznam.get(i).getBrick().equals(R.drawable.brick_green)) {
                             zoznam.remove(i);
                             zoznam.add(i, new Brick(context, b.getX(), b.getY(), Brick.Level.TWO));
                         } else if (zoznam.get(i).getLevel() == Brick.Level.TWO) {
@@ -306,7 +309,6 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
             lifes = 3;
             resetLevel();
             gameOver = false;
-
         } else {
             start = true;
             if (controller == 0) {
@@ -342,6 +344,8 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
         ball.vytvorRychlost();
         zoznam = new ArrayList<Brick>();
         vygenerujBricks(context);
+        randomBrick = -1;
+        isRandomTNT = false;
     }
 
     /**
