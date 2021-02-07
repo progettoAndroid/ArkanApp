@@ -107,7 +107,7 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.RankingV
     @Override
         public void onBindViewHolder(@NonNull RankingViewHolder holder, int position) {
 
-        DataSnapshot snapshot =  mDataSnapshots.get(position);
+        DataSnapshot snapshot =  mDataSnapshots.get(position+1);
         UsersModal user  = snapshot.getValue(UsersModal.class);
 
         holder.username.setText(user.getUsername());
