@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -31,6 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
 
 
@@ -112,15 +114,23 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
      * @param context
      */
     private void vygenerujBricks(Context context) {
-        for (int i = 3; i < 7; i++) {
-            for (int j = 1; j < 6; j++) {
-                zoznam.add(new Brick(context, j * 150, i * 100, Brick.Level.ONE));
+        if(this.getResources().getConfiguration().orientation == ORIENTATION_PORTRAIT) {
+            for (int i = 3; i < 7; i++) {
+                for (int j = 1; j < 6; j++) {
+                    zoznam.add(new Brick(context, j * 150, i * 100, Brick.Level.ONE));
+                }
+            }
+        } else if ( this.getResources().getConfiguration().orientation == ORIENTATION_LANDSCAPE){
+            for (int i = 1; i < 3; i++) {
+                for (int j = 2; j < 12; j++) {
+                    zoznam.add(new Brick(context, j * 150, i * 100, Brick.Level.ONE));
+                }
             }
         }
     }
 
     private void Sottofondo(){
-        MediaPlayer mediaPlayer = MediaPlayer.create(this.context, R.raw.song);
+        MediaPlayer mediaPlayer = MusicCache.getInstance().getMp();
         mediaPlayer.setLooping(true);
         mediaPlayer.start();
     }
@@ -130,7 +140,9 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
      * @param context
      */
     private void nacitajPozadie(Context context) {
+        // in base all'orientamento creo lo sfondo
         wallpaper = Bitmap.createBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.pozadie_score));
+
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         display = wm.getDefaultDisplay();
         size = new Point();
@@ -155,23 +167,37 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
 
         // disegnare mattoni
         paint.setColor(Color.GREEN);
-        for (int i = 0; i < zoznam.size(); i++) {
-            Brick b = zoznam.get(i);
-            r = new RectF(b.getX(), b.getY(), b.getX() + 100, b.getY() + 80);
-            canvas.drawBitmap(b.getBrick(), null, r, paint);
-        }
+
+            for (int i = 0; i < zoznam.size(); i++) {
+                Brick b = zoznam.get(i);
+                r = new RectF(b.getX(), b.getY(), b.getX() + 100, b.getY() + 80);
+                canvas.drawBitmap(b.getBrick(), null, r, paint);
+            }
+
+            for (int i = 0; i < zoznam.size(); i++) {
+                Brick b = zoznam.get(i);
+                r = new RectF(b.getX(), b.getY(), b.getX() + 100, b.getY() + 80);
+                canvas.drawBitmap(b.getBrick(), null, r, paint);
+            }
 
         // disegnare il testo
         paint.setColor(Color.WHITE);
         paint.setTextSize(50);
-        canvas.drawText("" + lifes, 400, 100, paint);
-        canvas.drawText("" + score, 700, 100, paint);
+        if(this.getResources().getConfiguration().orientation == ORIENTATION_PORTRAIT) {
+            canvas.drawText("" + lifes, 400, 100, paint);
+            canvas.drawText("" + score, 700, 100, paint);
+        } else if ( this.getResources().getConfiguration().orientation == ORIENTATION_LANDSCAPE){
+            canvas.drawText("" + lifes, 930, 68, paint);
+            canvas.drawText("" + score, 1290, 68, paint);
+        }
+
 
         // in caso di perdita "Game over!"
         if (gameOver) {
             paint.setColor(Color.RED);
             paint.setTextSize(100);
             canvas.drawText("Game over!", size.x / 4, size.y / 2, paint);
+
         }
     }
 
@@ -198,6 +224,10 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
         if (lifes == 1) {
             gameOver = true;
             start = false;
+            MediaPlayer mediaPlayer = MusicCache.getInstance().getMp();
+            mediaPlayer.setLooping(true);
+            mediaPlayer.pause();
+            sound2.playStarting();
             invalidate();
 
             namePlayerPreferences = context.getSharedPreferences(NICKNAME, context.MODE_PRIVATE);

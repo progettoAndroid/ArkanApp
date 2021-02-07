@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+        <string name="app_name">Arkanoid</string>
+        <string name="title_activity_main2">MainActivity</string>
+        <!-- Strings used for fragments for navigation -->
+        <string name="first_fragment_label">First Fragment</string>
+        <string name="second_fragment_label">Second Fragment</string>
+        <string name="next">Successivo</string>
+        <string name="previous">Precedente</string>
+
+        <string name="hello_first_fragment">Hello first fragment</string>
+        <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+        <string name="singleplayer">Singleplayer</string>
+        <string name="multiplayer">Multiplayer</string>
+        <string name="impostazioni">Settings</string>
+        <string name="classifica">Leaderboard</string>
+        <string name="musicaOn">music on</string>
+        <string name="musicaOff">music off</string>
+        <string name="configurazione_iniziale"> INITIAL SETUP</string>
+        <string name="scelta">Pick how to control the paddle</string>
+        <string name="benvenuto">Welcome to ArkanApp!</string>
+        <string name="username">Set an username</string>
+        <string name="username_esistente">Username already picked!</string>
+        <string name="non_vuoto">The field cannot be null.</string>
+</resources>

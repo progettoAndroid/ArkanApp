@@ -1,18 +1,24 @@
 package com.example.android.arkanoid;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ComponentActivity;
+
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
@@ -27,11 +33,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
+import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
+
 public class MainActivity extends AppCompatActivity {
     public static final String CONTROLLER ="ControllerFile";    //serve a salvare la preferenza sul controller
     public static final String NICKNAME ="NamePlayerFile";
     private static final String TAG = "DB";
-
+    private MediaPlayer player;
     private String nickname = "";
     private String inputName = "";
     SharedPreferences controllerSettings;
@@ -45,11 +54,15 @@ public class MainActivity extends AppCompatActivity {
     private SoundPlayer sound2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        MusicCache.getInstance();
         mContext = getApplicationContext();
         super.onCreate(savedInstanceState);
         mContext = getApplicationContext();
         setContentView(R.layout.activity_main);
+
         sound2 = new SoundPlayer(this);
+        player= MediaPlayer.create(this,R.raw.song);
+        MusicCache.getInstance().setMp(player);
 
 
     }
@@ -65,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         //se la preferenza sul controller non è ancora stata settata, gli chiedo quale controller preferisca.
         if (selectedController == 2) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.styledialog);
-            builder.setTitle("CONFIGURAZIONE INIZIALE \nScegli come controllare il paddle");
+            builder.setTitle(mContext.getResources().getString(R.string.configurazione_iniziale) + "\n" + mContext.getResources().getString(R.string.scelta));
             builder.setCancelable(false);
             builder.setItems(controllers, new DialogInterface.OnClickListener() {
                 @Override
@@ -92,8 +105,8 @@ public class MainActivity extends AppCompatActivity {
 
         if ( nickname.isEmpty()) {
             final AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-            builder1.setTitle("Benvenuto su ARKANOID");
-            builder1.setMessage("Imposta un username");
+            builder1.setTitle(R.string.benvenuto);
+            builder1.setMessage(R.string.username);
             builder1.setCancelable(false);
 
              final EditText input = new EditText(this);
@@ -111,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view1) {
                     if (TextUtils.isEmpty(input.getText().toString().trim())) {
-                        input.setError("Il campo non può essere vuoto");
+                        input.setError(mContext.getResources().getString(R.string.non_vuoto));
                     } else {
                         inputName = input.getText().toString().trim();
 
@@ -131,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
                                     dialog.dismiss();
                                  }
                                 else{
-                                    input.setError("Username già esistente");
+                                    input.setError(mContext.getResources().getString(R.string.username_esistente));
                                 }
                             }
 
@@ -150,10 +163,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void sendMessageSingleplayer(View view) {
         Intent gameStarter = new Intent(this, GameStarter.class);
+        int orientation = this.getResources().getConfiguration().orientation;
         if(selectedController==2){
             selectedController=0;
         }
         gameStarter.putExtra("EXTRA_CONTROLLER",selectedController);
+        gameStarter.putExtra("EXTRA_ORIENTATION", orientation);
         if(selectedController != 2) {
             sound2.playStarting();
             startActivity(gameStarter);
@@ -171,4 +186,22 @@ public class MainActivity extends AppCompatActivity {
     public void sendMessageClassifica(View view) {
         sound2.playButton();
     }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        MediaPlayer player = MusicCache.getInstance().getMp();
+        if(player!=null)
+            player.pause();
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        MediaPlayer player = MusicCache.getInstance().getMp();
+        if(player!=null && !player.isPlaying())
+            player.start();
+
+    }
+
 }		
