@@ -11,6 +11,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -22,6 +24,8 @@ import androidx.core.app.ComponentActivity;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -55,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         MusicCache.getInstance();
-        mContext = getApplicationContext();
         super.onCreate(savedInstanceState);
         mContext = getApplicationContext();
         setContentView(R.layout.activity_main);
@@ -92,12 +95,10 @@ public class MainActivity extends AppCompatActivity {
             });
             //sistemo la parte grafica dell'alertdialog
             AlertDialog dialogController = builder.show();
-
             dialogController.getWindow().setBackgroundDrawableResource(R.drawable.popup_style);
             ListView listView =dialogController.getListView();
             listView.setDivider(new ColorDrawable(Color.LTGRAY));
             listView.setDividerHeight(2);
-
         }
 
         namePlayerPreferences = mContext.getSharedPreferences(NICKNAME, mContext.MODE_PRIVATE);
@@ -204,4 +205,4 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-}		
+}

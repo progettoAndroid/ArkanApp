@@ -31,6 +31,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
@@ -69,6 +70,11 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
     SharedPreferences namePlayerPreferences;
     public static final String NICKNAME ="NamePlayerFile";
     private String nickname = "";
+    private boolean isScoreMultipleOf400 = false;
+    int randomBrick = -1;
+    boolean isRandomTNT = false;
+    int paddleTouchCounter = 0;
+    MediaPlayer ringMiccia;
 
     public Game(Context context, int lifes, int score, int controller) {
         super(context);
@@ -87,7 +93,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
         gameOver = false;
 
         //Il giocatore sceglie quale controller utilizzare
-        if(controller == 1) {
+        if (controller == 1) {
             sManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
             accelerometer = sManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         }
@@ -111,23 +117,43 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
 
     /**
      * riempire l'elenco con i mattoni
+     *
      * @param context
      */
     private void vygenerujBricks(Context context) {
+        Brick b = null;
         if(this.getResources().getConfiguration().orientation == ORIENTATION_PORTRAIT) {
             for (int i = 3; i < 7; i++) {
                 for (int j = 1; j < 6; j++) {
-                    zoznam.add(new Brick(context, j * 150, i * 100, Brick.Level.ONE));
+                    if (level == 0 && i == 6 && j == 5) {
+                        b = new Brick(context, j * 150, i * 100, true, level);
+                    } else if (level != 0 && level <= 10 && ((i == 3 && j == 5) || (i == 6 && j == 1))) {
+                        b = new Brick(context, j * 150, i * 100, true, level);
+                    } else if (level > 10 && ((i == 3 && j == 5) || (i == 6 && j == 1) || (i == 4 && j == 3))) {
+                        b = new Brick(context, j * 150, i * 100, true, level);
+                    } else {
+                        b = new Brick(context, j * 150, i * 100, Brick.Level.ONE);
+                    }
+                    zoznam.add(b);
                 }
             }
-        } else if ( this.getResources().getConfiguration().orientation == ORIENTATION_LANDSCAPE){
+        }else if ( this.getResources().getConfiguration().orientation == ORIENTATION_LANDSCAPE){
             for (int i = 1; i < 3; i++) {
                 for (int j = 2; j < 12; j++) {
-                    zoznam.add(new Brick(context, j * 150, i * 100, Brick.Level.ONE));
+                    if (level == 0 && i == 6 && j == 5) {
+                        b = new Brick(context, j * 150, i * 100, true, level);
+                    } else if (level != 0 && level <= 10 && ((i == 3 && j == 5) || (i == 6 && j == 1))) {
+                        b = new Brick(context, j * 150, i * 100, true, level);
+                    } else if (level > 10 && ((i == 3 && j == 5) || (i == 6 && j == 1) || (i == 4 && j == 3))) {
+                        b = new Brick(context, j * 150, i * 100, true, level);
+                    } else {
+                        b = new Brick(context, j * 150, i * 100, Brick.Level.ONE);
+                    }
+                    zoznam.add(b);
                 }
             }
         }
-    }
+        }
 
     private void Sottofondo(){
         MediaPlayer mediaPlayer = MusicCache.getInstance().getMp();
@@ -142,7 +168,6 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
     private void nacitajPozadie(Context context) {
         // in base all'orientamento creo lo sfondo
         wallpaper = Bitmap.createBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.pozadie_score));
-
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         display = wm.getDefaultDisplay();
         size = new Point();
@@ -167,18 +192,11 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
 
         // disegnare mattoni
         paint.setColor(Color.GREEN);
-
-            for (int i = 0; i < zoznam.size(); i++) {
-                Brick b = zoznam.get(i);
-                r = new RectF(b.getX(), b.getY(), b.getX() + 100, b.getY() + 80);
-                canvas.drawBitmap(b.getBrick(), null, r, paint);
-            }
-
-            for (int i = 0; i < zoznam.size(); i++) {
-                Brick b = zoznam.get(i);
-                r = new RectF(b.getX(), b.getY(), b.getX() + 100, b.getY() + 80);
-                canvas.drawBitmap(b.getBrick(), null, r, paint);
-            }
+        for (int i = 0; i < zoznam.size(); i++) {
+            Brick b = zoznam.get(i);
+            r = new RectF(b.getX(), b.getY(), b.getX() + 100, b.getY() + 80);
+            canvas.drawBitmap(b.getBrick(), null, r, paint);
+        }
 
         // disegnare il testo
         paint.setColor(Color.WHITE);
@@ -197,13 +215,12 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
             paint.setColor(Color.RED);
             paint.setTextSize(100);
             canvas.drawText("Game over!", size.x / 4, size.y / 2, paint);
-
         }
     }
 
 
-    /**controllare che la palla non abbia toccato il bordo
-     *
+    /**
+     * controllare che la palla non abbia toccato il bordo
      */
     private void skontrolujOkraje() {
         if (ball.getX() + ball.getxRychlost() >= size.x - 60) {
@@ -217,8 +234,8 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
         }
     }
 
-    /**controlla lo stato del gioco. se le mie vite o se il gioco è finito
-     *
+    /**
+     * controlla lo stato del gioco. se le mie vite o se il gioco è finito
      */
     private void skontrolujZivoty() {
         if (lifes == 1) {
@@ -264,32 +281,74 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
             start = false;
         }
     }
+    private boolean randomTNT(){
+        boolean returnValue = false;
+        Random randomInt = new Random();
+        do {
+            randomBrick = randomInt.nextInt(zoznam.size());
+        } while(zoznam.get(randomBrick).getisXBrick());
+        if (isScoreMultipleOf400 &&score!=0) {
+            ringMiccia = MediaPlayer.create(context,R.raw.miccia);
+            ringMiccia.setLooping(true);
+            ringMiccia.start();
+            zoznam.get(randomBrick).setBrick(BitmapFactory.decodeResource(getResources(), R.drawable.brick_green));
+            isScoreMultipleOf400 = false;
+            returnValue=true;
+        }
+        return returnValue;
+    }
 
     // ogni passaggio controlla se c'è una collisione, una sconfitta o una vittoria, ecc.
     public void update() {
         if (start) {
-
             vyhra();
             skontrolujOkraje();
             if(ball.NarazPaddle(paddle.getX(), paddle.getY()) == 1){
                 sound2.playHitSound();
             }
+            if(ball.NarazPaddle(paddle.getX(), paddle.getY()) == 1){
+                if(paddleTouchCounter==0) {
+                    if(zoznam.size()!=1) {
+                        isRandomTNT = randomTNT();
+                        if (isRandomTNT) {
+                            paddleTouchCounter++;
+                        }
+                    }
+                }
+            }
             for (int i = 0; i < zoznam.size(); i++) {
                 Brick b = zoznam.get(i);
                 if (ball.NarazBrick(b.getX(), b.getY())) {
-//                    Bitmap brickCurrent = zoznam.get(i).getBrick();
-                    if (zoznam.get(i).getLevel() == Brick.Level.ONE){
-                        zoznam.remove(i);
-                        sound2.playHitSound();
-                        zoznam.add(i,new Brick(context, b.getX(),  b.getY(), Brick.Level.TWO));
-
+                    if(zoznam.get(i).getisXBrick()){
+                        System.out.println("è un brick x");
+                        if(zoznam.get(i).getxBrickBreakCounter()!=0){
+                            System.out.println("ho ancora "+zoznam.get(i).getxBrickBreakCounter()+" tocchi");
+                            zoznam.get(i).setxBrickBreakCounter(zoznam.get(i).getxBrickBreakCounter()-1);
+                        } else {
+                            zoznam.remove(i);
+                        }
+                    } else if (randomBrick != -1  && isRandomTNT && zoznam.size()!=1) {
+                        MediaPlayer ring = MediaPlayer.create(context,R.raw.explosion);
+                        ringMiccia.stop();
+                        ring.start();
+                        zoznam.remove(randomBrick);
+                        isRandomTNT = false;
+                        paddleTouchCounter=0;
+                        randomBrick = -1;
+                    } else {
+                        if (zoznam.get(i).getLevel() == Brick.Level.ONE && !zoznam.get(i).getBrick().equals(R.drawable.brick_green)) {
+                            zoznam.remove(i);
+                            sound2.playHitSound();
+                            zoznam.add(i, new Brick(context, b.getX(), b.getY(), Brick.Level.TWO));
+                        } else if (zoznam.get(i).getLevel() == Brick.Level.TWO) {
+                            zoznam.remove(i);
+                            sound2.playHitSound();
+                        }
+                        score = score + 80;
+                        if (score % 400 == 0) {
+                            isScoreMultipleOf400 = true;
+                        }
                     }
-                    else if (zoznam.get(i).getLevel() == Brick.Level.TWO){
-                        sound2.playHitSound();
-                        zoznam.remove(i);
-                    }
-
-                    score = score + 80;
                 }
             }
             ball.pohni();
@@ -300,7 +359,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
      * stopSensing
      */
     public void zastavSnimanie() {
-        if(controller == 1) {
+        if (controller == 1) {
             sManager.unregisterListener(this);
         }
     }
@@ -309,7 +368,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
      * runScanning
      */
     public void spustiSnimanie() {
-        if(controller == 1) {
+        if (controller == 1) {
             sManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME);
         }
     }
@@ -333,7 +392,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
     }
 
     /**
-     serve a sospendere il gioco in caso di un nuovo gioco
+     * serve a sospendere il gioco in caso di un nuovo gioco
      **/
     @Override
     public boolean onTouch(View v, MotionEvent event) {
@@ -342,21 +401,21 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
             lifes = 3;
             resetLevel();
             gameOver = false;
-
         } else {
             start = true;
-            if(controller==0){
-                switch(event.getAction()){
+            if (controller == 0) {
+                switch (event.getAction()) {
                     //se l'azione è di tipo down o move richiamo il thread
-                    case MotionEvent.ACTION_DOWN: case MotionEvent.ACTION_MOVE:
-                        if (controlsThread == null){
+                    case MotionEvent.ACTION_DOWN:
+                    case MotionEvent.ACTION_MOVE:
+                        if (controlsThread == null) {
                             controlsThread = new WorkerThread(context, event, paddle, size);
                             controlsThread.start();
                         }
-                      return true;
-                     //se è di tipo up, stoppo il thread
+                        return true;
+                    //se è di tipo up, stoppo il thread
                     case MotionEvent.ACTION_UP:
-                        if (controlsThread != null){
+                        if (controlsThread != null) {
                             controlsThread.terminate();
                             controlsThread = null;
                         }
@@ -368,8 +427,8 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
     }
 
 
-    /** imposta il gioco per iniziare
-     *
+    /**
+     * imposta il gioco per iniziare
      */
     private void resetLevel() {
         ball.setX(size.x / 2);
@@ -377,6 +436,8 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
         ball.vytvorRychlost();
         zoznam = new ArrayList<Brick>();
         vygenerujBricks(context);
+        randomBrick = -1;
+        isRandomTNT = false;
     }
 
     /**

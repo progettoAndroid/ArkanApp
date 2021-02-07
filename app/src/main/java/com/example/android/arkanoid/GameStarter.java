@@ -1,5 +1,7 @@
 package com.example.android.arkanoid;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.media.MediaPlayer;
@@ -22,7 +24,6 @@ public class GameStarter extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // nastavi orientaciu obrazovky
-
 
         // vytvori novu hru
         controller = getIntent().getIntExtra("EXTRA_CONTROLLER", 0);
