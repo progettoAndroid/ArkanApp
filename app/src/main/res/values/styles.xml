@@ -11,5 +11,8 @@
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:fontFamily">@font/caviar_dreams_bold</item>
         <item name="textColorAlertDialogListItem">#FFFFFF</item>
+
     </style>
+
+ 
 </resources>

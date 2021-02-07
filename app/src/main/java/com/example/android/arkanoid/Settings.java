@@ -11,6 +11,7 @@ import android.widget.Toast;
 public class Settings extends AppCompatActivity {
     private AudioManager manager;
     private MediaPlayer player;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,5 +46,4 @@ public class Settings extends AppCompatActivity {
         }
 
     }
-
 }
