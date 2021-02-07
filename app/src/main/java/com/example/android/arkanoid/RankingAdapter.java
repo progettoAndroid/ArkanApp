@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 
 public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.RankingViewHolder> {
@@ -32,20 +33,15 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.RankingV
         @Override
         public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
-            mDataSnapshots.add(snapshot);
-            mDataSnapshots.sort(new Comparator<DataSnapshot>() {
+            Collections.sort(mDataSnapshots, new Comparator<DataSnapshot>() {
                 @Override
-                public int compare(DataSnapshot t1, DataSnapshot t2) {
-                    UsersModal user1  = t1.getValue(UsersModal.class);
-                    UsersModal user2  = t1.getValue(UsersModal.class);
-                    if(Integer.valueOf(user1.getPoints()) > Integer.valueOf(user2.getPoints()))
-                             return 1;
-                    else if (Integer.valueOf(user1.getPoints()) < Integer.valueOf(user2.getPoints()))
-                        return -1;
-                    else
-                        return 0;
+                public int compare(DataSnapshot d1, DataSnapshot d2) {
+                    UsersModal user1  = d1.getValue(UsersModal.class);
+                    UsersModal user2  = d2.getValue(UsersModal.class);
+                    return  Integer.valueOf(user1.getPoints() ) > Integer.valueOf(user2.getPoints() ) ? -1 :  Integer.valueOf(user1.getPoints() ) <  Integer.valueOf(user2.getPoints() )   ? 1 : 0;
                 }
             });
+            mDataSnapshots.add(snapshot);
             notifyDataSetChanged();
         }
 
@@ -113,6 +109,7 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.RankingV
 
         DataSnapshot snapshot =  mDataSnapshots.get(position);
         UsersModal user  = snapshot.getValue(UsersModal.class);
+
         holder.username.setText(user.getUsername());
         holder.points.setText(user.getPoints());
         holder.numberRanking.setText(String.valueOf(position));
