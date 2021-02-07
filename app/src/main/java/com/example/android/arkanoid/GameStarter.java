@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 public class GameStarter extends AppCompatActivity {
 
@@ -70,5 +71,14 @@ public class GameStarter extends AppCompatActivity {
             player.start();
         game.spustiSnimanie();
     }
+
+
+    @Override
+    public void onBackPressed() {
+        String text;
+        Toast.makeText(this, text="clicca un'altra volta per tornare al menù", Toast.LENGTH_SHORT).show();
+        onDestroy();
+    }
+
 
 }

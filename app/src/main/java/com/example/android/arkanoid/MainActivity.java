@@ -189,7 +189,6 @@ public class MainActivity extends AppCompatActivity {
     public void sendMessageRanking(View view) {
         Intent rank = new Intent(this, Ranking.class);
         sound2.playButton();
-
         startActivity(rank);
     }
 

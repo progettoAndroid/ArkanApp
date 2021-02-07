@@ -35,8 +35,15 @@ public class Ranking extends AppCompatActivity {
         spinner = (ProgressBar)findViewById(R.id.progressBar_ranking);
         spinner.setVisibility(View.VISIBLE);
 
-        rvRanking = (RecyclerView)findViewById(R.id.ranking);
 
+
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        rvRanking = (RecyclerView)findViewById(R.id.ranking);
         rootRef= FirebaseDatabase.getInstance().getReference();
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager((getApplicationContext()));
@@ -48,11 +55,6 @@ public class Ranking extends AppCompatActivity {
 
         //assegno l adapter alla recycler view
         rvRanking.setAdapter(rankingAdapter);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
 
 
 
