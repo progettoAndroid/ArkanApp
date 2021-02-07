@@ -1,8 +1,6 @@
 package com.example.android.arkanoid;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -15,25 +13,13 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
-import android.support.constraint.ConstraintLayout;
-import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.model.stream.BaseGlideUrlLoader;
 
 import java.util.ArrayList;
 import java.util.Random;
-
-import tyrantgit.explosionfield.ExplosionField;
-
-import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
 
 
 public class Game extends View implements SensorEventListener, View.OnTouchListener {
@@ -64,7 +50,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
     private boolean gameOver;
     private Context context;
     private WorkerThread controlsThread;
-    private boolean isScoreMultipleOf360 = false;
+    private boolean isScoreMultipleOf400 = false;
     int randomBrick = -1;
     boolean isRandomTNT = false;
     int paddleTouchCounter = 0;
@@ -112,9 +98,18 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
      * @param context
      */
     private void vygenerujBricks(Context context) {
+        Brick b = null;
         for (int i = 3; i < 7; i++) {
             for (int j = 1; j < 6; j++) {
-                Brick b = new Brick(context, j * 150, i * 100, Brick.Level.ONE);
+                if(level==0 && i == 6 && j == 5){
+                     b = new Brick(context, j * 150,i * 100, true, level);
+                } else if(level!=0 && level<=10 && ((i == 3 && j == 5) ||(i == 6 && j == 1))){
+                     b = new Brick(context, j * 150,i * 100, true, level);
+                } else if(level>10 && ((i == 3 && j == 5) ||(i == 6 && j == 1) || (i == 4 && j == 3))){
+                     b = new Brick(context, j * 150,i * 100, true, level);
+                } else {
+                     b = new Brick(context, j * 150, i * 100, Brick.Level.ONE);
+                }
                 zoznam.add(b);
             }
         }
@@ -208,13 +203,15 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
     private boolean randomTNT(){
         boolean returnValue = false;
         Random randomInt = new Random();
-        randomBrick = randomInt.nextInt(zoznam.size());
-        if (isScoreMultipleOf360&&score!=0) {
+        do {
+            randomBrick = randomInt.nextInt(zoznam.size());
+        } while(zoznam.get(randomBrick).getisXBrick());
+        if (isScoreMultipleOf400 &&score!=0) {
             ringMiccia = MediaPlayer.create(context,R.raw.miccia);
             ringMiccia.setLooping(true);
             ringMiccia.start();
             zoznam.get(randomBrick).setBrick(BitmapFactory.decodeResource(getResources(), R.drawable.brick_green));
-            isScoreMultipleOf360=false;
+            isScoreMultipleOf400 = false;
             returnValue=true;
         }
         return returnValue;
@@ -227,16 +224,26 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
             skontrolujOkraje();
             if(ball.NarazPaddle(paddle.getX(), paddle.getY())){
                 if(paddleTouchCounter==0) {
-                    isRandomTNT = randomTNT();
-                    if(isRandomTNT) {
-                        paddleTouchCounter++;
+                    if(zoznam.size()!=1) {
+                        isRandomTNT = randomTNT();
+                        if (isRandomTNT) {
+                            paddleTouchCounter++;
+                        }
                     }
                 }
             }
             for (int i = 0; i < zoznam.size(); i++) {
                 Brick b = zoznam.get(i);
                 if (ball.NarazBrick(b.getX(), b.getY())) {
-                    if (randomBrick != -1  && isRandomTNT && zoznam.size()!=1) {
+                    if(zoznam.get(i).getisXBrick()){
+                        System.out.println("è un brick x");
+                        if(zoznam.get(i).getxBrickBreakCounter()!=0){
+                            System.out.println("ho ancora "+zoznam.get(i).getxBrickBreakCounter()+" tocchi");
+                            zoznam.get(i).setxBrickBreakCounter(zoznam.get(i).getxBrickBreakCounter()-1);
+                        } else {
+                            zoznam.remove(i);
+                        }
+                    } else if (randomBrick != -1  && isRandomTNT && zoznam.size()!=1) {
                         MediaPlayer ring = MediaPlayer.create(context,R.raw.explosion);
                         ringMiccia.stop();
                         ring.start();
@@ -254,7 +261,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
                         }
                         score = score + 80;
                         if (score % 400 == 0) {
-                            isScoreMultipleOf360 = true;
+                            isScoreMultipleOf400 = true;
                         }
                     }
                 }

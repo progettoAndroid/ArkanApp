@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import java.util.HashMap;
+import java.util.Random;
 
 
 public class Brick extends View {
@@ -31,7 +32,24 @@ public class Brick extends View {
     private Bitmap brick;
     private float x;
     private float y;
+    private boolean isXBrick;
+    private int xBrickBreakCounter;
 
+    public int getxBrickBreakCounter() {
+        return xBrickBreakCounter;
+    }
+
+    public void setxBrickBreakCounter(int xBrickBreakCounter) {
+        this.xBrickBreakCounter = xBrickBreakCounter;
+    }
+
+    public boolean getisXBrick() {
+        return isXBrick;
+    }
+
+    public void setXBrick(boolean XBrick) {
+        isXBrick = XBrick;
+    }
 
     public Brick(Context context, float x, float y, Level level) {
         super(context);
@@ -47,7 +65,31 @@ public class Brick extends View {
                 skin_level2();
             }
         }
+    //costruttore xBrickl
+    public Brick(Context context, float x, float y, boolean isXBrick, int gameLevel) {
+        super(context);
+        this.x = x;
+        this.y = y;
+        this.isXBrick=isXBrick;
+        this.setLayoutParams(new ViewGroup.LayoutParams(64,32));
+        System.out.println("getHeight: "+this.getHeight()+" getWidth "+this.getWidth());
+        this.level = level;
+        skinXBrick(gameLevel);
 
+    }
+    // assegna un'immagine casuale al mattone
+    private void skinXBrick(int gameLevel) {
+        Random randomInt = new Random();
+        if (gameLevel < 1) {
+            xBrickBreakCounter = randomInt.nextInt(3);
+        } else if(gameLevel <= 10 && gameLevel != 0){
+            xBrickBreakCounter = randomInt.nextInt(5);
+        } else if(gameLevel > 10){
+            xBrickBreakCounter = randomInt.nextInt(10);
+        }
+        brick = BitmapFactory.decodeResource(getResources(), R.drawable.brick_x);
+
+    }
 
     // assegna un'immagine casuale al mattone
     private void skin() {
