@@ -15,8 +15,8 @@
     <string name="multiplayer">Multijoueur</string>
     <string name="impostazioni">Paramètres</string>
     <string name="classifica">Classement</string>
-    <string name="musicaOn">music on</string>
-    <string name="musicaOff">music off</string>
+    <string name="musicaOn">musique on</string>
+    <string name="musicaOff">musique off</string>
     <string name="configurazione_iniziale"> CONFIGURATION INITIALE</string>
     <string name="scelta">Choisissez comment contrôler le paddle</string>
     <string name="benvenuto">Bienvenue en ArkanApp!</string>

@@ -48,7 +48,11 @@
             android:onClick="sendMessageSingleplayer"
             android:text="@string/singleplayer"
             android:textColor="#FFFFFF"
-            android:textSize="35dp" />
+            android:autoSizeTextType="uniform"
+            android:maxLines="1"
+            android:autoSizeMinTextSize="10sp"
+            android:autoSizeMaxTextSize="25sp"
+            android:autoSizeStepGranularity="2sp"/>
 
         <Button
             android:id="@+id/button_multiplayer"
@@ -63,7 +67,11 @@
             android:onClick="sendMessageMultiplayer"
             android:text="@string/multiplayer"
             android:textColor="#FFFFFF"
-            android:textSize="35dp" />
+            android:autoSizeTextType="uniform"
+            android:maxLines="1"
+            android:autoSizeMinTextSize="10sp"
+            android:autoSizeMaxTextSize="25sp"
+        />
 
         <Button
             android:id="@+id/button_impostazioni"
@@ -78,7 +86,11 @@
             android:onClick="sendMessageImpostazioni"
             android:text="@string/impostazioni"
             android:textColor="#FFFFFF"
-            android:textSize="35dp" />
+            android:autoSizeTextType="uniform"
+            android:maxLines="1"
+            android:autoSizeMinTextSize="10sp"
+            android:autoSizeMaxTextSize="30sp"
+           />
 
         <Button
             android:id="@+id/button_classifica"
@@ -93,7 +105,11 @@
             android:onClick="sendMessageClassifica"
             android:text="@string/classifica"
             android:textColor="#FFFFFF"
-            android:textSize="35dp" />
+            android:autoSizeTextType="uniform"
+            android:maxLines="1"
+            android:autoSizeMinTextSize="10sp"
+            android:autoSizeMaxTextSize="30sp"
+            />
 
     </RelativeLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

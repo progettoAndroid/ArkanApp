@@ -171,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
         gameStarter.putExtra("EXTRA_CONTROLLER",selectedController);
         gameStarter.putExtra("EXTRA_ORIENTATION", orientation);
         if(selectedController != 2) {
-            sound2.playStarting();
+            sound2.playButton();
             startActivity(gameStarter);
         }
     }

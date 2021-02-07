@@ -81,7 +81,7 @@
             android:autoSizeMinTextSize="10sp"
             android:autoSizeMaxTextSize="30sp"
             android:textColor="#FFFFFF"
-            android:textSize="35dp" />
+             />
 
         <Button
             android:id="@+id/button_classifica"
@@ -97,7 +97,7 @@
             android:autoSizeMinTextSize="10sp"
             android:autoSizeMaxTextSize="30sp"
             android:textColor="#FFFFFF"
-            android:textSize="35dp" />
+            />
 
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

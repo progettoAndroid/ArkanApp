@@ -140,11 +140,11 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
         }else if ( this.getResources().getConfiguration().orientation == ORIENTATION_LANDSCAPE){
             for (int i = 1; i < 3; i++) {
                 for (int j = 2; j < 12; j++) {
-                    if (level == 0 && i == 6 && j == 5) {
+                    if (level == 0 && i == 2 && j == 5) {
                         b = new Brick(context, j * 150, i * 100, true, level);
-                    } else if (level != 0 && level <= 10 && ((i == 3 && j == 5) || (i == 6 && j == 1))) {
+                    } else if (level != 0 && level <= 10 && ((i == 2 && j == 5) || (i == 6 && j == 1))) {
                         b = new Brick(context, j * 150, i * 100, true, level);
-                    } else if (level > 10 && ((i == 3 && j == 5) || (i == 6 && j == 1) || (i == 4 && j == 3))) {
+                    } else if (level > 10 && ((i == 2 && j == 5) || (i == 2 && j == 2) || (i == 4 && j == 3))) {
                         b = new Brick(context, j * 150, i * 100, true, level);
                     } else {
                         b = new Brick(context, j * 150, i * 100, Brick.Level.ONE);
@@ -244,6 +244,9 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
             MediaPlayer mediaPlayer = MusicCache.getInstance().getMp();
             mediaPlayer.setLooping(true);
             mediaPlayer.pause();
+            if(ringMiccia!= null) {
+                ringMiccia.pause();
+            }
             sound2.playStarting();
             invalidate();
 
