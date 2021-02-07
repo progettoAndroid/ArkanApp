@@ -10,7 +10,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.InputType;
@@ -116,18 +115,22 @@ public class MainActivity extends AppCompatActivity {
                         inputName = input.getText().toString().trim();
 
                         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-                        final DatabaseReference userNameRef = rootRef.child("Users").child(inputName);
+                        final DatabaseReference userNameRef = rootRef.child("Users").child(inputName).child("username");
+                          final DatabaseReference punteggioRef = userNameRef.getParent().child("points");
 
-                        ValueEventListener eventListener = new ValueEventListener() {
+                       final  ValueEventListener eventListener = new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if(!dataSnapshot.exists()) {
 
                                     SharedPreferences.Editor editor = namePlayerPreferences.edit();
                                     editor.putString("nickname", inputName);
+
                                     editor.commit();
 
-                                    userNameRef.setValue(0);
+                                    userNameRef.setValue(inputName);
+                                    punteggioRef.setValue("0");
+
                                     dialog.dismiss();
                                  }
                                 else{
@@ -168,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(settings);
     }
     public void sendMessageRanking(View view) {
-        Intent rank = new Intent(this,Ranking.class);
+        Intent rank = new Intent(this, Ranking.class);
         sound2.playButton();
 
         startActivity(rank);

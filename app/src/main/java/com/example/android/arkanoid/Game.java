@@ -210,9 +210,9 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if(dataSnapshot.child(nickname).exists()) {
                         try {
-                            Integer value = dataSnapshot.child(nickname).getValue(Integer.class);
+                            Integer value = Integer.parseInt(dataSnapshot.child(nickname).child("points").getValue(String.class));
                             if (value < score )
-                                userNameRef.child(nickname).setValue(score);
+                                userNameRef.child(nickname).child( "points").setValue(score.toString());
                         }catch (Exception e){
                             Log.d(TAG, e.getMessage()); //Don't ignore errors!
                         }

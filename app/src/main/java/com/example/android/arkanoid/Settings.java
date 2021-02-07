@@ -25,7 +25,6 @@ public class Settings extends AppCompatActivity {
                 }
             });
         }
-
         player.start();
     }
 
