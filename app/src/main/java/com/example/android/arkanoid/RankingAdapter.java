@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -132,13 +133,21 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.RankingV
         nickname = namePlayerPreferences.getString ("nickname","");
         if (nickname.equals(user.getUsername())){
             holder.imageSend.setVisibility(View.VISIBLE);
-            holder.itemView.setBackgroundColor(Color.rgb(172,32,232));
-        }
+            holder.username.setTypeface(null, Typeface.BOLD);
+            holder.username.setTextColor(  Color.parseColor("#000000"));
+            holder.points.setTextColor(  Color.parseColor("#000000"));
+            holder.numberRanking.setTextColor(  Color.parseColor("#000000"));
+            holder.points.setTypeface(null, Typeface.BOLD);
+            holder.numberRanking.setTypeface(null, Typeface.BOLD);
+          }
         switch (position+1){
-            case 1: holder.itemView.setBackgroundColor( Color.parseColor("#daa520"));  break;
-            case 2: holder.itemView.setBackgroundColor( Color.parseColor("#8a9597"));  break;
-            case 3: holder.itemView.setBackgroundColor( Color.parseColor("#cd7f32"));  break;
-            default: holder.itemView.setBackgroundColor( Color.parseColor("#ffffff"));  break;
+            case 1: holder.itemView.setBackgroundColor( Color.parseColor("#daa520"));
+          break;
+             case 2: holder.itemView.setBackgroundColor( Color.parseColor("#8a9597"));
+                break;
+              case 3: holder.itemView.setBackgroundColor( Color.parseColor("#cd7f32"));
+            break;
+
          }
 
         spinner.setVisibility(View.GONE);
