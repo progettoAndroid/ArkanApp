@@ -2,9 +2,13 @@ package com.example.android.arkanoid;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -23,12 +27,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+
 public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.RankingViewHolder> {
     private Activity mActivity;
     private DatabaseReference mData;
     private String mDisplayName;
     private ArrayList<DataSnapshot> mDataSnapshots;
     ProgressBar spinner;
+    SharedPreferences namePlayerPreferences;
+    private String nickname = "";
+
+    public static final String NICKNAME ="NamePlayerFile";
+
+
     private ChildEventListener mListener = new ChildEventListener() {
         @Override
         public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -38,6 +49,7 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.RankingV
                 public int compare(DataSnapshot d1, DataSnapshot d2) {
                     UsersModal user1  = d1.getValue(UsersModal.class);
                     UsersModal user2  = d2.getValue(UsersModal.class);
+
                     return  Integer.valueOf(user1.getPoints() ) > Integer.valueOf(user2.getPoints() ) ? -1 :  Integer.valueOf(user1.getPoints() ) <  Integer.valueOf(user2.getPoints() )   ? 1 : 0;
                 }
             });
@@ -80,6 +92,7 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.RankingV
         TextView username;
         TextView points;
         TextView numberRanking;
+        ImageView imageSend;
         ViewGroup.LayoutParams params;
 
         public RankingViewHolder(@NonNull View itemView) {
@@ -87,7 +100,8 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.RankingV
             numberRanking = (TextView) itemView.findViewById(R.id.number);
             username = (TextView) itemView.findViewById(R.id.username);
             points = (TextView) itemView.findViewById(R.id.points);
-            params = (LinearLayout.LayoutParams)username.getLayoutParams();
+            imageSend = (ImageView) itemView.findViewById(R.id.image_send);
+//            params = (LinearLayout.LayoutParams)username.getLayoutParams();
         }
 
     }
@@ -105,15 +119,44 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.RankingV
     }
 
     @Override
-        public void onBindViewHolder(@NonNull RankingViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull final RankingViewHolder holder, final int position) {
 
         DataSnapshot snapshot =  mDataSnapshots.get(position);
-        UsersModal user  = snapshot.getValue(UsersModal.class);
+        final UsersModal user  = snapshot.getValue(UsersModal.class);
 
         holder.username.setText(user.getUsername());
         holder.points.setText(user.getPoints());
         holder.numberRanking.setText(String.valueOf(position+1));
+
+        namePlayerPreferences = mActivity.getApplicationContext().getSharedPreferences(NICKNAME, mActivity.getApplicationContext().MODE_PRIVATE);
+        nickname = namePlayerPreferences.getString ("nickname","");
+        if (nickname.equals(user.getUsername())){
+            holder.imageSend.setVisibility(View.VISIBLE);
+            holder.itemView.setBackgroundColor(Color.rgb(172,32,232));
+        }
+        switch (position+1){
+            case 1: holder.itemView.setBackgroundColor( Color.parseColor("#daa520"));  break;
+            case 2: holder.itemView.setBackgroundColor( Color.parseColor("#8a9597"));  break;
+            case 3: holder.itemView.setBackgroundColor( Color.parseColor("#cd7f32"));  break;
+            default: holder.itemView.setBackgroundColor( Color.parseColor("#ffffff"));  break;
+         }
+
         spinner.setVisibility(View.GONE);
+
+        holder.imageSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                int pos = position;
+                pos +=1;
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "Il miglior punteggio del giocatore " + user.getUsername() + " è : "  + user.getPoints() + " arrivando " + pos+ " in classifica");
+                sendIntent.setType("text/plain");
+
+                Intent shareIntent = Intent.createChooser(sendIntent, null);
+                mActivity.startActivity(shareIntent);
+            }
+        });
     }
 
 

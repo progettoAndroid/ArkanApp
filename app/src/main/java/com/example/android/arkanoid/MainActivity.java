@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
         namePlayerPreferences = mContext.getSharedPreferences(NICKNAME, mContext.MODE_PRIVATE);
         nickname = namePlayerPreferences.getString ("nickname","");
 
+
         if ( nickname.isEmpty()) {
             final AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
             builder1.setTitle(R.string.benvenuto);
