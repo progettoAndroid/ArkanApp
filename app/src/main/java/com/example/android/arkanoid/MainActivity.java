@@ -30,11 +30,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+//import com.google.firebase.database.DataSnapshot;
+//import com.google.firebase.database.DatabaseError;
+//import com.google.firebase.database.DatabaseReference;
+//import com.google.firebase.database.FirebaseDatabase;
+//import com.google.firebase.database.ValueEventListener;
 
 import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
@@ -117,51 +117,51 @@ public class MainActivity extends AppCompatActivity {
             final AlertDialog dialog = builder1.show();
             dialog.getWindow().setBackgroundDrawableResource(R.drawable.popup_style);
 
-
-            Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            button.setOnClickListener(new View.OnClickListener() {
-
-                @SuppressLint("RestrictedApi")
-                @Override
-                public void onClick(View view1) {
-                    if (TextUtils.isEmpty(input.getText().toString().trim())) {
-                        input.setError(mContext.getResources().getString(R.string.non_vuoto));
-                    } else {
-                        inputName = input.getText().toString().trim();
-
-                        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-                        final DatabaseReference userNameRef = rootRef.child("Users").child(inputName).child("username");
-                          final DatabaseReference punteggioRef = userNameRef.getParent().child("points");
-
-                       final  ValueEventListener eventListener = new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                if(!dataSnapshot.exists()) {
-
-                                    SharedPreferences.Editor editor = namePlayerPreferences.edit();
-                                    editor.putString("nickname", inputName);
-
-                                    editor.commit();
-
-                                    userNameRef.setValue(inputName);
-                                    punteggioRef.setValue("0");
-
-                                    dialog.dismiss();
-                                 }
-                                else{
-                                    input.setError(mContext.getResources().getString(R.string.username_esistente));
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-                                Log.d(TAG, databaseError.getMessage()); //Don't ignore errors!
-                            }
-                        };
-                        userNameRef.addListenerForSingleValueEvent(eventListener);
-                    }
-                }
-            });
+//
+//            Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+//            button.setOnClickListener(new View.OnClickListener() {
+//
+//                @SuppressLint("RestrictedApi")
+//                @Override
+//                public void onClick(View view1) {
+//                    if (TextUtils.isEmpty(input.getText().toString().trim())) {
+//                        input.setError(mContext.getResources().getString(R.string.non_vuoto));
+//                    } else {
+//                        inputName = input.getText().toString().trim();
+//
+//                        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+//                        final DatabaseReference userNameRef = rootRef.child("Users").child(inputName).child("username");
+//                          final DatabaseReference punteggioRef = userNameRef.getParent().child("points");
+//
+//                       final  ValueEventListener eventListener = new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(DataSnapshot dataSnapshot) {
+//                                if(!dataSnapshot.exists()) {
+//
+//                                    SharedPreferences.Editor editor = namePlayerPreferences.edit();
+//                                    editor.putString("nickname", inputName);
+//
+//                                    editor.commit();
+//
+//                                    userNameRef.setValue(inputName);
+//                                    punteggioRef.setValue("0");
+//
+//                                    dialog.dismiss();
+//                                 }
+//                                else{
+//                                    input.setError(mContext.getResources().getString(R.string.username_esistente));
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onCancelled(DatabaseError databaseError) {
+//                                Log.d(TAG, databaseError.getMessage()); //Don't ignore errors!
+//                            }
+//                        };
+//                        userNameRef.addListenerForSingleValueEvent(eventListener);
+//                    }
+//                }
+//            });
         }
     }
 
@@ -188,9 +188,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(settings);
     }
     public void sendMessageRanking(View view) {
-        Intent rank = new Intent(this, Ranking.class);
+//        Intent rank = new Intent(this, Ranking.class);
         sound2.playButton();
-        startActivity(rank);
+//        startActivity(rank);
     }
 
     @Override
