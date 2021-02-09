@@ -24,11 +24,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 
-//import com.google.firebase.database.DataSnapshot;
-//import com.google.firebase.database.DatabaseError;
-//import com.google.firebase.database.DatabaseReference;
-//import com.google.firebase.database.FirebaseDatabase;
-//import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -230,60 +230,60 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
         } else if (ball.getY() + ball.getyRychlost() <= 150) {
             ball.zmenSmer("hore");
         } else if (ball.getY() + ball.getyRychlost() >= size.y - 200) {
-//            skontrolujZivoty();
+            skontrolujZivoty();
         }
     }
 
     /**
      * controlla lo stato del gioco. se le mie vite o se il gioco è finito
      */
-//    private void skontrolujZivoty() {
-//        if (lifes == 1) {
-//            gameOver = true;
-//            start = false;
-//            MediaPlayer mediaPlayer = MusicCache.getInstance().getMp();
-//            mediaPlayer.setLooping(true);
-//            mediaPlayer.pause();
-//            if(ringMiccia!= null) {
-//                ringMiccia.pause();
-//            }
-//            sound2.playStarting();
-//            invalidate();
-//
-//            namePlayerPreferences = context.getSharedPreferences(NICKNAME, context.MODE_PRIVATE);
-//            nickname = namePlayerPreferences.getString ("nickname","");
-//            DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-//            final DatabaseReference userNameRef = rootRef.child("Users");
-//
-//            ValueEventListener eventListener = new ValueEventListener() {
-//                @Override
-//                public void onDataChange(DataSnapshot dataSnapshot) {
-//                    if(dataSnapshot.child(nickname).exists()) {
-//                        try {
-//                            Integer value = Integer.parseInt(dataSnapshot.child(nickname).child("points").getValue(String.class));
-//                            if (value < score )
-//                                userNameRef.child(nickname).child( "points").setValue(score.toString());
-//                        }catch (Exception e){
-//                            Log.d(TAG, e.getMessage()); //Don't ignore errors!
-//                        }
-//                    }
-//                }
-//                @Override
-//                public void onCancelled(DatabaseError databaseError) {
-//                    Log.d(TAG, databaseError.getMessage()); //Don't ignore errors!
-//                }
-//            };
-//            userNameRef.addListenerForSingleValueEvent(eventListener);
-//
-//        } else {
-//            lifes--;
-//            ball.setX(size.x / 2);
-//            ball.setY(size.y - 480);
-//            ball.vytvorRychlost();
-//            ball.zvysRychlost(level);
-//            start = false;
-//        }
-//    }
+    private void skontrolujZivoty() {
+        if (lifes == 1) {
+            gameOver = true;
+            start = false;
+            MediaPlayer mediaPlayer = MusicCache.getInstance().getMp();
+            mediaPlayer.setLooping(true);
+            mediaPlayer.pause();
+            if(ringMiccia!= null) {
+                ringMiccia.pause();
+            }
+            sound2.playStarting();
+            invalidate();
+
+            namePlayerPreferences = context.getSharedPreferences(NICKNAME, context.MODE_PRIVATE);
+            nickname = namePlayerPreferences.getString ("nickname","");
+            DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+            final DatabaseReference userNameRef = rootRef.child("Users");
+
+            ValueEventListener eventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.child(nickname).exists()) {
+                        try {
+                            Integer value = Integer.parseInt(dataSnapshot.child(nickname).child("points").getValue(String.class));
+                            if (value < score )
+                                userNameRef.child(nickname).child( "points").setValue(score.toString());
+                        }catch (Exception e){
+                            Log.d(TAG, e.getMessage()); //Don't ignore errors!
+                        }
+                    }
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.d(TAG, databaseError.getMessage()); //Don't ignore errors!
+                }
+            };
+            userNameRef.addListenerForSingleValueEvent(eventListener);
+
+        } else {
+            lifes--;
+            ball.setX(size.x / 2);
+            ball.setY(size.y - 480);
+            ball.vytvorRychlost();
+            ball.zvysRychlost(level);
+            start = false;
+        }
+    }
     private boolean randomTNT(){
         boolean returnValue = false;
         Random randomInt = new Random();
