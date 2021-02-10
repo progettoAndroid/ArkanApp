@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Editor">
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="1100dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:background="@drawable/vaporwave" />
+
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center_vertical"
+        app:layout_anchor="@+id/image"
+        app:layout_anchorGravity="center_horizontal"
+        android:paddingTop="100dp"
+        >
+        <TableRow>
+            <CheckBox
+                android:id="@+id/check1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:button="@drawable/brick_red"
+                android:buttonTint="@android:color/white"
+                android:checked="false"
+                android:onClick="BooleanBlocco"
+                />
+
+            <CheckBox
+                android:id="@+id/check2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:button="@drawable/brick_aqua"
+                android:buttonTint="@android:color/white"
+                android:checked="false"
+                android:onClick="BooleanBlocco"
+                />
+
+            <CheckBox
+                android:id="@+id/check3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:button="@drawable/brick_blue"
+                android:buttonTint="@android:color/white"
+                android:checked="false"
+                android:onClick="BooleanBlocco"
+                />
+
+            <CheckBox
+                android:id="@+id/check4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:button="@drawable/brick_orange"
+                android:buttonTint="@android:color/white"
+                android:checked="false"
+                android:onClick="BooleanBlocco"
+                />
+
+            <CheckBox
+                android:id="@+id/check5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:button="@drawable/brick_pink"
+                android:buttonTint="@android:color/white"
+                android:checked="false"
+                android:onClick="BooleanBlocco"
+                />
+        </TableRow>
+
+        <TableRow>
+            <CheckBox
+                android:id="@+id/check6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:button="@drawable/brick_purple"
+                android:buttonTint="@android:color/white"
+                android:checked="false"
+                android:onClick="BooleanBlocco"
+                />
+
+            <CheckBox
+                android:id="@+id/check7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:button="@drawable/brick_yellow"
+                android:buttonTint="@android:color/white"
+                android:checked="false"
+                android:onClick="BooleanBlocco"
+                />
+
+
+            <CheckBox
+                android:id="@+id/check8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:button="@drawable/brick_red"
+                android:buttonTint="@android:color/white"
+                android:checked="false"
+                android:onClick="BooleanBlocco"
+                />
+
+            <CheckBox
+                android:id="@+id/check9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:button="@drawable/brick_purple"
+                android:buttonTint="@android:color/white"
+                android:checked="false"
+                android:onClick="BooleanBlocco"
+                />
+
+            <CheckBox
+                android:id="@+id/check10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:button="@drawable/brick_pink"
+                android:buttonTint="@android:color/white"
+                android:checked="false"
+                android:onClick="BooleanBlocco"
+                />
+        </TableRow>
+        <TableRow>
+
+            <CheckBox
+                android:id="@+id/check11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:button="@drawable/brick_red"
+                android:buttonTint="@android:color/white"
+                android:checked="false"
+                android:onClick="BooleanBlocco"
+                />
+
+            <CheckBox
+                android:id="@+id/check12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:button="@drawable/brick_aqua"
+                android:buttonTint="@android:color/white"
+                android:checked="false"
+                android:onClick="BooleanBlocco"
+                />
+
+            <CheckBox
+                android:id="@+id/check13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:button="@drawable/brick_blue"
+                android:buttonTint="@android:color/white"
+                android:checked="false"
+                android:onClick="BooleanBlocco"
+                />
+
+            <CheckBox
+                android:id="@+id/check14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:button="@drawable/brick_orange"
+                android:buttonTint="@android:color/white"
+                android:checked="false"
+                android:onClick="BooleanBlocco"
+                />
+
+            <CheckBox
+                android:id="@+id/check15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:button="@drawable/brick_pink"
+                android:buttonTint="@android:color/white"
+                android:checked="false"
+                android:onClick="BooleanBlocco"
+                />
+        </TableRow>
+        <TableRow>
+
+            <CheckBox
+                android:id="@+id/check16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:button="@drawable/brick_red"
+                android:buttonTint="@android:color/white"
+                android:checked="false"
+                android:onClick="BooleanBlocco"
+                />
+
+            <CheckBox
+                android:id="@+id/check17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:button="@drawable/brick_aqua"
+                android:buttonTint="@android:color/white"
+                android:checked="false"
+                android:onClick="BooleanBlocco"
+                />
+
+            <CheckBox
+                android:id="@+id/check18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:button="@drawable/brick_blue"
+                android:buttonTint="@android:color/white"
+                android:checked="false"
+                android:onClick="BooleanBlocco"
+                />
+
+            <CheckBox
+                android:id="@+id/check19"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:button="@drawable/brick_orange"
+                android:buttonTint="@android:color/white"
+                android:checked="false"
+                android:onClick="BooleanBlocco"
+                />
+
+            <CheckBox
+                android:id="@+id/check20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:button="@drawable/brick_pink"
+                android:buttonTint="@android:color/white"
+                android:checked="false"
+                android:onClick="BooleanBlocco"
+                />
+        </TableRow>
+    </TableLayout>
+
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:paddingBottom="100dp"
+        >
+        <TableRow>
+            <Button
+                android:id="@+id/button_carica"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/buttonshape_home"
+                android:fontFamily="@font/feasfbrg"
+                android:onClick="Carica"
+                android:text="@string/carica"
+                android:textColor="#FFFFFF"
+                android:autoSizeTextType="uniform"
+                android:maxLines="1"
+                android:autoSizeMinTextSize="10sp"
+                android:autoSizeMaxTextSize="25sp"
+                android:autoSizeStepGranularity="2sp"/>
+
+            <Button
+                android:id="@+id/button_salva"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/buttonshape_home"
+                android:fontFamily="@font/feasfbrg"
+                android:onClick="Salva"
+                android:text="@string/salva"
+                android:textColor="#FFFFFF"
+                android:autoSizeTextType="uniform"
+                android:maxLines="1"
+                android:autoSizeMinTextSize="10sp"
+                android:autoSizeMaxTextSize="25sp"
+                android:autoSizeStepGranularity="2sp"/>
+
+            <Button
+                android:id="@+id/button_gioca"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/buttonshape_home"
+                android:fontFamily="@font/feasfbrg"
+                android:onClick="Gioca"
+                android:text="@string/gioca"
+                android:textColor="#FFFFFF"
+                android:autoSizeTextType="uniform"
+                android:maxLines="1"
+                android:autoSizeMinTextSize="10sp"
+                android:autoSizeMaxTextSize="25sp"
+                android:autoSizeStepGranularity="2sp"/>
+        </TableRow>
+    </TableLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

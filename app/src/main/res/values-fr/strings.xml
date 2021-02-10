@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Arkanoid</string>
+    <string name="app_name">ArkanApp</string>
     <string name="title_activity_main2">MainActivity</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -11,16 +11,26 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="singleplayer">Nouvelle Partie</string>
+    <string name="singleplayer">Jeu Solo</string>
     <string name="multiplayer">Multijoueur</string>
     <string name="impostazioni">Paramètres</string>
     <string name="classifica">Classement</string>
-    <string name="musicaOn">musique on</string>
-    <string name="musicaOff">musique off</string>
+    <string name="musica">Musique:</string>
+    <string name="musicaOn">Musique on!</string>
+    <string name="musicaOff">Musique off!</string>
     <string name="configurazione_iniziale"> CONFIGURATION INITIALE</string>
     <string name="scelta">Choisissez comment contrôler le paddle</string>
     <string name="benvenuto">Bienvenue en ArkanApp!</string>
     <string name="username">Choisissez un nom de utilisateur</string>
     <string name="username_esistente">Nom de utilisateur dejà choisi!</string>
     <string name="non_vuoto">Le champ ne peut pas être null.</string>
+    <string name="doppio_back">Appuyez sur back encore une fois pour accéder au menu</string>
+    <string name="controller">Contrôleur:</string>
+    <string name="tocco_on">Tu as choisi: touch!</string>
+    <string name="accelerometro_on">Tu as choisi: accéléromètre!</string>
+    <string name="editor">Editor des Niveaux</string>
+    <string name="gioca">Joue Niveaux</string>
+    <string name="salva">Enregistre Niveaux</string>
+    <string name="carica">Charge Niveaux</string>
+    <string name="livello_non_giocabile">Tu dois choisir au moins un bloc pour jouer!</string>
 </resources>
