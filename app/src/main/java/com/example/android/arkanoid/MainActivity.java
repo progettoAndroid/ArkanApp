@@ -41,6 +41,7 @@ import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
 
 public class MainActivity extends AppCompatActivity {
     public static final String CONTROLLER ="ControllerFile";    //serve a salvare la preferenza sul controller
+    public static final String MUSIC ="MusicFile";
     public static final String NICKNAME ="NamePlayerFile";
     private static final String TAG = "DB";
     private MediaPlayer player;
@@ -48,12 +49,14 @@ public class MainActivity extends AppCompatActivity {
     private String inputName = "";
     SharedPreferences controllerSettings;
     SharedPreferences namePlayerPreferences;
+    SharedPreferences soundPreferences;
     String[] controllers = {"Touch", "Accelerometro"};
     private Game game;
     private UpdateThread myThread;
     private Handler updateHandler;
     private int selectedController = 2;
     private Context mContext;
+    private int soundOn;
     private SoundPlayer sound2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,10 +64,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mContext = getApplicationContext();
         setContentView(R.layout.activity_main);
-
         sound2 = new SoundPlayer(this);
         player= MediaPlayer.create(this,R.raw.song);
-        MusicCache.getInstance().setMp(player);
+        soundPreferences = mContext.getSharedPreferences(MUSIC, mContext.MODE_PRIVATE);
+        soundOn = soundPreferences.getInt("Music", 1);
+        if(soundOn == 1){ MusicCache.getInstance().setMp(player);}
 
 
     }
@@ -165,32 +169,49 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sendMessageSingleplayer(View view) {
+
         Intent gameStarter = new Intent(this, GameStarter.class);
         int orientation = this.getResources().getConfiguration().orientation;
+        selectedController = controllerSettings.getInt("SelectedController", 2);
         if(selectedController==2){
             selectedController=0;
         }
         gameStarter.putExtra("EXTRA_CONTROLLER",selectedController);
         gameStarter.putExtra("EXTRA_ORIENTATION", orientation);
         if(selectedController != 2) {
-            sound2.playButton();
+            if(soundOn==1) { sound2.playButton();}
             startActivity(gameStarter);
         }
     }
 
     public void sendMessageMultiplayer(View view) {
-        sound2.playButton();
+        soundPreferences = mContext.getSharedPreferences(MUSIC, mContext.MODE_PRIVATE);
+        soundOn = soundPreferences.getInt("Music", 1);
+        if(soundOn==1) { sound2.playButton();}
     }
     public void sendMessageImpostazioni(View view) {
         Intent settings = new Intent(this, Settings.class);
-        sound2.playButton();
+        soundPreferences = mContext.getSharedPreferences(MUSIC, mContext.MODE_PRIVATE);
+        soundOn = soundPreferences.getInt("Music", 1);
+        if(soundOn==1) { sound2.playButton();}
         startActivity(settings);
     }
     public void sendMessageRanking(View view) {
         Intent rank = new Intent(this, Ranking.class);
-        sound2.playButton();
+        soundPreferences = mContext.getSharedPreferences(MUSIC, mContext.MODE_PRIVATE);
+        soundOn = soundPreferences.getInt("Music", 1);
+        if(soundOn==1) { sound2.playButton();}
         startActivity(rank);
     }
+
+    public void sendMessageEditor(View view) {
+        Intent edit = new Intent(this, Editor.class);
+        soundPreferences = mContext.getSharedPreferences(MUSIC, mContext.MODE_PRIVATE);
+        soundOn = soundPreferences.getInt("Music", 1);
+        if(soundOn==1) { sound2.playButton();}
+        startActivity(edit);
+    }
+
 
     @Override
     protected void onPause(){
@@ -204,9 +225,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume(){
         super.onResume();
         MediaPlayer player = MusicCache.getInstance().getMp();
-        if(player!=null && !player.isPlaying())
-            player.start();
-
+        soundPreferences = mContext.getSharedPreferences(MUSIC, mContext.MODE_PRIVATE);
+        soundOn = soundPreferences.getInt("Music", 1);
+        if((player!=null && !player.isPlaying()) && soundOn==1) { player.start(); }
     }
 
 }

@@ -14,23 +14,24 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="1100dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal|center_vertical"
-        android:background="@drawable/vaporwave" />
+        android:background="@drawable/vaporwave"
+        />
 
     <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/arkanoidvw" />
-
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:src="@drawable/arkanoidvw"
+        android:layout_gravity="center_horizontal"
+        />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical"
-        android:paddingTop="100dp"
+        android:paddingTop="90dp"
         app:layout_anchor="@+id/imageView"
         app:layout_anchorGravity="center">
 
@@ -49,7 +50,9 @@
             android:textOn="@string/musicaOn"
             android:thumb="@drawable/thumb"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp"            />
+            android:paddingRight="10dp"
+            />
+
         <Switch
             android:id="@+id/switch2"
             android:layout_width="wrap_content"
@@ -68,8 +71,5 @@
             android:paddingRight="10dp"
             android:layout_marginTop="20dp"
             />
-
-
-
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -4,21 +4,30 @@
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
-
+    <string name="next">Successivo</string>
+    <string name="previous">Precedente</string>
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="singleplayer">Giocatore Singolo</string>
     <string name="multiplayer">Multigiocatore</string>
     <string name="impostazioni">Impostazioni</string>
     <string name="classifica">Classifica</string>
-    <string name="musicaOn">musica on</string>
-    <string name="musicaOff">musica off</string>
+    <string name="musica">Musica:</string>
+    <string name="musicaOn">Musica on!</string>
+    <string name="musicaOff">musica off!</string>
     <string name="configurazione_iniziale">CONFIGURAZIONE INIZIALE</string>
     <string name="scelta">Scegli come controllare il paddle</string>
     <string name="benvenuto">Benvenuto su ArkanApp!</string>
     <string name="username">Imposta un username</string>
     <string name="username_esistente">Username già esistente</string>
     <string name="non_vuoto">Il campo non può essere vuoto!</string>
+    <string name="doppio_back">Premi di nuovo back per tornare al menù</string>
+    <string name="controller">Controller:</string>
+    <string name="tocco_on">Hai scelto di usare: tocco!</string>
+    <string name="accelerometro_on">Hai scelto di usare: accelerometro!</string>
+    <string name="editor">Editor Livelli</string>
+    <string name="gioca">Gioca Livello</string>
+    <string name="salva">Salva Livello</string>
+    <string name="carica">Carica Livello</string>
+    <string name="livello_non_giocabile">Devi selezionare almeno una casella per giocare!</string>
 </resources>

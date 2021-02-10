@@ -35,6 +35,7 @@ import java.util.Random;
 
 import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
+import static com.example.android.arkanoid.MainActivity.MUSIC;
 
 
 public class Game extends View implements SensorEventListener, View.OnTouchListener {
@@ -75,7 +76,9 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
     boolean isRandomTNT = false;
     int paddleTouchCounter = 0;
     MediaPlayer ringMiccia;
-
+    SharedPreferences soundPreferences;
+    private int soundOn;
+    private boolean[] livello;
     public Game(Context context, int lifes, int score, int controller) {
         super(context);
         paint = new Paint();
@@ -92,7 +95,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
         start = false;
         gameOver = false;
 
-        //Il giocatore sceglie quale controller utilizzare
+        //Il giocatore sceglie quale controller utilizzare, 0 per il tocco, 1 per l'accelerometro
         if (controller == 1) {
             sManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
             accelerometer = sManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -103,7 +106,55 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
         redBall = BitmapFactory.decodeResource(getResources(), R.drawable.redball);
         paddle_p = BitmapFactory.decodeResource(getResources(), R.drawable.paddle);
 
-        //
+        //verifico se la musica è attiva o meno
+        soundPreferences = this.context.getSharedPreferences(MUSIC, this.context.MODE_PRIVATE);
+        soundOn = soundPreferences.getInt("Music", 1);
+
+
+        //crea una nuova palla, una nuova base e un elenco di mattoni
+        ball = new Ball(size.x / 2, size.y - 480);
+        paddle = new Paddle(size.x / 2 - 100, size.y - 400);
+        zoznam = new ArrayList<Brick>();
+        Sottofondo();
+
+        vygenerujBricks(context);
+        this.setOnTouchListener(this);
+
+    }
+
+    public Game(Context context, int lifes, int score, int controller, boolean[] livello) {
+        super(context);
+        paint = new Paint();
+
+        // impostare contesto, vite, punteggi e livelli
+        this.context = context;
+        this.lifes = lifes;
+        this.score = score;
+        this.controller = controller;
+        this.livello = livello;
+        level = 0;
+        sound2 = new SoundPlayer(this.context);
+
+        // start a gameOver per scoprire se il gioco è finito e se il giocatore non l'ha perso
+        start = false;
+        gameOver = false;
+
+        //Il giocatore sceglie quale controller utilizzare, 0 per il tocco, 1 per l'accelerometro
+        if (controller == 1) {
+            sManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+            accelerometer = sManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        }
+        nacitajPozadie(context);
+
+        //crea una bitmap per la palla e la pagaia
+        redBall = BitmapFactory.decodeResource(getResources(), R.drawable.redball);
+        paddle_p = BitmapFactory.decodeResource(getResources(), R.drawable.paddle);
+
+        //verifico se la musica è attiva o meno
+        soundPreferences = this.context.getSharedPreferences(MUSIC, this.context.MODE_PRIVATE);
+        soundOn = soundPreferences.getInt("Music", 1);
+
+
         //crea una nuova palla, una nuova base e un elenco di mattoni
         ball = new Ball(size.x / 2, size.y - 480);
         paddle = new Paddle(size.x / 2 - 100, size.y - 400);
@@ -122,9 +173,13 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
      */
     private void vygenerujBricks(Context context) {
         Brick b = null;
+        int contabool = 0;
+        // Se la configurazione è portrait generiamo i blocchi in una matrice 4x5
+        // L'if interno serve alla generazione del blocco marcato dalla X
         if(this.getResources().getConfiguration().orientation == ORIENTATION_PORTRAIT) {
             for (int i = 3; i < 7; i++) {
                 for (int j = 1; j < 6; j++) {
+                    if(livello != null){ contabool++; }
                     if (level == 0 && i == 6 && j == 5) {
                         b = new Brick(context, j * 150, i * 100, true, level);
                     } else if (level != 0 && level <= 10 && ((i == 3 && j == 5) || (i == 6 && j == 1))) {
@@ -134,12 +189,16 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
                     } else {
                         b = new Brick(context, j * 150, i * 100, Brick.Level.ONE);
                     }
-                    zoznam.add(b);
+                    if(livello==null || livello[contabool] == true) {
+                        zoznam.add(b);
+                    }
                 }
             }
+        // altrimenti se è in landscape li generiamo come una matrice 2 x 10
         }else if ( this.getResources().getConfiguration().orientation == ORIENTATION_LANDSCAPE){
             for (int i = 1; i < 3; i++) {
                 for (int j = 2; j < 12; j++) {
+                    if(livello != null){ contabool++; }
                     if (level == 0 && i == 2 && j == 5) {
                         b = new Brick(context, j * 150, i * 100, true, level);
                     } else if (level != 0 && level <= 10 && ((i == 2 && j == 5) || (i == 6 && j == 1))) {
@@ -149,16 +208,21 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
                     } else {
                         b = new Brick(context, j * 150, i * 100, Brick.Level.ONE);
                     }
-                    zoznam.add(b);
+                    if(livello==null || livello[contabool] == true) {
+                        zoznam.add(b);
+                    }
                 }
             }
         }
         }
 
+     // funzione che si occupa della riproduzione della canzone di sottofondo
     private void Sottofondo(){
         MediaPlayer mediaPlayer = MusicCache.getInstance().getMp();
-        mediaPlayer.setLooping(true);
-        mediaPlayer.start();
+        if(soundOn == 1) {
+            mediaPlayer.setLooping(true);
+            mediaPlayer.start();
+        }
     }
 
     /**
@@ -238,16 +302,23 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
      * controlla lo stato del gioco. se le mie vite o se il gioco è finito
      */
     private void skontrolujZivoty() {
+        //se lifes è uguale a 1, dopo aver perso quella vita gestiamo il game over
         if (lifes == 1) {
             gameOver = true;
             start = false;
             MediaPlayer mediaPlayer = MusicCache.getInstance().getMp();
-            mediaPlayer.setLooping(true);
-            mediaPlayer.pause();
+            if(!mediaPlayer.isLooping()) {
+                mediaPlayer.setLooping(true);
+            }
+            if(mediaPlayer.isPlaying()) {
+                mediaPlayer.pause();
+            }
             if(ringMiccia!= null) {
                 ringMiccia.pause();
             }
-            sound2.playStarting();
+            if(soundOn==1) {
+                sound2.playStarting();
+            }
             invalidate();
 
             namePlayerPreferences = context.getSharedPreferences(NICKNAME, context.MODE_PRIVATE);
@@ -284,6 +355,8 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
             start = false;
         }
     }
+
+
     private boolean randomTNT(){
         boolean returnValue = false;
         Random randomInt = new Random();
@@ -291,9 +364,11 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
             randomBrick = randomInt.nextInt(zoznam.size());
         } while(zoznam.get(randomBrick).getisXBrick());
         if (isScoreMultipleOf400 &&score!=0) {
-            ringMiccia = MediaPlayer.create(context,R.raw.miccia);
-            ringMiccia.setLooping(true);
-            ringMiccia.start();
+            if(soundOn==1){
+                ringMiccia = MediaPlayer.create(context,R.raw.miccia);
+                ringMiccia.setLooping(true);
+                ringMiccia.start();
+            }
             zoznam.get(randomBrick).setBrick(BitmapFactory.decodeResource(getResources(), R.drawable.brick_green));
             isScoreMultipleOf400 = false;
             returnValue=true;
@@ -307,9 +382,9 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
             vyhra();
             skontrolujOkraje();
             if(ball.NarazPaddle(paddle.getX(), paddle.getY()) == 1){
-                sound2.playHitSound();
-            }
-            if(ball.NarazPaddle(paddle.getX(), paddle.getY()) == 1){
+                if(soundOn==1) {
+                    sound2.playHitSound();
+                }
                 if(paddleTouchCounter==0) {
                     if(zoznam.size()!=1) {
                         isRandomTNT = randomTNT();
@@ -319,21 +394,22 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
                     }
                 }
             }
+
             for (int i = 0; i < zoznam.size(); i++) {
                 Brick b = zoznam.get(i);
                 if (ball.NarazBrick(b.getX(), b.getY())) {
                     if(zoznam.get(i).getisXBrick()){
-                        System.out.println("è un brick x");
                         if(zoznam.get(i).getxBrickBreakCounter()!=0){
-                            System.out.println("ho ancora "+zoznam.get(i).getxBrickBreakCounter()+" tocchi");
                             zoznam.get(i).setxBrickBreakCounter(zoznam.get(i).getxBrickBreakCounter()-1);
                         } else {
                             zoznam.remove(i);
                         }
                     } else if (randomBrick != -1  && isRandomTNT && zoznam.size()!=1) {
-                        MediaPlayer ring = MediaPlayer.create(context,R.raw.explosion);
-                        ringMiccia.stop();
-                        ring.start();
+                        if(soundOn==1) {
+                            MediaPlayer ring = MediaPlayer.create(context, R.raw.explosion);
+                            ringMiccia.stop();
+                            ring.start();
+                        }
                         zoznam.remove(randomBrick);
                         isRandomTNT = false;
                         paddleTouchCounter=0;
@@ -341,11 +417,15 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
                     } else {
                         if (zoznam.get(i).getLevel() == Brick.Level.ONE && !zoznam.get(i).getBrick().equals(R.drawable.brick_green)) {
                             zoznam.remove(i);
-                            sound2.playHitSound();
+                            if(soundOn==1) {
+                                sound2.playHitSound();
+                            }
                             zoznam.add(i, new Brick(context, b.getX(), b.getY(), Brick.Level.TWO));
                         } else if (zoznam.get(i).getLevel() == Brick.Level.TWO) {
                             zoznam.remove(i);
-                            sound2.playHitSound();
+                            if(soundOn==1) {
+                                sound2.playHitSound();
+                            }
                         }
                         score = score + 80;
                         if (score % 400 == 0) {

@@ -21,95 +21,97 @@
         />
 
     <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-
-        android:src="@drawable/arkanoidvw" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        app:layout_anchor="@+id/imageView"
-        app:layout_anchorGravity="center">
-
-        <Button
-            android:id="@+id/button_singleplayer"
-            android:layout_width="200dp"
-            android:layout_height="60dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="100dp"
-            android:layout_marginTop="170dp"
-            android:background="@drawable/buttonshape_home"
-            android:baselineAligned="false"
-            android:fontFamily="@font/feasfbrg"
-            android:onClick="sendMessageSingleplayer"
-            android:text="@string/singleplayer"
-            android:textColor="#FFFFFF"
-            android:autoSizeTextType="uniform"
-            android:maxLines="1"
-            android:autoSizeMinTextSize="10sp"
-            android:autoSizeMaxTextSize="25sp"
-            android:autoSizeStepGranularity="2sp"/>
-
-        <Button
-            android:id="@+id/button_multiplayer"
-            android:layout_width="200dp"
-            android:layout_height="60dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="375dp"
-            android:layout_marginTop="250dp"
-            android:background="@drawable/buttonshape_home"
-            android:fontFamily="@font/feasfbrg"
-            android:onClick="sendMessageMultiplayer"
-            android:text="@string/multiplayer"
-            android:textColor="#FFFFFF"
-            android:autoSizeTextType="uniform"
-            android:maxLines="1"
-            android:autoSizeMinTextSize="10sp"
-            android:autoSizeMaxTextSize="25sp"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:src="@drawable/arkanoidvw"
+        android:layout_gravity="center_horizontal"
         />
 
-        <Button
-            android:id="@+id/button_impostazioni"
-            android:layout_width="200dp"
-            android:layout_height="60dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="100dp"
-            android:layout_marginTop="250dp"
-            android:background="@drawable/buttonshape_home"
-            android:fontFamily="@font/feasfbrg"
-            android:onClick="sendMessageImpostazioni"
-            android:text="@string/impostazioni"
-            android:textColor="#FFFFFF"
-            android:autoSizeTextType="uniform"
-            android:maxLines="1"
-            android:autoSizeMinTextSize="10sp"
-            android:autoSizeMaxTextSize="30sp"
-           />
 
-        <Button
-            android:id="@+id/button_classifica"
-            android:layout_width="200dp"
-            android:layout_height="60dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="375dp"
-            android:layout_marginTop="170dp"
-            android:background="@drawable/buttonshape_home"
-            android:fontFamily="@font/feasfbrg"
-            android:onClick="sendMessageRanking"
-            android:text="@string/classifica"
-            android:textColor="#FFFFFF"
-            android:autoSizeTextType="uniform"
-            android:maxLines="1"
-            android:autoSizeMinTextSize="10sp"
-            android:autoSizeMaxTextSize="30sp"
-            />
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:paddingTop="100dp">
 
-    </RelativeLayout>
+            <TableRow>
+                <Button
+                    android:id="@+id/button_singleplayer"
+                    android:layout_width="200dp"
+                    android:layout_height="60dp"
+                    android:layout_margin="20dp"
+                    android:background="@drawable/buttonshape_home"
+                    android:baselineAligned="false"
+                    android:fontFamily="@font/feasfbrg"
+                    android:onClick="sendMessageSingleplayer"
+                    android:text="@string/singleplayer"
+                    android:textColor="#FFFFFF"
+                    android:autoSizeTextType="uniform"
+                    android:maxLines="1"
+                    android:autoSizeMinTextSize="10sp"
+                    android:autoSizeMaxTextSize="25sp"
+                    android:autoSizeStepGranularity="2sp"/>
+
+                    <Button
+                        android:id="@+id/button_multiplayer"
+                        android:layout_width="200dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="20dp"
+                        android:background="@drawable/buttonshape_home"
+                        android:fontFamily="@font/feasfbrg"
+                        android:onClick="sendMessageMultiplayer"
+                        android:text="@string/multiplayer"
+                        android:textColor="#FFFFFF"
+                        android:autoSizeTextType="uniform"
+                        android:maxLines="1"
+                        android:autoSizeMinTextSize="10sp"
+                        android:autoSizeMaxTextSize="25sp"
+                    />
+            </TableRow >
+            <TableRow>
+                <Button
+                    android:id="@+id/button_editor"
+                    android:layout_width="200dp"
+                    android:layout_height="60dp"
+                    android:layout_margin="20dp"
+                    android:background="@drawable/buttonshape_home"
+                    android:fontFamily="@font/feasfbrg"
+                    android:onClick="sendMessageEditor"
+                    android:text="@string/editor"
+                    android:textColor="#FFFFFF"
+                    android:autoSizeTextType="uniform"
+                    android:maxLines="1"
+                    android:autoSizeMinTextSize="10sp"
+                    android:autoSizeMaxTextSize="25sp"
+                    android:autoSizeStepGranularity="2sp"/>
+
+
+                    <Button
+                        android:id="@+id/button_classifica"
+                        android:layout_width="200dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="20dp"
+                        android:background="@drawable/buttonshape_home"
+                        android:fontFamily="@font/feasfbrg"
+                        android:onClick="sendMessageRanking"
+                        android:text="@string/classifica"
+                        android:textColor="#FFFFFF"
+                        android:autoSizeTextType="uniform"
+                        android:maxLines="1"
+                        android:autoSizeMinTextSize="10sp"
+                        android:autoSizeMaxTextSize="30sp"
+                        />
+            </TableRow>
+        </TableLayout>
+            <Button
+                android:id="@+id/button_impostazioni"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="bottom|right"
+                android:background="@drawable/buttonshape_home"
+                android:fontFamily="@font/feasfbrg"
+                android:onClick="sendMessageImpostazioni"
+                android:drawableStart="@drawable/settings"
+                />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
