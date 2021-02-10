@@ -23,4 +23,6 @@
         <string name="username">Set an username</string>
         <string name="username_esistente">Username already picked!</string>
         <string name="non_vuoto">The field cannot be null.</string>
+        <string name="gioca">Play</string>
+        <string name="risultato">Results</string>
 </resources>

@@ -2,6 +2,7 @@ package com.example.android.arkanoid;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.media.MediaPlayer;
@@ -20,6 +21,7 @@ public class GameStarter extends AppCompatActivity {
     private int orientation;
     private SoundPlayer sound2;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +36,11 @@ public class GameStarter extends AppCompatActivity {
         } else if (orientation == Configuration.ORIENTATION_LANDSCAPE){
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
-        game = new Game(this, 3, 0, controller);
+        if(getIntent().getBooleanExtra("isMultiplayer", false)) {
+            game = new Game(this, 3, 0, controller, true);
+        } else {
+            game = new Game(this, 3, 0, controller);
+        }
 
         setContentView(game);
 

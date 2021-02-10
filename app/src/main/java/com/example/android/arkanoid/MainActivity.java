@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String CONTROLLER ="ControllerFile";    //serve a salvare la preferenza sul controller
     public static final String NICKNAME ="NamePlayerFile";
     private static final String TAG = "DB";
+    private static String dbNickname;
     private MediaPlayer player;
     private String nickname = "";
     private String inputName = "";
@@ -67,6 +68,11 @@ public class MainActivity extends AppCompatActivity {
         MusicCache.getInstance().setMp(player);
 
 
+    }
+    public static void storeScoreMultiplayer(Integer score){
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+        rootRef.child("Online").child(dbNickname).child("nickname").setValue(dbNickname);
+        rootRef.child("Online").child(dbNickname).child("point").setValue(score.toString());
     }
     @Override
     protected void onStart() {
@@ -102,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
         namePlayerPreferences = mContext.getSharedPreferences(NICKNAME, mContext.MODE_PRIVATE);
         nickname = namePlayerPreferences.getString ("nickname","");
-
+        dbNickname = nickname;
         if ( nickname.isEmpty()) {
             final AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
             builder1.setTitle(R.string.benvenuto);
@@ -180,7 +186,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void sendMessageMultiplayer(View view) {
         sound2.playButton();
+        Intent multiplayer = new Intent(this, Multiplayer.class);
+        multiplayer.putExtra("selectedController",selectedController);
+        startActivity(multiplayer);
     }
+
     public void sendMessageImpostazioni(View view) {
         Intent settings = new Intent(this, Settings.class);
         sound2.playButton();
@@ -208,5 +218,6 @@ public class MainActivity extends AppCompatActivity {
             player.start();
 
     }
+
 
 }

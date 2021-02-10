@@ -2,6 +2,7 @@ package com.example.android.arkanoid;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -75,11 +76,50 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
     boolean isRandomTNT = false;
     int paddleTouchCounter = 0;
     MediaPlayer ringMiccia;
+    private boolean isMultiplayer;
 
     public Game(Context context, int lifes, int score, int controller) {
         super(context);
         paint = new Paint();
 
+        // impostare contesto, vite, punteggi e livelli
+        this.context = context;
+        this.lifes = lifes;
+        this.score = score;
+        this.controller = controller;
+        level = 0;
+        sound2 = new SoundPlayer(this.context);
+
+        // start a gameOver per scoprire se il gioco è finito e se il giocatore non l'ha perso
+        start = false;
+        gameOver = false;
+
+        //Il giocatore sceglie quale controller utilizzare
+        if (controller == 1) {
+            sManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+            accelerometer = sManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        }
+        nacitajPozadie(context);
+
+        //crea una bitmap per la palla e la pagaia
+        redBall = BitmapFactory.decodeResource(getResources(), R.drawable.redball);
+        paddle_p = BitmapFactory.decodeResource(getResources(), R.drawable.paddle);
+
+        //
+        //crea una nuova palla, una nuova base e un elenco di mattoni
+        ball = new Ball(size.x / 2, size.y - 480);
+        paddle = new Paddle(size.x / 2 - 100, size.y - 400);
+        zoznam = new ArrayList<Brick>();
+        Sottofondo();
+
+        vygenerujBricks(context);
+        this.setOnTouchListener(this);
+
+    }
+    public Game(Context context, int lifes, int score, int controller, boolean isMultiplayer) {
+        super(context);
+        paint = new Paint();
+        this.isMultiplayer = isMultiplayer;
         // impostare contesto, vite, punteggi e livelli
         this.context = context;
         this.lifes = lifes;
@@ -323,9 +363,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
                 Brick b = zoznam.get(i);
                 if (ball.NarazBrick(b.getX(), b.getY())) {
                     if(zoznam.get(i).getisXBrick()){
-                        System.out.println("è un brick x");
                         if(zoznam.get(i).getxBrickBreakCounter()!=0){
-                            System.out.println("ho ancora "+zoznam.get(i).getxBrickBreakCounter()+" tocchi");
                             zoznam.get(i).setxBrickBreakCounter(zoznam.get(i).getxBrickBreakCounter()-1);
                         } else {
                             zoznam.remove(i);
@@ -402,8 +440,12 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
         if (gameOver == true && start == false) {
             score = 0;
             lifes = 3;
+            if (isMultiplayer) {
+                MainActivity.storeScoreMultiplayer(score);
+            }
             resetLevel();
             gameOver = false;
+
         } else {
             start = true;
             if (controller == 0) {
@@ -454,4 +496,5 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
             start = false;
         }
     }
+
 }

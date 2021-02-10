@@ -21,4 +21,6 @@
     <string name="username">Imposta un username</string>
     <string name="username_esistente">Username già esistente</string>
     <string name="non_vuoto">Il campo non può essere vuoto!</string>
+    <string name="gioca">Gioca</string>
+    <string name="risultato">Risultato</string>
 </resources>

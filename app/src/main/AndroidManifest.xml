@@ -22,6 +22,8 @@
         </activity>
         <activity android:name=".Settings" />
         <activity android:name=".Ranking" />
+        <activity android:name=".MultiplayerScore" />
+        <activity android:name=".Multiplayer" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">

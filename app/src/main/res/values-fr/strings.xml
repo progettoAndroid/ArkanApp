@@ -23,4 +23,6 @@
     <string name="username">Choisissez un nom de utilisateur</string>
     <string name="username_esistente">Nom de utilisateur dejà choisi!</string>
     <string name="non_vuoto">Le champ ne peut pas être null.</string>
+    <string name="gioca">Joue</string>
+    <string name="risultato">Resultat</string>
 </resources>
