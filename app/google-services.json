@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "3690180749",
-    "project_id": "arkanapp-6faf2",
-    "storage_bucket": "arkanapp-6faf2.appspot.com"
+    "project_number": "309636959972",
+    "project_id": "arkanapp-3fedb",
+    "storage_bucket": "arkanapp-3fedb.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:3690180749:android:6073907c0a56f506aef2c4",
+        "mobilesdk_app_id": "1:309636959972:android:60a49075d724accc6aa6f1",
         "android_client_info": {
           "package_name": "com.example.android.arkanoid"
         }
       },
       "oauth_client": [
         {
-          "client_id": "3690180749-am0l3jdgb976o57893maj7ounoqdvf3l.apps.googleusercontent.com",
+          "client_id": "309636959972-98j9h1l0h562os7uhckgvs9qogc45tei.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC78jDQKXt3_jnJaywccQcXbMm5lN8cbhI"
+          "current_key": "AIzaSyDAcI9Nq8TAi1qsfgUxWiBGcbGsSVSUjSk"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "3690180749-am0l3jdgb976o57893maj7ounoqdvf3l.apps.googleusercontent.com",
+              "client_id": "309636959972-98j9h1l0h562os7uhckgvs9qogc45tei.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
