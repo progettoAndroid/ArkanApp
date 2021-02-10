@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
 
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
-                                Log.d(TAG, databaseError.getMessage()); //Don't ignore errors!
+                                Log.d(TAG, databaseError.getMessage());
                             }
                         };
                         userNameRef.addListenerForSingleValueEvent(eventListener);

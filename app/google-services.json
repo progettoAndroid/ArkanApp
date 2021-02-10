@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "3690180749",
+    "project_id": "arkanapp-6faf2",
+    "storage_bucket": "arkanapp-6faf2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:3690180749:android:6073907c0a56f506aef2c4",
+        "android_client_info": {
+          "package_name": "com.example.android.arkanoid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "3690180749-am0l3jdgb976o57893maj7ounoqdvf3l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC78jDQKXt3_jnJaywccQcXbMm5lN8cbhI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "3690180749-am0l3jdgb976o57893maj7ounoqdvf3l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
