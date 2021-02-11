@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String MUSIC ="MusicFile";
     public static final String NICKNAME ="NamePlayerFile";
     private static final String TAG = "DB";
+    private static String dbNickname;
     private MediaPlayer player;
     private String nickname = "";
     private String inputName = "";
@@ -71,6 +72,11 @@ public class MainActivity extends AppCompatActivity {
         if(soundOn == 1){ MusicCache.getInstance().setMp(player);}
 
 
+    }
+    public static void storeScoreMultiplayer(Integer score){
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+        rootRef.child("Online").child(dbNickname).child("nickname").setValue(dbNickname);
+        rootRef.child("Online").child(dbNickname).child("point").setValue(score.toString());
     }
     @Override
     protected void onStart() {
@@ -106,8 +112,7 @@ public class MainActivity extends AppCompatActivity {
 
         namePlayerPreferences = mContext.getSharedPreferences(NICKNAME, mContext.MODE_PRIVATE);
         nickname = namePlayerPreferences.getString ("nickname","");
-
-
+        dbNickname = nickname;
         if ( nickname.isEmpty()) {
             final AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
             builder1.setTitle(R.string.benvenuto);
@@ -170,7 +175,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sendMessageSingleplayer(View view) {
-
         Intent gameStarter = new Intent(this, GameStarter.class);
         int orientation = this.getResources().getConfiguration().orientation;
         selectedController = controllerSettings.getInt("SelectedController", 2);
@@ -189,6 +193,9 @@ public class MainActivity extends AppCompatActivity {
         soundPreferences = mContext.getSharedPreferences(MUSIC, mContext.MODE_PRIVATE);
         soundOn = soundPreferences.getInt("Music", 1);
         if(soundOn==1) { sound2.playButton();}
+        Intent multiplayer = new Intent(this, Multiplayer.class);
+        multiplayer.putExtra("selectedController",selectedController);
+        startActivity(multiplayer);
     }
     public void sendMessageImpostazioni(View view) {
         Intent settings = new Intent(this, Settings.class);

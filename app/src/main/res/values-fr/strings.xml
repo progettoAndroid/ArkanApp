@@ -29,8 +29,10 @@
     <string name="tocco_on">Tu as choisi: touch!</string>
     <string name="accelerometro_on">Tu as choisi: accéléromètre!</string>
     <string name="editor">Editor des Niveaux</string>
-    <string name="gioca">Joue Niveaux</string>
+    <string name="giocaedit">Joue Niveaux</string>
     <string name="salva">Enregistre Niveaux</string>
     <string name="carica">Charge Niveaux</string>
     <string name="livello_non_giocabile">Tu dois choisir au moins un bloc pour jouer!</string>
+    <string name="gioca">Joue</string>
+    <string name="risultato">Resultat</string>
 </resources>

@@ -29,8 +29,10 @@
         <string name="tocco_on">You picked: touch!</string>
         <string name="accelerometro_on">You picked: accelerometer!</string>
         <string name="editor">Stage Editor</string>
-        <string name="gioca">Play Stage</string>
+        <string name="giocaedit">Play Stage</string>
         <string name="salva">Save Stage</string>
         <string name="carica">Load Stage</string>
         <string name="livello_non_giocabile">You must pick at least one brick to play!</string>
+        <string name="gioca">Play</string>
+        <string name="risultato">Results</string>
 </resources>

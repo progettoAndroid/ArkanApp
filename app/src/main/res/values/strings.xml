@@ -26,8 +26,10 @@
     <string name="tocco_on">Hai scelto di usare: tocco!</string>
     <string name="accelerometro_on">Hai scelto di usare: accelerometro!</string>
     <string name="editor">Editor Livelli</string>
-    <string name="gioca">Gioca Livello</string>
+    <string name="giocaedit">Gioca Livello</string>
     <string name="salva">Salva Livello</string>
     <string name="carica">Carica Livello</string>
     <string name="livello_non_giocabile">Devi selezionare almeno una casella per giocare!</string>
+    <string name="gioca">Gioca</string>
+    <string name="risultato">Risultato</string>
 </resources>

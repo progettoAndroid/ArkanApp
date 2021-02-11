@@ -3,6 +3,7 @@ package com.example.android.arkanoid;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.media.MediaPlayer;
@@ -41,10 +42,12 @@ public class GameStarter extends AppCompatActivity {
         } else if (orientation == Configuration.ORIENTATION_LANDSCAPE){
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
-        if(livello == null) {
+        if(getIntent().getBooleanExtra("isMultiplayer", false)) {
             game = new Game(this, 3, 0, controller);
         }else if(livello != null){
             game = new Game(this, 3, 0, controller, livello);
+        } else if(livello == null) {
+            game = new Game(this, 3, 0, controller, true);
         }
 
         setContentView(game);
@@ -80,7 +83,6 @@ public class GameStarter extends AppCompatActivity {
         game.zastavSnimanie();
     }
 
-    //Riprendo a suonare la musica una volta tornato dall'onpause
     @Override
     protected void onResume() {
         super.onResume();

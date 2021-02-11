@@ -23,6 +23,8 @@
         </activity>
         <activity android:name=".Settings" />
         <activity android:name=".Ranking" />
+        <activity android:name=".MultiplayerScore" />
+        <activity android:name=".Multiplayer" />
         <activity android:name=".Editor"/>
         <activity
             android:name=".MainActivity"
