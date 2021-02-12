@@ -56,7 +56,6 @@ public class Brick extends View {
             this.x = x;
             this.y = y;
         this.setLayoutParams(new ViewGroup.LayoutParams(64,32));
-        System.out.println("getHeight: "+this.getHeight()+" getWidth "+this.getWidth());
             if (level == Level.ONE) {
                 this.level = level;
                 skin();

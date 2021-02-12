@@ -42,12 +42,12 @@ public class GameStarter extends AppCompatActivity {
         } else if (orientation == Configuration.ORIENTATION_LANDSCAPE){
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
-        if(getIntent().getBooleanExtra("isMultiplayer", false)) {
-            game = new Game(this, 3, 0, controller);
+        if(getIntent().getIntExtra("isMultiplayer", 0)==1) {
+            game = new Game(this, 3, 0, controller, 1);
         }else if(livello != null){
             game = new Game(this, 3, 0, controller, livello);
         } else if(livello == null) {
-            game = new Game(this, 3, 0, controller, true);
+            game = new Game(this, 3, 0, controller);
         }
 
         setContentView(game);

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="1100dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:background="@drawable/vaporwave" />
+
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:paddingBottom="100dp">
+
+    <TableRow android:weightSum="1" >
+
+        <TextView
+            android:id="@+id/nick1"
+            android:layout_width="168dp"
+            android:layout_height="30dp"
+            android:layout_weight="0.25"
+            android:autoSizeMaxTextSize="25sp"
+            android:autoSizeMinTextSize="10sp"
+            android:autoSizeStepGranularity="2sp"
+            android:autoSizeTextType="uniform"
+            android:background="@drawable/buttonshape_home"
+            android:fontFamily="@font/feasfbrg"
+            android:maxLines="1"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF" />
+
+        <TextView
+            android:id="@+id/button_vs"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:layout_weight="0.5"
+            android:autoSizeMaxTextSize="25sp"
+            android:autoSizeMinTextSize="10sp"
+            android:autoSizeTextType="uniform"
+            android:background="@drawable/buttonshape_home"
+            android:fontFamily="@font/feasfbrg"
+            android:maxLines="1"
+            android:text="Vs."
+            android:textAlignment="center"
+            android:textColor="#FFFFFF" />
+
+        <TextView
+            android:id="@+id/nick2"
+            android:background="@drawable/buttonshape_home"
+            android:layout_height="30dp"
+            android:fontFamily="@font/feasfbrg"
+            android:textColor="#FFFFFF"
+            android:autoSizeTextType="uniform"
+            android:maxLines="1"
+            android:autoSizeMinTextSize="10sp"
+            android:autoSizeMaxTextSize="25sp"
+            android:layout_weight="0.25"
+            android:textAlignment="center" />
+    </TableRow >
+        <TableRow>
+            <TextView
+                android:id="@+id/score1"
+                android:background="@drawable/buttonshape_home"
+                android:layout_height="30dp"
+                android:fontFamily="@font/feasfbrg"
+                android:textColor="#FFFFFF"
+                android:autoSizeTextType="uniform"
+                android:maxLines="1"
+                android:autoSizeMinTextSize="10sp"
+                android:autoSizeMaxTextSize="25sp"
+                android:layout_weight="0.25"
+                android:textAlignment="center"
+                />
+            <TextView
+                android:id="@+id/a"
+                android:background="@drawable/buttonshape_home"
+                android:layout_height="30dp"
+                android:fontFamily="@font/feasfbrg"
+                android:textColor="#FFFFFF"
+                android:autoSizeTextType="uniform"
+                android:maxLines="1"
+                android:autoSizeMinTextSize="10sp"
+                android:autoSizeMaxTextSize="25sp"
+                android:layout_weight="0.5"
+                android:text="-"
+                android:textAlignment="center"
+                />
+            <TextView
+                android:id="@+id/score2"
+                android:layout_height="30dp"
+                android:autoSizeMaxTextSize="25sp"
+                android:autoSizeMinTextSize="10sp"
+                android:autoSizeTextType="uniform"
+                android:background="@drawable/buttonshape_home"
+                android:fontFamily="@font/feasfbrg"
+                android:maxLines="1"
+                android:textColor="#FFFFFF"
+                android:layout_weight="0.25"
+                android:textAlignment="center"/>
+
+        </TableRow>
+    </TableLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

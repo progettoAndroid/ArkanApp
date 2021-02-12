@@ -32,4 +32,6 @@
     <string name="livello_non_giocabile">Devi selezionare almeno una casella per giocare!</string>
     <string name="gioca">Gioca</string>
     <string name="risultato">Risultato</string>
+    <string name="errore_matchmaking">Nessun giocatore disponibile al momento! Controlla la sezione risultati più tardi!</string>
+    <string name="errore_risultato">Quando saranno disponibili i risultati verranno mostrati qui! Controlla la sezione risultati più tardi!</string>
 </resources>

@@ -73,11 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-    public static void storeScoreMultiplayer(Integer score){
-        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-        rootRef.child("Online").child(dbNickname).child("nickname").setValue(dbNickname);
-        rootRef.child("Online").child(dbNickname).child("point").setValue(score.toString());
-    }
+
     @Override
     protected void onStart() {
 
@@ -140,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
 
                         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
                         final DatabaseReference userNameRef = rootRef.child("Users").child(inputName).child("username");
-                          final DatabaseReference punteggioRef = userNameRef.getParent().child("points");
+                        final DatabaseReference punteggioRef = userNameRef.getParent().child("points");
 
                        final  ValueEventListener eventListener = new ValueEventListener() {
                             @Override

@@ -161,7 +161,7 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.RankingV
                 sendIntent.setAction(Intent.ACTION_SEND);
                 int pos = position;
                 pos +=1;
-                sendIntent.putExtra(Intent.EXTRA_TEXT, "Il miglior punteggio del giocatore " + user.getUsername() + " è : "  + user.getPoints() + " arrivando " + pos+ " in classifica");
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "---ArkanApp---\n" + "Il miglior punteggio del giocatore " + user.getUsername() + " è: "  + user.getPoints() + " arrivando " + pos+ " in classifica!");
                 sendIntent.setType("text/plain");
 
                 Intent shareIntent = Intent.createChooser(sendIntent, null);

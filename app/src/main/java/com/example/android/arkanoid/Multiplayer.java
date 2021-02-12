@@ -1,25 +1,35 @@
 package com.example.android.arkanoid;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import static com.example.android.arkanoid.MainActivity.MUSIC;
+
 public class Multiplayer extends AppCompatActivity {
 
     private Integer selectedController;
     private SoundPlayer sound2;
+    SharedPreferences soundPreferences;
+    private int soundOn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.multiplayer);
         sound2 = new SoundPlayer(this);
         selectedController = getIntent().getIntExtra("selectedController",2);;
+        soundPreferences = getApplicationContext().getSharedPreferences(MUSIC, getApplicationContext().MODE_PRIVATE);
+        soundOn = soundPreferences.getInt("Music", 1);
     }
 
     public void sendMessageRanking(View view) {
         Intent rank = new Intent(this, Ranking.class);
+        if(soundOn==1) {
+            sound2.playButton();
+        }
         startActivity(rank);
     }
 
@@ -31,9 +41,11 @@ public class Multiplayer extends AppCompatActivity {
         }
         gameStarter.putExtra("EXTRA_CONTROLLER",selectedController);
         gameStarter.putExtra("EXTRA_ORIENTATION", orientation);
-        gameStarter.putExtra("isMultiplayer", true);
+        gameStarter.putExtra("isMultiplayer", 1);
         if(selectedController != 2) {
-            sound2.playButton();
+            if(soundOn==1) {
+                sound2.playButton();
+            }
             startActivity(gameStarter);
         }
 

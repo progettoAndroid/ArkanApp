@@ -35,4 +35,6 @@
         <string name="livello_non_giocabile">You must pick at least one brick to play!</string>
         <string name="gioca">Play</string>
         <string name="risultato">Results</string>
+        <string name="errore_matchmaking">There are no active players right now!</string>
+        <string name="errore_risultato">Results will be shown here when available!</string>
 </resources>

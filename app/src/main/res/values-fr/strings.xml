@@ -35,4 +35,6 @@
     <string name="livello_non_giocabile">Tu dois choisir au moins un bloc pour jouer!</string>
     <string name="gioca">Joue</string>
     <string name="risultato">Resultat</string>
+    <string name="errore_matchmaking">Il ne ya pas de joueurs actifs maintenant!</string>
+    <string name="errore_risultato">Le resultats seront visualisée ici!</string>
 </resources>
