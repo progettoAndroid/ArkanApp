@@ -23,6 +23,7 @@ public class GameStarter extends AppCompatActivity {
     private int controller;
     private int orientation;
     private SoundPlayer sound2;
+    MediaPlayer player;
     private boolean DoppioBackPerUscire = false;
     SharedPreferences soundPreferences;
     private int soundOn;
@@ -77,7 +78,7 @@ public class GameStarter extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        MediaPlayer player = MusicCache.getInstance().getMp();
+         player = MusicCache.getInstance().getMp();
         if(player!=null)
             player.pause();
         game.zastavSnimanie();
@@ -86,7 +87,7 @@ public class GameStarter extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        MediaPlayer player = MusicCache.getInstance().getMp();
+        player = MusicCache.getInstance().getMp();
         soundPreferences = getApplicationContext().getSharedPreferences(MUSIC, getApplicationContext().MODE_PRIVATE);
         soundOn = soundPreferences.getInt("Music", 1);
         if((player!=null && !player.isPlaying()) && soundOn == 1)
@@ -112,14 +113,12 @@ public class GameStarter extends AppCompatActivity {
                 DoppioBackPerUscire=false;
             }
         }, 2000);
+
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        MediaPlayer player = MusicCache.getInstance().getMp();
-        if(player!=null)
-            player.pause();
     }
 
 

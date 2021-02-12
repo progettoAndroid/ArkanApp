@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mContext = getApplicationContext();
         setContentView(R.layout.activity_main);
+        player=MusicCache.getInstance().getMp();
         sound2 = new SoundPlayer(this);
         player= MediaPlayer.create(this,R.raw.song);
         soundPreferences = mContext.getSharedPreferences(MUSIC, mContext.MODE_PRIVATE);
@@ -78,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
 
         super.onStart();
-
         //Uso le preferenze per salvare e recuperare i comandi preferiti dell'utente
         controllerSettings = mContext.getSharedPreferences(CONTROLLER, mContext.MODE_PRIVATE);
         selectedController = controllerSettings.getInt("SelectedController", 2);
@@ -228,10 +228,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        MediaPlayer player = MusicCache.getInstance().getMp();
+        player = MusicCache.getInstance().getMp();
         soundPreferences = mContext.getSharedPreferences(MUSIC, mContext.MODE_PRIVATE);
         soundOn = soundPreferences.getInt("Music", 1);
         if((player!=null && !player.isPlaying()) && soundOn==1) { player.start(); }
     }
+
 
 }

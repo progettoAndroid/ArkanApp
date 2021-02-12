@@ -71,7 +71,6 @@ public class Brick extends View {
         this.y = y;
         this.isXBrick=isXBrick;
         this.setLayoutParams(new ViewGroup.LayoutParams(64,32));
-        System.out.println("getHeight: "+this.getHeight()+" getWidth "+this.getWidth());
         this.level = level;
         skinXBrick(gameLevel);
 

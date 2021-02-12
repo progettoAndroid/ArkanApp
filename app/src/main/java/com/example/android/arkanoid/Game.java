@@ -456,7 +456,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
                     } else if (randomBrick != -1 && isRandomTNT && zoznam.size() != 1) {
                         if (soundOn == 1) {
                             MediaPlayer ring = MediaPlayer.create(context, R.raw.explosion);
-                            ringMiccia.stop();
+                            ringMiccia.pause();
                             ring.start();
                         }
                         zoznam.remove(randomBrick);
