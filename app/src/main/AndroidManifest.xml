@@ -18,13 +18,14 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
-
             </intent-filter>
         </activity>
         <activity android:name=".Settings" />
         <activity android:name=".Ranking" />
-        <activity android:name=".MultiplayerScore" />
-        <activity android:name=".Multiplayer" />
+        <activity android:name=".MultiplayerScore"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".Multiplayer"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".Editor"/>
         <activity
             android:name=".MainActivity"
