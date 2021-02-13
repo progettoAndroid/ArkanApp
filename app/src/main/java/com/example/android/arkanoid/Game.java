@@ -620,7 +620,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
                              Intent risultato = new Intent(context, MultiplayerScore.class);
                              risultato.putExtra("EXTRA_NICKNAME1", nickname);
                              risultato.putExtra("EXTRA_SCORE1", tmpscore);
-                             if(Users.get(i)!= nickname) {
+                             if(Users.get(i).compareTo(nickname)!=0) {
                                  risultato.putExtra("EXTRA_NICKNAME2", Users.get(i));
                                  risultato.putExtra("EXTRA_SCORE2", Scores.get(i));
                              }
