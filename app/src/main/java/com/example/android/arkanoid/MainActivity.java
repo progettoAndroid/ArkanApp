@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         nickname = namePlayerPreferences.getString ("nickname","");
         dbNickname = nickname;
         if ( nickname.isEmpty()) {
-            final AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+            final AlertDialog.Builder builder1 = new AlertDialog.Builder(this, R.style.styledialog);
             builder1.setTitle(R.string.benvenuto);
             builder1.setMessage(R.string.username);
             builder1.setCancelable(false);

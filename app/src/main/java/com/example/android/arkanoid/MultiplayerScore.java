@@ -65,11 +65,13 @@ public class MultiplayerScore extends AppCompatActivity {
                     String nickname;
                     String nicknameCompara1;
                     String nicknameCompara2;
+                    boolean trovato = false;
                     boolean visualizzato = false;
                     namePlayerPreferences = getApplicationContext().getSharedPreferences(NICKNAME, getApplicationContext().MODE_PRIVATE);
                     nickname = namePlayerPreferences.getString("nickname", "");
                     if(dataSnapshot!=null){
                         for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                            if(trovato==false){
                             Users = new ArrayList();
                             ScoreMio = new ArrayList();
                             ScoreAvversario = new ArrayList();
@@ -80,18 +82,21 @@ public class MultiplayerScore extends AppCompatActivity {
                                     Users.add(ds.child("giocatore2").getValue().toString());
                                     ScoreMio.add((ds.child("score1").getValue().toString()));
                                     ScoreAvversario.add((ds.child("score2").getValue().toString()));
+                                    trovato = true;
                                 }
                             } else if(nickname.compareTo(nicknameCompara2)==0){
                                 if (ds.child("giocatore1").getValue() != null) {
                                     Users.add(ds.child("giocatore1").getValue().toString());
                                     ScoreMio.add((ds.child("score2").getValue().toString()));
                                     ScoreAvversario.add((ds.child("score1").getValue().toString()));
+                                    trovato=true;
                                 }
+                            }
                             }
                         }
                         if(Users != null && Users.size()>=1){
                             for(int i=0;i<Users.size() && visualizzato==false;i++){
-                                if(Users.get(i) != nickname){
+                                if(Users.get(i).compareTo(nickname)!=0){
                                     visualizzato=true;
                                     TextView viewnick1 = findViewById(R.id.nick1);
                                     viewnick1.setText(nickname);

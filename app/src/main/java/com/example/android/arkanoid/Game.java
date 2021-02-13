@@ -612,7 +612,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
                  }
                  if(Users.size()>=1){
                      for(int i=0;i<Users.size() && trovato==false;i++){
-                         if(Users.get(i) != nickname){
+                         if(Users.get(i).compareTo(nickname)!=0){
                              trovato = true;
                              dataSnapshot.getRef().removeValue();
                              rootRef.child(nickname).child("nickname").removeValue();
