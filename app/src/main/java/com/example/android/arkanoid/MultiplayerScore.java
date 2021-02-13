@@ -101,11 +101,11 @@ public class MultiplayerScore extends AppCompatActivity {
                                 TextView viewscore2 = findViewById(R.id.score2);
                                 viewscore2.setText("" + scoreAvversario.get(scoreAvversario.size()-1));
                             } else if (users.size() == 1) {
-                                Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getString(R.string.errore_risultato) + "1", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getString(R.string.errore_risultato), Toast.LENGTH_SHORT).show();
                             }
 
                         } else {
-                            Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getString(R.string.errore_risultato) + "2", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getString(R.string.errore_risultato), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
