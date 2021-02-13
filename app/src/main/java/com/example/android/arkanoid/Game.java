@@ -604,9 +604,9 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
             public void onDataChange(DataSnapshot dataSnapshot) {
                 boolean trovato = false;
                 if(dataSnapshot!=null){
+                    Users = new ArrayList();
+                    Scores = new ArrayList();
                  for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                     Users = new ArrayList();
-                     Scores = new ArrayList();
                      Users.add(ds.child("nickname").getValue().toString());
                      Scores.add((ds.child("points").getValue().toString()));
                  }
@@ -620,13 +620,11 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
                              Intent risultato = new Intent(context, MultiplayerScore.class);
                              risultato.putExtra("EXTRA_NICKNAME1", nickname);
                              risultato.putExtra("EXTRA_SCORE1", tmpscore);
-                             if(Users.get(i).compareTo(nickname)!=0) {
-                                 risultato.putExtra("EXTRA_NICKNAME2", Users.get(i));
-                                 risultato.putExtra("EXTRA_SCORE2", Scores.get(i));
-                             }
-                                 context.startActivity(risultato);
+                             risultato.putExtra("EXTRA_NICKNAME2", Users.get(i));
+                             risultato.putExtra("EXTRA_SCORE2", Scores.get(i));
+                             context.startActivity(risultato);
                          }
-                         else if (Users.size()==1) {
+                         else{
                              Toast.makeText(context, context.getResources().getString(R.string.errore_matchmaking), Toast.LENGTH_SHORT).show();
                          }
                      }

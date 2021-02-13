@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Arkanoid</string>
+    <string name="app_name">ArkanApp</string>
     <string name="title_activity_main2">MainActivity</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -32,6 +32,7 @@
     <string name="livello_non_giocabile">Devi selezionare almeno una casella per giocare!</string>
     <string name="gioca">Gioca</string>
     <string name="risultato">Risultato</string>
-    <string name="errore_matchmaking">Nessun giocatore disponibile al momento! Controlla la sezione risultati più tardi!</string>
+    <string name="errore_matchmaking">Controlla la sezione risultati più tardi!</string>
     <string name="errore_risultato">Quando saranno disponibili i risultati verranno mostrati qui! Controlla la sezione risultati più tardi!</string>
+
 </resources>

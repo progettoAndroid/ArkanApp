@@ -1,9 +1,7 @@
 package com.example.android.arkanoid;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,9 +24,9 @@ public class MultiplayerScore extends AppCompatActivity {
     private String nick2;
     SharedPreferences namePlayerPreferences;
     private DatabaseReference rootRef;
-    private ArrayList<String> Users;
-    private ArrayList<String> ScoreMio;
-    private ArrayList<String> ScoreAvversario;
+    private ArrayList<String> users;
+    private ArrayList<String> scoreMio;
+    private ArrayList<String> scoreAvversario;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,48 +63,49 @@ public class MultiplayerScore extends AppCompatActivity {
                     String nickname;
                     String nicknameCompara1;
                     String nicknameCompara2;
-                    boolean trovato = false;
+                    int trovato = -1;
                     namePlayerPreferences = getApplicationContext().getSharedPreferences(NICKNAME, getApplicationContext().MODE_PRIVATE);
                     nickname = namePlayerPreferences.getString("nickname", "");
                     if (dataSnapshot != null) {
+                        users = new ArrayList();
+                        scoreMio = new ArrayList();
+                        scoreAvversario = new ArrayList();
                         for (DataSnapshot ds : dataSnapshot.getChildren()) {
-
-                                Users = new ArrayList();
-                                ScoreMio = new ArrayList();
-                                ScoreAvversario = new ArrayList();
                                 nicknameCompara1 = ds.child("giocatore1").getValue().toString();
                                 nicknameCompara2 = ds.child("giocatore2").getValue().toString();
                                 if (nickname.compareTo(nicknameCompara1) == 0) {
                                     if (ds.child("giocatore2").getValue() != null) {
-                                        Users.add(ds.child("giocatore2").getValue().toString());
-                                        ScoreMio.add((ds.child("score1").getValue().toString()));
-                                        ScoreAvversario.add((ds.child("score2").getValue().toString()));
+                                        users.add(ds.child("giocatore2").getValue().toString());
+                                        scoreMio.add((ds.child("score1").getValue().toString()));
+                                        scoreAvversario.add((ds.child("score2").getValue().toString()));
+                                        trovato++;
                                     }
                                 } else if (nickname.compareTo(nicknameCompara2) == 0) {
                                     if (ds.child("giocatore1").getValue() != null) {
-                                        Users.add(ds.child("giocatore1").getValue().toString());
-                                        ScoreMio.add((ds.child("score2").getValue().toString()));
-                                        ScoreAvversario.add((ds.child("score1").getValue().toString()));
+                                        users.add(ds.child("giocatore1").getValue().toString());
+                                        scoreMio.add((ds.child("score2").getValue().toString()));
+                                        scoreAvversario.add((ds.child("score1").getValue().toString()));
+                                        trovato++;
                                     }
                                 }
                             }
 
-                        if (Users != null && Users.size()>1) {
-                            if (Users.get(Users.lastIndexOf(Users)).compareTo(nickname) != 0) {
+                        if (users != null && users.size()>0) {
+                            if (users.get(trovato).compareTo(nickname) != 0) {
                                 TextView viewnick1 = findViewById(R.id.nick1);
                                 viewnick1.setText(nickname);
                                 TextView viewnick2 = findViewById(R.id.nick2);
-                                viewnick2.setText(Users.get(Users.size()-1));
+                                viewnick2.setText(users.get(trovato));
                                 TextView viewscore1 = findViewById(R.id.score1);
-                                viewscore1.setText("" + ScoreMio.get(ScoreMio.size()-1));
+                                viewscore1.setText("" + scoreMio.get(trovato));
                                 TextView viewscore2 = findViewById(R.id.score2);
-                                viewscore2.setText("" + ScoreAvversario.get(ScoreAvversario.size()-1));
-                            } else if (Users.size() == 1) {
-                                Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getString(R.string.errore_risultato) + "1", Toast.LENGTH_SHORT).show();
+                                viewscore2.setText("" + scoreAvversario.get(trovato));
+                            } else {
+                                Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getString(R.string.errore_risultato), Toast.LENGTH_SHORT).show();
                             }
 
                         } else {
-                            Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getString(R.string.errore_risultato) + "2", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getString(R.string.errore_risultato), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
