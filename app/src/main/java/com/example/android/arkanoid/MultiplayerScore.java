@@ -91,7 +91,7 @@ public class MultiplayerScore extends AppCompatActivity {
                                 }
                             }
 
-                        if (Users != null) {
+                        if (Users != null && Users.size()>1) {
                             if (Users.get(Users.lastIndexOf(Users)).compareTo(nickname) != 0) {
                                 TextView viewnick1 = findViewById(R.id.nick1);
                                 viewnick1.setText(nickname);
