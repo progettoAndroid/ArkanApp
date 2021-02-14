@@ -23,8 +23,10 @@ import androidx.core.app.ComponentActivity;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,9 +46,9 @@ import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
 
 public class MainActivity extends AppCompatActivity {
-    public static final String CONTROLLER ="ControllerFile";    //serve a salvare la preferenza sul controller
-    public static final String MUSIC ="MusicFile";
-    public static final String NICKNAME ="NamePlayerFile";
+    public static final String CONTROLLER = "ControllerFile";    //serve a salvare la preferenza sul controller
+    public static final String MUSIC = "MusicFile";
+    public static final String NICKNAME = "NamePlayerFile";
     private static final String TAG = "DB";
     private static String dbNickname;
     private MediaPlayer player;
@@ -63,18 +65,21 @@ public class MainActivity extends AppCompatActivity {
     private Context mContext;
     private int soundOn;
     private SoundPlayer sound2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         MusicCache.getInstance();
         super.onCreate(savedInstanceState);
         mContext = getApplicationContext();
         setContentView(R.layout.activity_main);
-        player=MusicCache.getInstance().getMp();
+        player = MusicCache.getInstance().getMp();
         sound2 = new SoundPlayer(this);
-        player= MediaPlayer.create(this,R.raw.song);
+        player = MediaPlayer.create(this, R.raw.song);
         soundPreferences = mContext.getSharedPreferences(MUSIC, mContext.MODE_PRIVATE);
         soundOn = soundPreferences.getInt("Music", 1);
-        if(soundOn == 1){ MusicCache.getInstance().setMp(player);}
+        if (soundOn == 1) {
+            MusicCache.getInstance().setMp(player);
+        }
     }
 
     @Override
@@ -103,72 +108,76 @@ public class MainActivity extends AppCompatActivity {
             //sistemo la parte grafica dell'alertdialog
             AlertDialog dialogController = builder.show();
             dialogController.getWindow().setBackgroundDrawableResource(R.drawable.popup_style);
-            ListView listView =dialogController.getListView();
+            ListView listView = dialogController.getListView();
             listView.setDivider(new ColorDrawable(Color.LTGRAY));
             listView.setDividerHeight(2);
         }
 
-        namePlayerPreferences = mContext.getSharedPreferences(NICKNAME, mContext.MODE_PRIVATE);
-        nickname = namePlayerPreferences.getString ("nickname","");
-        dbNickname = nickname;
-        if ( nickname.isEmpty()) {
-            final AlertDialog.Builder builder1 = new AlertDialog.Builder(this, R.style.styledialog);
-            builder1.setTitle(R.string.benvenuto);
-            builder1.setMessage(R.string.username);
-            builder1.setCancelable(false);
 
-             final EditText input = new EditText(this);
-            input.setInputType(InputType.TYPE_CLASS_TEXT );
-            builder1.setView(input);
-            builder1.setPositiveButton("OK", null);
-            final AlertDialog dialog = builder1.show();
-            dialog.getWindow().setBackgroundDrawableResource(R.drawable.popup_style);
+        if (InternetConnection.checkConnection(this.mContext)) {
 
 
-            Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            button.setOnClickListener(new View.OnClickListener() {
+            namePlayerPreferences = mContext.getSharedPreferences(NICKNAME, mContext.MODE_PRIVATE);
+            nickname = namePlayerPreferences.getString("nickname", "");
+            dbNickname = nickname;
+            if (nickname.isEmpty()) {
+                final AlertDialog.Builder builder1 = new AlertDialog.Builder(this, R.style.styledialog);
+                builder1.setTitle(R.string.benvenuto);
+                builder1.setMessage(R.string.username);
+                builder1.setCancelable(false);
 
-                @SuppressLint("RestrictedApi")
-                @Override
-                public void onClick(View view1) {
-                    if (TextUtils.isEmpty(input.getText().toString().trim())) {
-                        input.setError(mContext.getResources().getString(R.string.non_vuoto));
-                    } else {
-                        inputName = input.getText().toString().trim();
+                final EditText input = new EditText(this);
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                builder1.setView(input);
+                builder1.setPositiveButton("OK", null);
+                final AlertDialog dialog = builder1.show();
+                dialog.getWindow().setBackgroundDrawableResource(R.drawable.popup_style);
 
-                        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-                        final DatabaseReference userNameRef = rootRef.child("Users").child(inputName).child("username");
-                        final DatabaseReference punteggioRef = userNameRef.getParent().child("points");
 
-                       final  ValueEventListener eventListener = new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                if(!dataSnapshot.exists()) {
+                Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(new View.OnClickListener() {
 
-                                    SharedPreferences.Editor editor = namePlayerPreferences.edit();
-                                    editor.putString("nickname", inputName);
+                    @SuppressLint("RestrictedApi")
+                    @Override
+                    public void onClick(View view1) {
+                        if (TextUtils.isEmpty(input.getText().toString().trim())) {
+                            input.setError(mContext.getResources().getString(R.string.non_vuoto));
+                        } else {
+                            inputName = input.getText().toString().trim();
 
-                                    editor.commit();
+                            DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+                            final DatabaseReference userNameRef = rootRef.child("Users").child(inputName).child("username");
+                            final DatabaseReference punteggioRef = userNameRef.getParent().child("points");
 
-                                    userNameRef.setValue(inputName);
-                                    punteggioRef.setValue("0");
+                            final ValueEventListener eventListener = new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    if (!dataSnapshot.exists()) {
 
-                                    dialog.dismiss();
-                                 }
-                                else{
-                                    input.setError(mContext.getResources().getString(R.string.username_esistente));
+                                        SharedPreferences.Editor editor = namePlayerPreferences.edit();
+                                        editor.putString("nickname", inputName);
+
+                                        editor.commit();
+
+                                        userNameRef.setValue(inputName);
+                                        punteggioRef.setValue("0");
+
+                                        dialog.dismiss();
+                                    } else {
+                                        input.setError(mContext.getResources().getString(R.string.username_esistente));
+                                    }
                                 }
-                            }
 
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-                                Log.d(TAG, databaseError.getMessage());
-                            }
-                        };
-                        userNameRef.addListenerForSingleValueEvent(eventListener);
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    Log.d(TAG, databaseError.getMessage());
+                                }
+                            };
+                            userNameRef.addListenerForSingleValueEvent(eventListener);
+                        }
                     }
-                }
-            });
+                });
+            }
         }
     }
 
@@ -176,13 +185,15 @@ public class MainActivity extends AppCompatActivity {
         Intent gameStarter = new Intent(this, GameStarter.class);
         int orientation = this.getResources().getConfiguration().orientation;
         selectedController = controllerSettings.getInt("SelectedController", 2);
-        if(selectedController==2){
-            selectedController=0;
+        if (selectedController == 2) {
+            selectedController = 0;
         }
-        gameStarter.putExtra("EXTRA_CONTROLLER",selectedController);
+        gameStarter.putExtra("EXTRA_CONTROLLER", selectedController);
         gameStarter.putExtra("EXTRA_ORIENTATION", orientation);
-        if(selectedController != 2) {
-            if(soundOn==1) { sound2.playButton();}
+        if (selectedController != 2) {
+            if (soundOn == 1) {
+                sound2.playButton();
+            }
             startActivity(gameStarter);
         }
     }
@@ -190,30 +201,38 @@ public class MainActivity extends AppCompatActivity {
     public void sendMessageMultiplayer(View view) {
         soundPreferences = mContext.getSharedPreferences(MUSIC, mContext.MODE_PRIVATE);
         soundOn = soundPreferences.getInt("Music", 1);
-        if(soundOn==1) { sound2.playButton();}
+        if (soundOn == 1) {
+            sound2.playButton();
+        }
         Intent multiplayer = new Intent(this, Multiplayer.class);
-        multiplayer.putExtra("selectedController",selectedController);
-        if(InternetConnection.checkConnection(mContext)==true) {
+        multiplayer.putExtra("selectedController", selectedController);
+        if (InternetConnection.checkConnection(mContext) == true) {
             startActivity(multiplayer);
-        }else {
+        } else {
             Toast.makeText(mContext, getString(R.string.errore_internet), Toast.LENGTH_SHORT).show();
         }
     }
+
     public void sendMessageImpostazioni(View view) {
         Intent settings = new Intent(this, Settings.class);
         soundPreferences = mContext.getSharedPreferences(MUSIC, mContext.MODE_PRIVATE);
         soundOn = soundPreferences.getInt("Music", 1);
-        if(soundOn==1) { sound2.playButton();}
+        if (soundOn == 1) {
+            sound2.playButton();
+        }
         startActivity(settings);
     }
+
     public void sendMessageRanking(View view) {
         Intent rank = new Intent(this, Ranking.class);
         soundPreferences = mContext.getSharedPreferences(MUSIC, mContext.MODE_PRIVATE);
         soundOn = soundPreferences.getInt("Music", 1);
-        if(soundOn==1) { sound2.playButton();}
-        if(InternetConnection.checkConnection(mContext)==true) {
+        if (soundOn == 1) {
+            sound2.playButton();
+        }
+        if (InternetConnection.checkConnection(mContext) == true) {
             startActivity(rank);
-        }else {
+        } else {
             Toast.makeText(mContext, getString(R.string.errore_internet), Toast.LENGTH_SHORT).show();
         }
     }
@@ -222,26 +241,30 @@ public class MainActivity extends AppCompatActivity {
         Intent edit = new Intent(this, Editor.class);
         soundPreferences = mContext.getSharedPreferences(MUSIC, mContext.MODE_PRIVATE);
         soundOn = soundPreferences.getInt("Music", 1);
-        if(soundOn==1) { sound2.playButton();}
+        if (soundOn == 1) {
+            sound2.playButton();
+        }
         startActivity(edit);
     }
 
 
     @Override
-    protected void onPause(){
+    protected void onPause() {
         super.onPause();
         MediaPlayer player = MusicCache.getInstance().getMp();
-        if(player!=null)
+        if (player != null)
             player.pause();
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         player = MusicCache.getInstance().getMp();
         soundPreferences = mContext.getSharedPreferences(MUSIC, mContext.MODE_PRIVATE);
         soundOn = soundPreferences.getInt("Music", 1);
-        if((player!=null && !player.isPlaying()) && soundOn==1) { player.start(); }
+        if ((player != null && !player.isPlaying()) && soundOn == 1) {
+            player.start();
+        }
     }
 
 
