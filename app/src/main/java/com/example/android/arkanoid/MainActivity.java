@@ -116,7 +116,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (InternetConnection.checkConnection(this.mContext)) {
 
-
             namePlayerPreferences = mContext.getSharedPreferences(NICKNAME, mContext.MODE_PRIVATE);
             nickname = namePlayerPreferences.getString("nickname", "");
             dbNickname = nickname;

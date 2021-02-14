@@ -17,6 +17,9 @@ import static com.example.android.arkanoid.MainActivity.MUSIC;
 
 public class GameStarter extends AppCompatActivity {
 
+
+    private static final String POINTS = "";
+    private static final String LEVEL ="" ;
     private Game game;
     private UpdateThread myThread;
     private Handler updateHandler;
@@ -50,7 +53,12 @@ public class GameStarter extends AppCompatActivity {
         } else if(livello == null) {
             game = new Game(this, 3, 0, controller);
         }
+        if (savedInstanceState != null) {
 
+            game.setLevel(savedInstanceState.getInt(LEVEL));
+            game.setScore(savedInstanceState.getInt(POINTS));
+
+        }
         setContentView(game);
 
         // vytvori handler a thread
@@ -79,8 +87,10 @@ public class GameStarter extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
          player = MusicCache.getInstance().getMp();
+
         if(player!=null)
             player.pause();
+
         game.zastavSnimanie();
     }
 
@@ -93,6 +103,7 @@ public class GameStarter extends AppCompatActivity {
         if((player!=null && !player.isPlaying()) && soundOn == 1)
             player.start();
         game.spustiSnimanie();
+
     }
 
     /*
@@ -124,7 +135,15 @@ public class GameStarter extends AppCompatActivity {
             ring.pause();
             game.setRingMiccia(ring);
         }
+        game.setStart(false); ;
+
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(  POINTS ,game.getScore());
+        outState.putInt(  LEVEL ,game.getLevel());
 
+    }
 }

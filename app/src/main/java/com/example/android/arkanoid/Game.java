@@ -64,9 +64,44 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
     private ArrayList<String> Users;
     private ArrayList<String> Scores;
     private int lifes;
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
+    }
+
+    public boolean[] getLivello() {
+        return livello;
+    }
+
+    public void setLivello(boolean[] livello) {
+        this.livello = livello;
+    }
+
     private Integer score;
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
     private int level;
     private int controller;
+
+    public boolean isStart() {
+        return start;
+    }
+
+    public void setStart(boolean start) {
+        this.start = start;
+    }
+
     private boolean start;
     private boolean gameOver;
     private Context context;
@@ -324,7 +359,6 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
             canvas.drawText("" + score, 1290, 68, paint);
         }
 
-
         // in caso di sconfitta "Game over!"
         if (gameOver) {
             paint.setColor(Color.RED);
@@ -412,13 +446,8 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
     }
 
 
-    public MediaPlayer getRingMiccia() {
-        return ringMiccia;
-    }
 
-    public void setRingMiccia(MediaPlayer ringMiccia) {
-        this.ringMiccia = ringMiccia;
-    }
+
 
     // funzione per la generazione del blocco di tnt
     private boolean randomTNT() {
@@ -662,6 +691,20 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
             }
         });
 
+    }
+    public MediaPlayer getRingMiccia() {
+        return ringMiccia;
+    }
+
+    public void setRingMiccia(MediaPlayer ringMiccia) {
+        this.ringMiccia = ringMiccia;
+    }
+    public SoundPlayer getSound2() {
+        return sound2;
+    }
+
+    public void setSound2(SoundPlayer sound2) {
+        this.sound2 = sound2;
     }
 
 

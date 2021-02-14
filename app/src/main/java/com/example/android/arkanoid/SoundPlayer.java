@@ -46,5 +46,8 @@ public class SoundPlayer {
     public void playButton(){
         soundPool.play(button, 1.0f, 1.0f, 1,0, 1.0f);
     }
+    public void pauseButton(){
+        soundPool.release( );
+    }
 }
 
