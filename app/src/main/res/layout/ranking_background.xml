@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#120000"
+    android:backgroundTint="#FFFFFF"
+    android:backgroundTintMode="screen"
+    tools:context=".Start">
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="2000dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/vaporwaveblur" />
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

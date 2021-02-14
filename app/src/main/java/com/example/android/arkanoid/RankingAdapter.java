@@ -131,25 +131,33 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.RankingV
 
         namePlayerPreferences = mActivity.getApplicationContext().getSharedPreferences(NICKNAME, mActivity.getApplicationContext().MODE_PRIVATE);
         nickname = namePlayerPreferences.getString ("nickname","");
+        holder.username.setTextColor(  Color.parseColor("#FFFFFF"));
+        holder.points.setTextColor(  Color.parseColor("#FFFFFF"));
+        holder.numberRanking.setTextColor(  Color.parseColor("#FFFFFF"));
         if (nickname.equals(user.getUsername())){
             holder.imageSend.setVisibility(View.VISIBLE);
             holder.username.setTypeface(null, Typeface.BOLD);
+            holder.itemView.setBackgroundColor( Color.parseColor("#FFFFFF"));
+            holder.points.setTypeface(null, Typeface.BOLD);
+            holder.numberRanking.setTypeface(null, Typeface.BOLD);
             holder.username.setTextColor(  Color.parseColor("#000000"));
             holder.points.setTextColor(  Color.parseColor("#000000"));
             holder.numberRanking.setTextColor(  Color.parseColor("#000000"));
-            holder.points.setTypeface(null, Typeface.BOLD);
-            holder.numberRanking.setTypeface(null, Typeface.BOLD);
           }
         switch (position+1){
-            case 1: holder.username.setBackgroundColor( Color.parseColor("#daa520"));
-                holder.points.setBackgroundColor( Color.parseColor("#daa520"));
-                holder.numberRanking.setBackgroundColor( Color.parseColor("#daa520"));break;
-             case 2: holder.username.setBackgroundColor( Color.parseColor("#8a9597"));
-                holder.points.setBackgroundColor( Color.parseColor("#8a9597"));
-                holder.numberRanking.setBackgroundColor( Color.parseColor("#8a9597"));break;
-              case 3: holder.username.setBackgroundColor( Color.parseColor("#cd7f32"));
-                 holder.points.setBackgroundColor( Color.parseColor("#cd7f32"));
-                 holder.numberRanking.setBackgroundColor( Color.parseColor("#cd7f32"));break;
+            case 1: holder.username.setTextColor( Color.parseColor("#daa520"));
+                holder.points.setTextColor( Color.parseColor("#daa520"));
+                holder.numberRanking.setTextColor( Color.parseColor("#daa520"));
+                 break;
+             case 2: holder.username.setTextColor( Color.parseColor("#8a9597"));
+                holder.points.setTextColor( Color.parseColor("#8a9597"));
+                holder.numberRanking.setTextColor( Color.parseColor("#8a9597"));
+
+                break;
+              case 3: holder.username.setTextColor( Color.parseColor("#cd7f32"));
+                 holder.points.setTextColor( Color.parseColor("#cd7f32"));
+                 holder.numberRanking.setTextColor( Color.parseColor("#cd7f32"));
+               break;
          }
 
         spinner.setVisibility(View.GONE);
