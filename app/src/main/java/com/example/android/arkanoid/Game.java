@@ -81,8 +81,8 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
     int paddleTouchCounter = 0;
     MediaPlayer ringMiccia;
     SharedPreferences soundPreferences;
-    private int soundOn;
-    private boolean[] livello;
+    private int soundOn; // se è 1 il suono è attivo se è 0 il suono è disattivato
+    private boolean[] livello; // livello dell'editor
     private int isMultiplayer = 0;
 
     public Game(Context context, int lifes, int score, int controller) {
@@ -300,7 +300,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
         paint.setColor(Color.RED);
         canvas.drawBitmap(redBall, ball.getX(), ball.getY(), paint);
 
-        // disegnato paddle
+        // disegnare paddle
         paint.setColor(Color.WHITE);
         r = new RectF(paddle.getX(), paddle.getY(), paddle.getX() + 200, paddle.getY() + 40);
         canvas.drawBitmap(paddle_p, null, r, paint);
@@ -325,7 +325,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
         }
 
 
-        // in caso di perdita "Game over!"
+        // in caso di sconfitta "Game over!"
         if (gameOver) {
             paint.setColor(Color.RED);
             paint.setTextSize(100);
@@ -378,6 +378,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
             DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
             final DatabaseReference userNameRef = rootRef.child("Users");
 
+            // salviamo l'high score del giocatore
             ValueEventListener eventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -387,14 +388,14 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
                             if (value < score)
                                 userNameRef.child(nickname).child("points").setValue(score.toString());
                         } catch (Exception e) {
-                            Log.d(TAG, e.getMessage()); //Don't ignore errors!
+                            Log.d(TAG, e.getMessage());
                         }
                     }
                 }
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-                    Log.d(TAG, databaseError.getMessage()); //Don't ignore errors!
+                    Log.d(TAG, databaseError.getMessage());
                 }
             };
             userNameRef.addListenerForSingleValueEvent(eventListener);
@@ -418,6 +419,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
         this.ringMiccia = ringMiccia;
     }
 
+    // funzione per la generazione del blocco di tnt
     private boolean randomTNT() {
         boolean returnValue = false;
         Random randomInt = new Random();
@@ -425,6 +427,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
             randomBrick = randomInt.nextInt(zoznam.size());
         } while (zoznam.get(randomBrick).getisXBrick());
         if (isScoreMultipleOf400 && score != 0) {
+            //se il suono è attivo riproduco  il rumore della miccia seguito dall'esplosione quando tocca il paddle
             if (soundOn == 1) {
                 ringMiccia = MediaPlayer.create(context, R.raw.miccia);
                 ringMiccia.setLooping(true);
@@ -459,6 +462,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
             for (int i = 0; i < zoznam.size(); i++) {
                 Brick b = zoznam.get(i);
                 if (ball.NarazBrick(b.getX(), b.getY())) {
+                    //se è un blocco con la X vedo quanti tocchi ci volevano a distruggerlo e sottraggo il tocco avvenuto
                     if (zoznam.get(i).getisXBrick()) {
                         if (zoznam.get(i).getxBrickBreakCounter() != 0) {
                             zoznam.get(i).setxBrickBreakCounter(zoznam.get(i).getxBrickBreakCounter() - 1);
@@ -475,7 +479,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
                         isRandomTNT = false;
                         paddleTouchCounter = 0;
                         randomBrick = -1;
-                    } else {
+                    } else {//se il blocco è di livello 1 ossia integro, lo faccio screpolare, altrimenti se è screpolato lo rimuovo
                         if (zoznam.get(i).getLevel() == Brick.Level.ONE && !zoznam.get(i).getBrick().equals(R.drawable.brick_green)) {
                             zoznam.remove(i);
                             if (soundOn == 1) {
@@ -541,6 +545,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (gameOver == true && start == false) {
+            //se la partita è multiplayer e l'utente ha la connessione attiva salvo il punteggio, altrimenti resetto per il singleplayer
             if (isMultiplayer == 1 && InternetConnection.checkConnection(context)==true) {
                 storeScoreMultiplayer();
             }else {
@@ -603,6 +608,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
 
     public void storeScoreMultiplayer() {
         final int tmpscore = score;
+        //Prendo il nick dalle preferenze e mi apro un riferimento al child Multiplayer del Database, da dove cercherò gli avversari
         namePlayerPreferences = this.context.getSharedPreferences(NICKNAME, this.context.MODE_PRIVATE);
         nickname = namePlayerPreferences.getString("nickname", "");
         rootRef = FirebaseDatabase.getInstance().getReference().child("Multiplayer");
@@ -611,6 +617,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
         final DatabaseReference MultiUser = rootRef.child("Multiplayer").child(nickname).child("username");
         final DatabaseReference MultiPunteggio = MultiUser.getParent().child("points");
 
+        //al cambiare dei dati nel database, prendo i valori degli utenti e degli score
         rootRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -622,6 +629,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
                      Users.add(ds.child("nickname").getValue().toString());
                      Scores.add((ds.child("points").getValue().toString()));
                  }
+                 // se c'è almeno un utente disponibile il cui nickname sia diverso dal nickname in uso, creo la schermata risultato, altrimenti mostro un messaggio
                  if(Users.size()>=1){
                      for(int i=0;i<Users.size() && trovato==false;i++){
                          if(Users.get(i).compareTo(nickname)!=0){

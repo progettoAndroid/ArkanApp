@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private Game game;
     private UpdateThread myThread;
     private Handler updateHandler;
-    private int selectedController = 2;
+    private int selectedController = 2; // serve a sapere quale controller si è scelto, 0 tocco, 1 accelerometro, 2 se non ha scelto
     private Context mContext;
     private int soundOn;
     private SoundPlayer sound2;

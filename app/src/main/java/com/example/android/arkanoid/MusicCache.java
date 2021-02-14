@@ -3,6 +3,7 @@ package com.example.android.arkanoid;
 import android.media.MediaPlayer;
 
 public class MusicCache {
+    //classe singleton per la gestione del player musicale
     private static MusicCache musicCache;
     private MediaPlayer mp;
 

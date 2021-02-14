@@ -31,6 +31,7 @@ public class MultiplayerScore extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.multiplayer_score);
+        // se si arriva qui tramite intent creo normalmente l'activity
         if(getIntent().getStringExtra("EXTRA_NICKNAME1")!=null) {
             nick1 = getIntent().getStringExtra("EXTRA_NICKNAME1");
             score1 = getIntent().getIntExtra("EXTRA_SCORE1", 0);
@@ -51,6 +52,7 @@ public class MultiplayerScore extends AppCompatActivity {
     protected void onStart(){
         super.onStart();
         rootRef = FirebaseDatabase.getInstance().getReference().child("Partite");
+        //se si arriva in questa schermata senza intent, trovo una vecchia partita dell'utente e la mostro.
         if(getIntent().getStringExtra("EXTRA_NICKNAME1")!=null && getIntent().getStringExtra("EXTRA_NICKNAME2")!=null ) {
             rootRef.child(nick1+" "+nick2).child("giocatore1").setValue(nick1);
             rootRef.child(nick1+" "+nick2).child("giocatore2").setValue(nick2);
@@ -70,6 +72,8 @@ public class MultiplayerScore extends AppCompatActivity {
                         users = new ArrayList();
                         scoreMio = new ArrayList();
                         scoreAvversario = new ArrayList();
+                        //vedo se il nickname appare come giocatore uno o giocatore due, la variabile trovato serve a prendere l'ultima istanza del DB per l'utente
+                        //questa, sarà l'indice di dove si trova l'altro utente che per ultimo ha sfidato l'utente in uso.
                         for (DataSnapshot ds : dataSnapshot.getChildren()) {
                                 nicknameCompara1 = ds.child("giocatore1").getValue().toString();
                                 nicknameCompara2 = ds.child("giocatore2").getValue().toString();
@@ -90,6 +94,7 @@ public class MultiplayerScore extends AppCompatActivity {
                                 }
                             }
 
+                        // se users non è nullo vuol dire che ha trovato almeno una partita terminata, quindi ne riporta i dettagli nelle view.
                         if (users != null && users.size()>0) {
                             if (users.get(trovato).compareTo(nickname) != 0) {
                                 TextView viewnick1 = findViewById(R.id.nick1);

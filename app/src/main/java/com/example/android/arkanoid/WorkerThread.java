@@ -27,7 +27,6 @@ public class WorkerThread extends Thread {
         //finché non si verifica l'azione di rimozione del dito dallo schermo
        while(!terminated){
            //se l'azione è un tocco, sposto a destra o sinistra il paddle
-
                if (context.getResources().getConfiguration().orientation == ORIENTATION_PORTRAIT) {
                    //se il tocco avviene a destra dello schermo, e il paddle non finisce fuori dal bordo destro, lo muovo a destra
                    if ((event.getRawX() > (size.x / 2)) && ((paddle.getX() + size.x / 100) < size.x - 200)) {

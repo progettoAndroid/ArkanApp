@@ -28,7 +28,6 @@ import static com.example.android.arkanoid.MainActivity.MUSIC;
 public class Editor extends AppCompatActivity {
     public static final String LEVELPOR ="LevelFile";
     public static final String LEVELLAND ="LevelLandscapeFile";
-    CheckBox chkBuffer;
     ArrayList<CheckBox> ArrayCheckbox = new ArrayList<>();  // arraylist che servirà a fare il controllo con l'id per modificare il boolean giusto
     boolean[] Livello = new boolean[21];    // il livello sarà visto come un array di boolean, true c'è blocco, false non c'è.
     private int selectedController;
@@ -46,7 +45,7 @@ public class Editor extends AppCompatActivity {
         soundPreferences = getApplicationContext().getSharedPreferences(MUSIC, getApplicationContext().MODE_PRIVATE);
         soundOn = soundPreferences.getInt("Music", 1);
 
-        //Fisso l'orientamento.
+        //Fisso l'orientamento per non stravolgere il livello creato dall'utente
         if (getApplicationContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         } else if (getApplicationContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
