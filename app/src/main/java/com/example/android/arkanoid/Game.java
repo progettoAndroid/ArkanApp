@@ -32,6 +32,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -152,7 +153,10 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
         redBall = BitmapFactory.decodeResource(getResources(), R.drawable.redball);
         paddle_p = BitmapFactory.decodeResource(getResources(), R.drawable.paddle);
 
-        //
+
+        soundPreferences = this.context.getSharedPreferences(MUSIC, this.context.MODE_PRIVATE);
+        soundOn = soundPreferences.getInt("Music", 1);
+
         //crea una nuova palla, una nuova base e un elenco di mattoni
         ball = new Ball(size.x / 2, size.y - 480);
         paddle = new Paddle(size.x / 2 - 100, size.y - 400);
@@ -406,6 +410,14 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
     }
 
 
+    public MediaPlayer getRingMiccia() {
+        return ringMiccia;
+    }
+
+    public void setRingMiccia(MediaPlayer ringMiccia) {
+        this.ringMiccia = ringMiccia;
+    }
+
     private boolean randomTNT() {
         boolean returnValue = false;
         Random randomInt = new Random();
@@ -529,7 +541,7 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (gameOver == true && start == false) {
-            if (isMultiplayer == 1) {
+            if (isMultiplayer == 1 && InternetConnection.checkConnection(context)==true) {
                 storeScoreMultiplayer();
             }else {
                 score = 0;
@@ -643,5 +655,6 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
         });
 
     }
+
 
 }

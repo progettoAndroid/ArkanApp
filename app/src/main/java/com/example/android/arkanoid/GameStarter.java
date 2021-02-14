@@ -119,6 +119,11 @@ public class GameStarter extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
+        MediaPlayer ring = game.getRingMiccia();
+        if(ring!=null) {
+            ring.pause();
+            game.setRingMiccia(ring);
+        }
     }
 
 

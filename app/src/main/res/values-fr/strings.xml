@@ -37,4 +37,5 @@
     <string name="risultato">Resultat</string>
     <string name="errore_matchmaking">Controle ta section Resultats plus tards!</string>
     <string name="errore_risultato">Le resultats seront visualisée ici!</string>
+    <string name="errore_internet">Vous devez vous connecter à Internet pour y accéder</string>
 </resources>

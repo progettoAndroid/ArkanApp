@@ -21,11 +21,11 @@
 
             </intent-filter>
         </activity>
-        <activity android:name=".Settings" />
-        <activity android:name=".Ranking" />
-        <activity android:name=".MultiplayerScore" />
-        <activity android:name=".Multiplayer" />
-        <activity android:name=".Editor"/>
+        <activity android:name=".Settings" android:label="@string/impostazioni" />
+        <activity android:name=".Ranking" android:label="@string/classifica"/>
+        <activity android:name=".MultiplayerScore" android:label="@string/risultato"/>
+        <activity android:name=".Multiplayer" android:label="@string/multiplayer"/>
+        <activity android:name=".Editor" android:label="@string/editor"/>
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">

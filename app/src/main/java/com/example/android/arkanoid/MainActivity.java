@@ -29,12 +29,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.io.IOException;
+import java.net.InetAddress;
 
 import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
@@ -71,8 +75,6 @@ public class MainActivity extends AppCompatActivity {
         soundPreferences = mContext.getSharedPreferences(MUSIC, mContext.MODE_PRIVATE);
         soundOn = soundPreferences.getInt("Music", 1);
         if(soundOn == 1){ MusicCache.getInstance().setMp(player);}
-
-
     }
 
     @Override
@@ -191,7 +193,11 @@ public class MainActivity extends AppCompatActivity {
         if(soundOn==1) { sound2.playButton();}
         Intent multiplayer = new Intent(this, Multiplayer.class);
         multiplayer.putExtra("selectedController",selectedController);
-        startActivity(multiplayer);
+        if(InternetConnection.checkConnection(mContext)==true) {
+            startActivity(multiplayer);
+        }else {
+            Toast.makeText(mContext, getString(R.string.errore_internet), Toast.LENGTH_SHORT).show();
+        }
     }
     public void sendMessageImpostazioni(View view) {
         Intent settings = new Intent(this, Settings.class);
@@ -205,7 +211,11 @@ public class MainActivity extends AppCompatActivity {
         soundPreferences = mContext.getSharedPreferences(MUSIC, mContext.MODE_PRIVATE);
         soundOn = soundPreferences.getInt("Music", 1);
         if(soundOn==1) { sound2.playButton();}
-        startActivity(rank);
+        if(InternetConnection.checkConnection(mContext)==true) {
+            startActivity(rank);
+        }else {
+            Toast.makeText(mContext, getString(R.string.errore_internet), Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void sendMessageEditor(View view) {

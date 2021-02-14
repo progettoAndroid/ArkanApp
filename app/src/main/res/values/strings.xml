@@ -34,5 +34,5 @@
     <string name="risultato">Risultato</string>
     <string name="errore_matchmaking">Controlla la sezione risultati più tardi!</string>
     <string name="errore_risultato">Quando saranno disponibili i risultati verranno mostrati qui! Controlla la sezione risultati più tardi!</string>
-
+    <string name="errore_internet">Devi accedere ad una connessione per usufruire di questa funzionalità!</string>
 </resources>
