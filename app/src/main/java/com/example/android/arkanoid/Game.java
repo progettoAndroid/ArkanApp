@@ -373,33 +373,34 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
             }
             invalidate();
 
-            namePlayerPreferences = context.getSharedPreferences(NICKNAME, context.MODE_PRIVATE);
-            nickname = namePlayerPreferences.getString("nickname", "");
-            DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-            final DatabaseReference userNameRef = rootRef.child("Users");
+            if (InternetConnection.checkConnection(this.context)) {
+                namePlayerPreferences = context.getSharedPreferences(NICKNAME, context.MODE_PRIVATE);
+                nickname = namePlayerPreferences.getString("nickname", "");
+                DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+                final DatabaseReference userNameRef = rootRef.child("Users");
 
-            // salviamo l'high score del giocatore
-            ValueEventListener eventListener = new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.child(nickname).exists()) {
-                        try {
-                            Integer value = Integer.parseInt(dataSnapshot.child(nickname).child("points").getValue(String.class));
-                            if (value < score)
-                                userNameRef.child(nickname).child("points").setValue(score.toString());
-                        } catch (Exception e) {
-                            Log.d(TAG, e.getMessage());
+                // salviamo l'high score del giocatore
+                ValueEventListener eventListener = new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.child(nickname).exists()) {
+                            try {
+                                Integer value = Integer.parseInt(dataSnapshot.child(nickname).child("points").getValue(String.class));
+                                if (value < score)
+                                    userNameRef.child(nickname).child("points").setValue(score.toString());
+                            } catch (Exception e) {
+                                Log.d(TAG, e.getMessage());
+                            }
                         }
                     }
-                }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    Log.d(TAG, databaseError.getMessage());
-                }
-            };
-            userNameRef.addListenerForSingleValueEvent(eventListener);
-
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.d(TAG, databaseError.getMessage());
+                    }
+                };
+                userNameRef.addListenerForSingleValueEvent(eventListener);
+            }
         } else {
             lifes--;
             ball.setX(size.x / 2);
@@ -546,9 +547,9 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
     public boolean onTouch(View v, MotionEvent event) {
         if (gameOver == true && start == false) {
             //se la partita è multiplayer e l'utente ha la connessione attiva salvo il punteggio, altrimenti resetto per il singleplayer
-            if (isMultiplayer == 1 && InternetConnection.checkConnection(context)==true) {
+            if (isMultiplayer == 1 && InternetConnection.checkConnection(context) == true) {
                 storeScoreMultiplayer();
-            }else {
+            } else {
                 score = 0;
                 lifes = 3;
                 resetLevel();
@@ -622,39 +623,38 @@ public class Game extends View implements SensorEventListener, View.OnTouchListe
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 boolean trovato = false;
-                if(dataSnapshot!=null){
+                if (dataSnapshot != null) {
                     Users = new ArrayList();
                     Scores = new ArrayList();
-                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                     Users.add(ds.child("nickname").getValue().toString());
-                     Scores.add((ds.child("points").getValue().toString()));
-                 }
-                 // se c'è almeno un utente disponibile il cui nickname sia diverso dal nickname in uso, creo la schermata risultato, altrimenti mostro un messaggio
-                 if(Users.size()>=1){
-                     for(int i=0;i<Users.size() && trovato==false;i++){
-                         if(Users.get(i).compareTo(nickname)!=0){
-                             trovato = true;
-                             dataSnapshot.getRef().removeValue();
-                             rootRef.child(nickname).child("nickname").removeValue();
-                             rootRef.child(nickname).child("points").removeValue();
-                             Intent risultato = new Intent(context, MultiplayerScore.class);
-                             risultato.putExtra("EXTRA_NICKNAME1", nickname);
-                             risultato.putExtra("EXTRA_SCORE1", tmpscore);
-                             risultato.putExtra("EXTRA_NICKNAME2", Users.get(i));
-                             risultato.putExtra("EXTRA_SCORE2", Scores.get(i));
-                             context.startActivity(risultato);
-                         }
-                         else{
-                             Toast.makeText(context, context.getResources().getString(R.string.errore_matchmaking), Toast.LENGTH_SHORT).show();
-                         }
-                     }
-                     }else{
-                         Toast.makeText(context, context.getResources().getString(R.string.errore_matchmaking), Toast.LENGTH_SHORT).show();
-                     }
-                 }else {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        Users.add(ds.child("nickname").getValue().toString());
+                        Scores.add((ds.child("points").getValue().toString()));
+                    }
+                    // se c'è almeno un utente disponibile il cui nickname sia diverso dal nickname in uso, creo la schermata risultato, altrimenti mostro un messaggio
+                    if (Users.size() >= 1) {
+                        for (int i = 0; i < Users.size() && trovato == false; i++) {
+                            if (Users.get(i).compareTo(nickname) != 0) {
+                                trovato = true;
+                                dataSnapshot.getRef().removeValue();
+                                rootRef.child(nickname).child("nickname").removeValue();
+                                rootRef.child(nickname).child("points").removeValue();
+                                Intent risultato = new Intent(context, MultiplayerScore.class);
+                                risultato.putExtra("EXTRA_NICKNAME1", nickname);
+                                risultato.putExtra("EXTRA_SCORE1", tmpscore);
+                                risultato.putExtra("EXTRA_NICKNAME2", Users.get(i));
+                                risultato.putExtra("EXTRA_SCORE2", Scores.get(i));
+                                context.startActivity(risultato);
+                            } else {
+                                Toast.makeText(context, context.getResources().getString(R.string.errore_matchmaking), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    } else {
+                        Toast.makeText(context, context.getResources().getString(R.string.errore_matchmaking), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
                     Toast.makeText(context, context.getResources().getString(R.string.errore_matchmaking), Toast.LENGTH_SHORT).show();
                 }
-                }
+            }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
